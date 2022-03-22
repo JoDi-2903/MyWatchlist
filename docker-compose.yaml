@@ -1,0 +1,29 @@
+version: "3.7"
+services:
+  server:
+    build: .
+    container_name: mywatchlist_server
+    ports:
+      - 80:80
+      - 443:443
+    restart: always
+    volumes:
+      - ~/caddy_data:/data
+      - ~/caddy_config:/config
+
+  backend:
+    build: ./mywatchlist
+    container_name: mywatchlist_backend
+    ports:
+      - 8080:8080
+    restart: always
+  
+  db:
+    image: postgres:14
+    container_name: mywatchlist_db
+    restart: always
+    env_file: ./config.env
+    ports:
+      - 5432:5432
+    volumes:
+      - ~/postgres_data:/var/lib/postgresql/data
