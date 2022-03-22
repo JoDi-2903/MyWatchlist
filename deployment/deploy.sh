@@ -1,5 +1,5 @@
 echo "Cloning repository..."
-git clone git@github.com:JoDi-2903/MyWatchlist.git
+git clone https://github.com/JoDi-2903/MyWatchlist.git
 echo "Repository cloned"
 
 cd ./MyWatchlist
