@@ -1,9 +1,11 @@
 {
-    admin off
-    auto_https disable_redirects
+        admin off
 }
 
-localhost {
-    root * /srv
-    file_server
+mywatchlist.server-welt.com {
+        handle_path /* {
+                root * /srv
+                try_files {path} /index.html
+                file_server
+        }
 }

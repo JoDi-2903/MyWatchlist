@@ -7,6 +7,9 @@ services:
       - 80:80
       - 443:443
     restart: always
+    volumes:
+      - ~/caddy_data:/data
+      - ~/caddy_config:/config
 
   backend:
     build: ./mywatchlist
@@ -23,4 +26,4 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - ./postgres_data:/var/lib/postgresql/data

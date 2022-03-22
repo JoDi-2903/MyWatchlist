@@ -12,7 +12,7 @@ export default class App extends React.Component<AppProps, AppState> {
     return (
       <Router>
         <Routes>
-          <Route path="/start" element={<HomePage />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
         </Routes>
       </Router>
