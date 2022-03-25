@@ -9,16 +9,16 @@ public class Watchlist {
     @Id
     @GeneratedValue
     @Column(name = "watchlist_id")
-    private int watchlistId;
+    private Long watchlistId;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserAccount user;
 
-    public int getWatchlistId() {
+    public Long getWatchlistId() {
         return watchlistId;
     }
 
-    public void setWatchlistId(int watchlistId) {
+    public void setWatchlistId(Long watchlistId) {
         this.watchlistId = watchlistId;
     }
 

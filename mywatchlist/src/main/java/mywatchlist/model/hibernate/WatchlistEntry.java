@@ -9,29 +9,22 @@ public class WatchlistEntry {
     @Id
     @GeneratedValue
     @Column(name = "entry_id")
-    private int entryId;
-    @Column(name = "type", nullable = false)
-    private int type;
+    private Long entryId;
     @Column(name = "title_id", nullable = false)
     private int titleId;
+    @ManyToOne
+    @JoinColumn(name = "title_type_id", nullable = false)
+    private TitleType titleType;
     @ManyToOne
     @JoinColumn(name = "watchlist_id", nullable = false)
     private Watchlist watchlistId;
 
-    public int getEntryId() {
+    public Long getEntryId() {
         return entryId;
     }
 
-    public void setEntryId(int entryId) {
+    public void setEntryId(Long entryId) {
         this.entryId = entryId;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
     }
 
     public int getTitleId() {
@@ -48,5 +41,13 @@ public class WatchlistEntry {
 
     public void setWatchlistId(Watchlist watchlistId) {
         this.watchlistId = watchlistId;
+    }
+
+    public TitleType getTitleType() {
+        return titleType;
+    }
+
+    public void setTitleType(TitleType titleType) {
+        this.titleType = titleType;
     }
 }
