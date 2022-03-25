@@ -1,12 +1,12 @@
-package model.hibernate;
+package mywatchlist.model.hibernate;
 
 import javax.persistence.*;
 
 @Entity
-public class User {
+@Table(name = "user_account")
+public class UserAccount {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     @Column(name = "user_id")
     private int userId;
     @Column(name = "username")
@@ -18,6 +18,14 @@ public class User {
     @Column(name = "private_profile")
     private boolean privateProfile;
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -26,12 +34,12 @@ public class User {
         this.username = username;
     }
 
-    public String getEMail() {
+    public String geteMail() {
         return eMail;
     }
 
-    public void setEMail(String email) {
-        this.eMail = email;
+    public void seteMail(String eMail) {
+        this.eMail = eMail;
     }
 
     public String getPassword() {
@@ -49,6 +57,4 @@ public class User {
     public void setPrivateProfile(boolean privateProfile) {
         this.privateProfile = privateProfile;
     }
-
-
 }

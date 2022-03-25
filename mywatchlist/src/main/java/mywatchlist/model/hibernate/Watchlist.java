@@ -1,4 +1,5 @@
-package model.hibernate;
+package mywatchlist.model.hibernate;
+
 
 import javax.persistence.*;
 
@@ -9,19 +10,9 @@ public class Watchlist {
     @GeneratedValue
     @Column(name = "watchlist_id")
     private int watchlistId;
-    @Column(name = "user_Id")
-    private int userId;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+    private UserAccount user;
 
     public int getWatchlistId() {
         return watchlistId;
@@ -31,11 +22,11 @@ public class Watchlist {
         this.watchlistId = watchlistId;
     }
 
-    public User getUser() {
+    public UserAccount getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserAccount user) {
         this.user = user;
     }
 }

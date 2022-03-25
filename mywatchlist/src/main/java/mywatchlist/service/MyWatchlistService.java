@@ -1,4 +1,4 @@
-package service;
+package mywatchlist.service;
 
 public class MyWatchlistService {
 

@@ -1,9 +1,9 @@
-package model.hibernate;
-
-import net.bytebuddy.dynamic.loading.InjectionClassLoader;
+package mywatchlist.model.hibernate;
 
 import javax.persistence.*;
 
+@Entity
+@Table(name = "watchlist_entry")
 public class WatchlistEntry {
 
     @Id
