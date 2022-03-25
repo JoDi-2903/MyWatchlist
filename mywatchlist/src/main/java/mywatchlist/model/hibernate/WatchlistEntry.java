@@ -9,7 +9,7 @@ public class WatchlistEntry {
     @Id
     @GeneratedValue
     @Column(name = "entry_id")
-    private Long entryId;
+    private long entryId;
     @Column(name = "title_id", nullable = false)
     private int titleId;
     @ManyToOne
@@ -19,11 +19,11 @@ public class WatchlistEntry {
     @JoinColumn(name = "watchlist_id", nullable = false)
     private Watchlist watchlistId;
 
-    public Long getEntryId() {
+    public long getEntryId() {
         return entryId;
     }
 
-    public void setEntryId(Long entryId) {
+    public void setEntryId(long entryId) {
         this.entryId = entryId;
     }
 

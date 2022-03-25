@@ -1,6 +1,5 @@
 package mywatchlist.service;
 
-import mywatchlist.model.hibernate.WatchlistEntry;
 import mywatchlist.repository.TitleTypeRepo;
 import mywatchlist.repository.UserAccountRepo;
 import mywatchlist.repository.WatchlistEntryRepo;
@@ -26,9 +25,8 @@ public class MyWatchlistService {
     }
 
 
-    public void getUsers() {
-        System.out.println(userAccountRepo.findAll());
-
+    public void getUsers(long id) {
+        userAccountRepo.getById(id);
     }
 
 

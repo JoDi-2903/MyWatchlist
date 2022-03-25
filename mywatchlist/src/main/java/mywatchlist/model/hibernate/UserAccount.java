@@ -9,7 +9,7 @@ public class UserAccount {
     @Id
     @GeneratedValue
     @Column(name = "user_id", nullable = false)
-    private Long userId;
+    private long userId;
     @Column(name = "username", nullable = false)
     private String username;
     @Column(name = "password", nullable = false)
@@ -19,11 +19,11 @@ public class UserAccount {
     @Column(name = "private_profile")
     private boolean privateProfile;
 
-    public Long getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
