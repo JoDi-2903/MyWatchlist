@@ -10,12 +10,12 @@ public class WatchlistEntry {
     @GeneratedValue
     @Column(name = "entry_id")
     private int entryId;
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private int type;
-    @Column(name = "title_id")
+    @Column(name = "title_id", nullable = false)
     private int titleId;
     @ManyToOne
-    @JoinColumn(name = "watchlist_id")
+    @JoinColumn(name = "watchlist_id", nullable = false)
     private Watchlist watchlistId;
 
     public int getEntryId() {

@@ -6,15 +6,16 @@ import javax.persistence.*;
 @Table(name = "user_account")
 public class UserAccount {
 
-    @Id @GeneratedValue
-    @Column(name = "user_id")
+    @Id
+    @GeneratedValue
+    @Column(name = "user_id", nullable = false)
     private int userId;
-    @Column(name = "username")
+    @Column(name = "username", nullable = false)
     private String username;
-    @Column(name = "eMail")
-    private String eMail;
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
+    @Column(name = "e_mail", nullable = false)
+    private String eMail;
     @Column(name = "private_profile")
     private boolean privateProfile;
 
