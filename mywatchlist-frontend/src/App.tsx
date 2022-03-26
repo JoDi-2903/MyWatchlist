@@ -12,7 +12,7 @@ interface AppState {}
 export default class App extends React.Component<AppProps, AppState> {
   render() {
     return (
-      <div className="dark:bg-dark_bg">
+      <div className="min-h-screen dark:bg-dark_bg">
       <Router>
         <Navbar />
         <Routes>
