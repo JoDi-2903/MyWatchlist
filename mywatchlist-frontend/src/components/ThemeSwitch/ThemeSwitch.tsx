@@ -8,8 +8,8 @@ export interface ThemeState {
 class ThemeSwitch extends Component<{}, ThemeState> {
     constructor(props: any) {
         super(props);
-        if (window.matchMedia("(prefers-color-scheme: dark)").matches)
-            document.documentElement.className = "dark";
+        //if (window.matchMedia("(prefers-color-scheme: dark)").matches) // Set defaul scheme to dark
+        document.documentElement.className = "dark";
         this.state = { darkMode: true };
     }
 
