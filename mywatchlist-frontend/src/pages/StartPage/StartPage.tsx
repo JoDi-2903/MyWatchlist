@@ -1,13 +1,11 @@
 import { Component } from "react";
 
-interface StartPageProps{
-
-}
-
-export default class StartPage extends Component<StartPageProps>{
+export default class StartPage extends Component{
     render(){
         return(
-            <h1 className="mt-5 ml-10 text-3xl">Hello World</h1>
+            <div className="h-80">
+                <h2 className="font-extrabold text-7x1 text-center">Coming soon!</h2>
+            </div>
         )
     }
 }
