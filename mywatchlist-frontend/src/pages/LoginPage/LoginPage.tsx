@@ -4,7 +4,7 @@ export default class LoginPage extends Component {
     render() {
         return (
             <div className="max-w-2xl mx-auto my-28"> 
-                <form className="bg-white_box dark:bg-dark_box shadow-md rounded-lg px-8 pt-6 pb-8 mb-4">
+                <form className="bg-white_box dark:bg-dark_box border border-black dark:border-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4">
                     <div className="mb-4">
                         <label className="block text-black dark:text-white text-sm font-bold mb-2" >
                             Username
