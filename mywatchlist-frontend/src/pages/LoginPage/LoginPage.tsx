@@ -22,7 +22,7 @@ export default class LoginPage extends Component {
                         <button className="bg-color_primary hover:bg-color_secondary-200 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline" type="button">
                             Sign In
                         </button>
-                        <a className="inline-block align-baseline font-bold text-sm text-color_primary hover:text-color_secondary-200" href="#">
+                        <a className="inline-block align-baseline font-bold text-sm text-color_primary hover:text-color_secondary-200" href="/">
                             Forgot Password?
                         </a>
                     </div>
