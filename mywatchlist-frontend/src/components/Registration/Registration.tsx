@@ -5,7 +5,20 @@ interface RegistrationState {
     isRegistered: boolean;
 }
 
+interface RegistrationInformation {
+    username: string,
+    email: string,
+    password: string
+}
+
 class Registration extends Component<{}, RegistrationState> {
+    
+    information: RegistrationInformation = {
+        username: "",
+        email: "",
+        password: ""
+    }
+    
     constructor(props: RegistrationState) {
         super(props);
         this.state = { isRegistered: false };
@@ -15,6 +28,7 @@ class Registration extends Component<{}, RegistrationState> {
         event.preventDefault();
 
         // API call here
+        console.log(this.information)
 
         this.setState({ isRegistered: true });
     };
@@ -35,6 +49,7 @@ class Registration extends Component<{}, RegistrationState> {
                         <input
                             id="username"
                             type="text"
+                            onChange={(e) => {this.information.username = e.target.value}}
                             className="bg-transparent border w-full p-2 mb-5 rounded-md focus:outline-none focus:border-color_primary transition-all duration-500 text-black dark:text-white"
                             required
                         />
@@ -47,6 +62,7 @@ class Registration extends Component<{}, RegistrationState> {
                         <input
                             id="email"
                             type="email"
+                            onChange={(e) => {this.information.email = e.target.value}}
                             className="bg-transparent border w-full p-2 rounded-md focus:outline-none focus:border-color_primary transition-all duration-500 text-black dark:text-white focus:invalid:border-pink-500 peer"
                             required
                         />
@@ -62,6 +78,7 @@ class Registration extends Component<{}, RegistrationState> {
                         <input
                             id="password"
                             type="password"
+                            onChange={(e) => {this.information.password = e.target.value}}
                             className="bg-transparent border w-full p-2 mb-5 rounded-md focus:outline-none focus:border-color_primary transition-all duration-500 text-black dark:text-white"
                             required
                         />
