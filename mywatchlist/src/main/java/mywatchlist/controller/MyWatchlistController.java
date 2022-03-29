@@ -1,14 +1,12 @@
 package mywatchlist.controller;
 
+import mywatchlist.model.dto.UserAccountDto;
 import mywatchlist.service.MyWatchlistService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/myWatchList")
+@RequestMapping("api/v1/mywatchlist")
 public class MyWatchlistController {
 
     private final MyWatchlistService myWatchlistService;
@@ -23,5 +21,14 @@ public class MyWatchlistController {
         myWatchlistService.getUsers(userId);
     }
 
+    @PostMapping()
+    public void registerUser(@RequestBody UserAccountDto userAccountDto){
+        myWatchlistService.registerUser(userAccountDto);
+    }
+
+    @PostMapping()
+    public void loginUser(){
+
+    }
 
 }

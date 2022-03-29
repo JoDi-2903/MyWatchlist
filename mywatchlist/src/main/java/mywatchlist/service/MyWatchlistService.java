@@ -1,5 +1,6 @@
 package mywatchlist.service;
 
+import mywatchlist.model.dto.UserAccountDto;
 import mywatchlist.repository.TitleTypeRepo;
 import mywatchlist.repository.UserAccountRepo;
 import mywatchlist.repository.WatchlistEntryRepo;
@@ -27,6 +28,11 @@ public class MyWatchlistService {
 
     public void getUsers(long id) {
         userAccountRepo.getById(id);
+    }
+
+
+    public void registerUser(UserAccountDto userAccountDto){
+        //logic..
     }
 
 
