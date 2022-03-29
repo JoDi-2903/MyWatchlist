@@ -102,7 +102,7 @@ class Registration extends Component<{}, RegistrationState> {
                             </label>
                         </div>
                         <input
-                            className="mt-5 w-full p-2 text-white text-dark border border-primary rounded cursor-pointer bg-primary hover:bg-primary-100"
+                            className="mt-5 w-full p-2 text-white dark:text-dark_bg border border-primary rounded cursor-pointer bg-primary hover:bg-primary-100 hover:border-primary-100"
                             type="submit"
                             value="Sign up"
                         />

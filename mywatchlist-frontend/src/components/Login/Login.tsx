@@ -20,7 +20,7 @@ class Login extends Component {
                 <input
                     type="text"
                     name="username"
-                    className="bg-transparent border border-border_primary w-full p-2 mb-10 rounded focus:outline-none focus:border-primary transition-all duration-500 text-black dark:text-white"
+                    className="bg-transparent border border-border_primary w-full p-2 mb-5 rounded focus:outline-none focus:border-primary transition-all duration-500 text-black dark:text-white"
                 />
 
                 <div className="grid grid-cols-2 items-center">
@@ -43,12 +43,12 @@ class Login extends Component {
                 <input
                     type="password"
                     name="password"
-                    className="bg-transparent border border-border_primary w-full p-2 mb-10 rounded focus:outline-none focus:border-primary transition-all duration-500 text-black dark:text-white"
+                    className="bg-transparent border border-border_primary w-full p-2 mb-5 rounded focus:outline-none focus:border-primary transition-all duration-500 text-black dark:text-white"
                 />
                 <input
                     type="submit"
                     value="Sign in"
-                    className="w-full p-2 text-white text-dark border border-primary rounded cursor-pointer bg-primary hover:bg-primary-100"
+                    className="w-full p-2 text-white dark:text-dark_bg border border-primary rounded cursor-pointer bg-primary hover:bg-primary-100 hover:border-primary-100"
                 />
             </form>
         );

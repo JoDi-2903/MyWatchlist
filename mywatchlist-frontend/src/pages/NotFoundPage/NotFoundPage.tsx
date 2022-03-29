@@ -11,7 +11,7 @@ export default class NotFoundPage extends Component {
                 <p className="text-black dark:text-white text-center text-3xl my-5">The page you were trying to access does not exist.</p>
                 <Link
                         to="/"
-                        className="mt-5 w-1/5 p-2 text-white text-dark border border-primary rounded cursor-pointer bg-primary hover:bg-primary-100 text-center mx-auto"
+                        className="mt-5 w-1/5 p-2 text-white dark:text-dark_bg border border-primary rounded cursor-pointer bg-primary hover:bg-primary-100 hover:border-primary-100 text-center mx-auto"
                     >
                         Return to the HomePage
                     </Link>
