@@ -29,15 +29,15 @@ class ThemeSwitch extends Component<{}, ThemeState> {
                 <input
                     type="checkbox"
                     name="toggle"
-                    className="absolute left-1 top-1 w-6 h-6 rounded-full align-middle appearance-none cursor-pointer bg-white checked:translate-x-8 checked:bg-black transition-transform ease-in-out duration-300 translate-x-0.5"
+                    className="absolute left-1 top-1 w-6 h-6 rounded-full align-middle appearance-none cursor-pointer checked:bg-primary checked:translate-x-8 bg-white transition-transform ease-in-out duration-300 translate-x-0.5"
                     onClick={this.toggleThemeHandler}
                 />
                 <label
                     htmlFor="toggle"
-                    className="flex h-8 px-2 gap-4 align-middle rounded-full border dark:border-white border-black cursor-pointer"
+                    className="flex h-8 px-2 gap-4 align-middle rounded-full border border-white cursor-pointer"
                 >
-                    <SunIcon className="w-4 text-black" />
-                    <MoonIcon className="w-4 dark:text-white text-black " />
+                    <SunIcon className="w-4 text-white" />
+                    <MoonIcon className="w-4 text-white " />
                 </label>
             </div>
         );
