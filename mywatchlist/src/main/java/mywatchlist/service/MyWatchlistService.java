@@ -1,11 +1,13 @@
 package mywatchlist.service;
 
 import mywatchlist.model.dto.UserAccountDto;
+import mywatchlist.model.hibernate.UserAccount;
 import mywatchlist.repository.TitleTypeRepo;
 import mywatchlist.repository.UserAccountRepo;
 import mywatchlist.repository.WatchlistEntryRepo;
 import mywatchlist.repository.WatchlistRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,14 +36,15 @@ public class MyWatchlistService implements UserDetailsService {
     }
 
 
-    public void registerUser(UserAccountDto userAccountDto){
+    public void registerUser(UserAccountDto userAccountDto) {
         //logic..
     }
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        return null;
+        UserAccount userAccount = userAccountRepo.findByUsername(username).orElseThrow(() ->
+                new UsernameNotFoundException("User not found in the database" + username));
+        return new User(userAccount.getUsername(), userAccount.getPassword(), null);
     }
 }
