@@ -1,5 +1,9 @@
 package mywatchlist.model.dto;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 public class UserAccountDto {
 
     private String username;
@@ -20,4 +24,5 @@ public class UserAccountDto {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

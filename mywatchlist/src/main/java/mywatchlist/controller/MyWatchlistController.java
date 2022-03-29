@@ -26,7 +26,7 @@ public class MyWatchlistController {
         myWatchlistService.registerUser(userAccountDto);
     }
 
-    @PostMapping()
+    @PostMapping("/testtt")
     public void loginUser(){
 
     }
