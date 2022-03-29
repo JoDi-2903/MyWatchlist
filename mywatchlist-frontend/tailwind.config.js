@@ -4,20 +4,28 @@ module.exports = {
     theme: {
       extend:{
         colors: {
-          dark_navbar: "#0a192f",
-          white_navbar: "#f0f0f0",
-          dark_bg: "#243247",
-          dark_box: "#3b4759",
-          white_box: "#e7e8ea",
-          color_primary: "#64ffda",
-          color_secondary: {
-            100: "#5ae6c4",
-            200: "#50ccae",
-            300: "#46b399",
-            400: "#3c9983",
-            500: "#32806d",
-            600: "#286657",
+          // dark_navbar: "#0a192f",
+          dark_navbar: "#262A33",
+          white_navbar: "#2E323C",
+          // dark_bg: "#243247",
+          dark_bg: "#2E323C",
+          white_bg: "#F3F4F6",
+          border_primary: "#A4A9B5",
+          // color_primary: "#64ffda",
+          primary: {
+            DEFAULT: "#E67082",
+            100: "#BF5E6C",
+            200: "#803E48",
+            300: "#401F24",
+            400: "#FF7D90"
           },
+          primary_green: {
+            DEFAULT: "#72E885",
+            100: "#52A861",
+            200: "#33693C",
+            300: "#78F58D",
+            400: "#65CF77"
+          }
         },
       }
     },

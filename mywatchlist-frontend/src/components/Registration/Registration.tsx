@@ -39,7 +39,7 @@ class Registration extends Component<{}, RegistrationState> {
                 {this.state.isRegistered ? (
                     <Navigate to="/login" />
                 ) : (
-                    <form className="w-full lg:w-3/5 xl:w-2/5 mx-auto p-5 lg:p-10 border border-gray-200 dark:border-white rounded-lg" onSubmit={this.submit_registration}>
+                    <form className="w-full md:w-1/2 xl:w-1/4 mx-auto p-5 lg:p-10 border border-border_primary rounded" onSubmit={this.submit_registration}>
                         <label
                             htmlFor="username"
                             className="block text-black dark:text-white text-md font-bold mb-2"
@@ -50,7 +50,7 @@ class Registration extends Component<{}, RegistrationState> {
                             id="username"
                             type="text"
                             onChange={(e) => {this.information.username = e.target.value}}
-                            className="bg-transparent border w-full p-2 mb-5 rounded-md focus:outline-none focus:border-color_primary transition-all duration-500 text-black dark:text-white"
+                            className="bg-transparent border border-border_primary w-full p-2 mb-5 rounded focus:outline-none focus:border-primary transition-all duration-500 text-black dark:text-white"
                             required
                         />
                         <label
@@ -63,10 +63,10 @@ class Registration extends Component<{}, RegistrationState> {
                             id="email"
                             type="email"
                             onChange={(e) => {this.information.email = e.target.value}}
-                            className="bg-transparent border w-full p-2 rounded-md focus:outline-none focus:border-color_primary transition-all duration-500 text-black dark:text-white focus:invalid:border-pink-500 peer"
+                            className="bg-transparent border border-border_primary w-full p-2 rounded focus:outline-none focus:border-primary transition-all duration-500 text-black dark:text-white focus:invalid:border-primary-400 peer"
                             required
                         />
-                        <p className="opacity-0 peer-invalid:peer-focus:opacity-100 text-pink-600 text-sm mb-2 after:text-red-500 transition-all duration-200">
+                        <p className="opacity-0 peer-invalid:peer-focus:opacity-100 text-primary-400 text-sm mb-2 after:text-red-500 transition-all duration-200">
                             Please provide a valid email address.
                         </p>
                         <label
@@ -79,7 +79,7 @@ class Registration extends Component<{}, RegistrationState> {
                             id="password"
                             type="password"
                             onChange={(e) => {this.information.password = e.target.value}}
-                            className="bg-transparent border w-full p-2 mb-5 rounded-md focus:outline-none focus:border-color_primary transition-all duration-500 text-black dark:text-white"
+                            className="bg-transparent border border-border_primary w-full p-2 mb-5 rounded focus:outline-none focus:border-primary transition-all duration-500 text-black dark:text-white"
                             required
                         />
                         <div>
@@ -87,14 +87,14 @@ class Registration extends Component<{}, RegistrationState> {
                                 type="checkbox"
                                 name="privacy"
                                 required
-                                className="appearance-none h-5 w-5 border border-white rounded-md bg-transparent border-gray-300 dark:border-white checked:bg-color_primary checked:border-color_primary dark:checked:border-color_primary transition duration-200 mt-1 float-left cursor-pointer"
+                                className="appearance-none h-5 w-5 border border-border_primary rounded-md bg-transparent checked:bg-primary checked:border-primary transition duration-200 mt-1 float-left cursor-pointer"
                             />
                             <label className="pl-2 text-dark dark:text-white">
                                 <span>
                                     I agree to the{" "}
                                     <Link
                                         to="/privacy"
-                                        className="underline text-dark dark:text-white hover:dark:text-color_primary"
+                                        className="underline hover:text-primary"
                                     >
                                         privacy policy
                                     </Link>
@@ -102,9 +102,9 @@ class Registration extends Component<{}, RegistrationState> {
                             </label>
                         </div>
                         <input
-                            className="mt-5 w-1/3 p-2 dark:text-white text-dark border border-color_primary rounded-lg cursor-pointer hover:bg-color_primary dark:hover:text-dark_navbar"
+                            className="mt-5 w-full p-2 text-white dark:text-dark_bg border border-primary rounded cursor-pointer bg-primary hover:bg-primary-100 hover:border-primary-100"
                             type="submit"
-                            value="Submit"
+                            value="Sign up"
                         />
                     </form>
                 )}

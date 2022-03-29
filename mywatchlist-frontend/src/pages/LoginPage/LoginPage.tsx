@@ -6,7 +6,7 @@ export default class LoginPage extends Component {
         return (
             <main className="p-10">
                 <h1 className="text-center text-black dark:text-white text-4xl m-5">
-                    Login
+                    Sign in into <span className="text-primary">MyWatchlist</span>
                 </h1>
                 <Login />
                 <p className="text-center text-gray-500 dark:text-gray-300 text-xs m-2">
