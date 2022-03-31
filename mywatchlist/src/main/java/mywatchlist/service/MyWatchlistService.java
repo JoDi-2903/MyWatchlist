@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MyWatchlistService implements UserDetailsService {
 
@@ -31,13 +33,24 @@ public class MyWatchlistService implements UserDetailsService {
     }
 
 
-    public void getUsers(long id) {
-        userAccountRepo.getById(id);
+    public UserAccountDto getUsers(long id) {
+        UserAccount userAccount = userAccountRepo.getById(id);
+        UserAccountDto userAccountDto = new UserAccountDto();
+        userAccountDto.setUsername(userAccount.getUsername());
+        return userAccountDto;
     }
 
 
     public void registerUser(UserAccountDto userAccountDto) {
-        //logic..
+        UserAccount userAccount = new UserAccount();
+        userAccount.setUsername(userAccountDto.getUsername());
+        userAccount.setEmail(userAccountDto.getEmail());
+        //passwort hashen und prüfen
+        userAccount.setPassword(userAccountDto.getPassword());
+        List<UserAccount> uc = userAccountRepo.findByEmailOrUsername(userAccount.getEmail(), userAccount.getUsername());
+        if(uc.size() == 0){
+            userAccountRepo.save(userAccount);
+        }
     }
 
 

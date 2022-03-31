@@ -1,8 +1,11 @@
 package mywatchlist.controller;
 
 import mywatchlist.model.dto.UserAccountDto;
+import mywatchlist.model.hibernate.UserAccount;
 import mywatchlist.service.MyWatchlistService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,17 +19,19 @@ public class MyWatchlistController {
         this.myWatchlistService = myWatchlistService;
     }
 
+    //for testing
     @GetMapping(path = "/user/{userId}")
-    public void test(@PathVariable long userId){
-        myWatchlistService.getUsers(userId);
+    public UserAccountDto test(@PathVariable long userId){
+        return myWatchlistService.getUsers(userId);
     }
 
     @PostMapping()
-    public void registerUser(@RequestBody UserAccountDto userAccountDto){
+    public ResponseEntity<?> registerUser(@RequestBody UserAccountDto userAccountDto){
         myWatchlistService.registerUser(userAccountDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PostMapping("/testtt")
+    @PostMapping("/login")
     public void loginUser(){
 
     }

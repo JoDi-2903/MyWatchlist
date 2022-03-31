@@ -15,7 +15,7 @@ public class UserAccount {
     @Column(name = "password", nullable = false)
     private String password;
     @Column(name = "e_mail", nullable = false)
-    private String eMail;
+    private String email;
     @Column(name = "private_profile")
     private boolean privateProfile;
 
@@ -35,12 +35,12 @@ public class UserAccount {
         this.username = username;
     }
 
-    public String geteMail() {
-        return eMail;
+    public String getEmail() {
+        return email;
     }
 
-    public void seteMail(String eMail) {
-        this.eMail = eMail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

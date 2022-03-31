@@ -1,7 +1,9 @@
-package mywatchlist.service;
+package mywatchlist.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import mywatchlist.security.UsernameAndPasswordAuthRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,6 +15,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
+import java.time.LocalDate;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -27,6 +32,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         //String username = request.getParamater(""username");  <- bessere alternative
         try {
+
             UsernameAndPasswordAuthRequest authenticationRequest = new ObjectMapper().readValue(request.getInputStream(), UsernameAndPasswordAuthRequest.class);
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
@@ -45,10 +51,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
-        //Jwts.builder().setSubject(authResult.getName())
+        /*
+        String key =  "9373feaf-f06a-4983-83eb-269ee8463821";
+        String token = Jwts.builder().setSubject(authResult.getName()).
+                setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(2))
+                ).signWith(Keys.hmacShaKeyFor(key.getBytes(StandardCharsets.UTF_8))).compact(); //Konvertierung ändern?
 
+        response.addHeader("Authorization", "Bearer" + token);
         // builder oder ohne ??
 
-
+*/
     }
 }

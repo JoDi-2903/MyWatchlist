@@ -1,4 +1,4 @@
-package mywatchlist.service;
+package mywatchlist.security;
 
 public class UsernameAndPasswordAuthRequest {
 
