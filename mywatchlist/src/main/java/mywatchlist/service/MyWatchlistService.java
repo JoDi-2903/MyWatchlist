@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,7 +33,6 @@ public class MyWatchlistService implements UserDetailsService {
         this.watchlistRepo = watchlistRepo;
     }
 
-
     public UserAccountDto getUsers(long id) {
         UserAccount userAccount = userAccountRepo.getById(id);
         UserAccountDto userAccountDto = new UserAccountDto();
@@ -40,23 +40,50 @@ public class MyWatchlistService implements UserDetailsService {
         return userAccountDto;
     }
 
+    public void test8(UserAccountDto userAccountDto) {
+        int errorResult = 0;
+        if (!validateUsername(userAccountDto.getUsername())) {
+            errorResult = 1;
+        } else if (!validateEmail(userAccountDto.getEmail())) {
+            errorResult = 2;
+        } else if (!validatePassword(userAccountDto.getPassword())) {
+            errorResult = 3;
+        } else if (errorResult == 0) {
+            UserAccount userAccount = new UserAccount();
+            userAccount.setUsername(userAccountDto.getUsername());
+            userAccount.setEmail(userAccountDto.getEmail());
+            userAccount.setPrivateProfile(false);
+            List<UserAccount> userAccountList = userAccountRepo.findByEmailOrUsername(userAccount.getEmail(), userAccount.getUsername());
+            if (userAccountList.isEmpty()) {
+                String hashedPw = BCrypt.hashpw(userAccountDto.getPassword(), BCrypt.gensalt());
+                userAccount.setPassword(hashedPw);
+                userAccountRepo.save(userAccount);
+            } else {
+                errorResult = 4;
+            }
+        }
+
+        //return errorResult;
+    }
 
     public void registerUser(UserAccountDto userAccountDto) {
         UserAccount userAccount = new UserAccount();
         userAccount.setUsername(userAccountDto.getUsername());
         userAccount.setEmail(userAccountDto.getEmail());
-        userAccount.setPassword(userAccountDto.getPassword());
-        //passwort hashen und prüfen
-        //Prüfen besser machen. Evtl. Framework dazu nehmen?
-        //Wie fehler nach oben geben?
-        if(validateUsername(userAccount.getEmail())){
+        userAccount.setPrivateProfile(false);
 
-                List<UserAccount> uc = userAccountRepo.findByEmailOrUsername(userAccount.getEmail(), userAccount.getUsername());
-                if(uc.size() == 0){
-                    userAccountRepo.save(userAccount);
-                }
+        String hashedPw = BCrypt.hashpw(userAccountDto.getPassword(), BCrypt.gensalt());
+        userAccount.setPassword(hashedPw);
+        userAccountRepo.save(userAccount);
+    }
 
+    public boolean checkUserOrEmailExist(String email, String username) {
+        boolean exist = false;
+        List<UserAccount> userAccountList = userAccountRepo.findByEmailOrUsername(email, username);
+        if (!userAccountList.isEmpty()) {
+            exist = true;
         }
+        return exist;
     }
 
 
@@ -71,19 +98,20 @@ public class MyWatchlistService implements UserDetailsService {
         return userAccountRepo.findByUsername(username).isPresent();
     }
 
-    public boolean validateUsername(String username){
+    public boolean validateUsername(String username) {
         String pattern = "^[A-Za-z0-9]{3,20}$";
         return username.matches(pattern);
     }
 
-    public boolean validateEmail(){
-        return false;
+    public boolean validateEmail(String email) {
+        String pattern = "^([A-Za-z0-9._+-]{2,20})+@([A-Za-z0-9]{2,20})+(.[A-Za-z]{2,4})$";
+        return email.matches(pattern);
     }
 
-    public boolean validatePassword(){
-        return false;
+    public boolean validatePassword(String password) {
+        String pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,30}$";
+        return password.matches(pattern);
     }
-
 
 
 }

@@ -27,8 +27,17 @@ public class MyWatchlistController {
 
     @PostMapping(path = "/register")
     public ResponseEntity<String> registerUser(@RequestBody UserAccountDto userAccountDto){
+        if(!myWatchlistService.validateUsername(userAccountDto.getUsername())){
+            return new ResponseEntity<>("Username does not meet the requirements", HttpStatus.BAD_REQUEST);
+        }else if(!myWatchlistService.validateEmail(userAccountDto.getEmail())){
+            return new ResponseEntity<>("Email does not meet the requirements", HttpStatus.BAD_REQUEST);
+        }else if(!myWatchlistService.validatePassword(userAccountDto.getPassword())){
+            return new ResponseEntity<>("Password does not meet the requirements", HttpStatus.BAD_REQUEST);
+        }else if(myWatchlistService.checkUserOrEmailExist(userAccountDto.getEmail(), userAccountDto.getUsername())){
+            return new ResponseEntity<>("Username or Email is already used", HttpStatus.BAD_REQUEST);
+        }
         myWatchlistService.registerUser(userAccountDto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return new ResponseEntity<>("User was created", HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/register/validateUsername/{username}")
