@@ -45,11 +45,17 @@ public class MyWatchlistService implements UserDetailsService {
         UserAccount userAccount = new UserAccount();
         userAccount.setUsername(userAccountDto.getUsername());
         userAccount.setEmail(userAccountDto.getEmail());
-        //passwort hashen und prüfen
         userAccount.setPassword(userAccountDto.getPassword());
-        List<UserAccount> uc = userAccountRepo.findByEmailOrUsername(userAccount.getEmail(), userAccount.getUsername());
-        if(uc.size() == 0){
-            userAccountRepo.save(userAccount);
+        //passwort hashen und prüfen
+        //Prüfen besser machen. Evtl. Framework dazu nehmen?
+        //Wie fehler nach oben geben?
+        if(!userAccount.getUsername().isEmpty() && !userAccount.getPassword().isEmpty() && !userAccount.getEmail().isEmpty()){
+            if(userAccount.getUsername().length() > 3 && userAccount.getPassword().length() > 3){
+                List<UserAccount> uc = userAccountRepo.findByEmailOrUsername(userAccount.getEmail(), userAccount.getUsername());
+                if(uc.size() == 0){
+                    userAccountRepo.save(userAccount);
+                }
+            }
         }
     }
 
