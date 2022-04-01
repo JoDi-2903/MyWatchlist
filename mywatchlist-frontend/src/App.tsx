@@ -5,6 +5,7 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import HomePage from "./pages/StartPage/StartPage";
+import WelcomePage from "./pages/WelcomePage/WelcomePage"
 
 interface AppProps {}
 
@@ -21,6 +22,7 @@ export default class App extends React.Component<AppProps, AppState> {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/welcome" element={<WelcomePage />} />
         </Routes>
       </Router>
       </div>
