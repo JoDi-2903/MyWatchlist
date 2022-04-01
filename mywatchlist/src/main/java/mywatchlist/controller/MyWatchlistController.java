@@ -19,12 +19,6 @@ public class MyWatchlistController {
         this.myWatchlistService = myWatchlistService;
     }
 
-    //for testing
-    @GetMapping(path = "/user/{userId}")
-    public UserAccountDto test(@PathVariable long userId){
-        return myWatchlistService.getUsers(userId);
-    }
-
     @PostMapping(path = "/register")
     public ResponseEntity<String> registerUser(@RequestBody UserAccountDto userAccountDto){
         if(!myWatchlistService.validateUsername(userAccountDto.getUsername())){
@@ -50,8 +44,6 @@ public class MyWatchlistController {
         }
         return new ResponseEntity<>("Username " + username + " meets all criteria", HttpStatus.OK);
     }
-
-
 
     @PostMapping("/login")
     public void loginUser(){

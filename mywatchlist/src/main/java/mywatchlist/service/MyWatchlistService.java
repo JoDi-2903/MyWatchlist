@@ -40,32 +40,6 @@ public class MyWatchlistService implements UserDetailsService {
         return userAccountDto;
     }
 
-    public void test8(UserAccountDto userAccountDto) {
-        int errorResult = 0;
-        if (!validateUsername(userAccountDto.getUsername())) {
-            errorResult = 1;
-        } else if (!validateEmail(userAccountDto.getEmail())) {
-            errorResult = 2;
-        } else if (!validatePassword(userAccountDto.getPassword())) {
-            errorResult = 3;
-        } else if (errorResult == 0) {
-            UserAccount userAccount = new UserAccount();
-            userAccount.setUsername(userAccountDto.getUsername());
-            userAccount.setEmail(userAccountDto.getEmail());
-            userAccount.setPrivateProfile(false);
-            List<UserAccount> userAccountList = userAccountRepo.findByEmailOrUsername(userAccount.getEmail(), userAccount.getUsername());
-            if (userAccountList.isEmpty()) {
-                String hashedPw = BCrypt.hashpw(userAccountDto.getPassword(), BCrypt.gensalt());
-                userAccount.setPassword(hashedPw);
-                userAccountRepo.save(userAccount);
-            } else {
-                errorResult = 4;
-            }
-        }
-
-        //return errorResult;
-    }
-
     public void registerUser(UserAccountDto userAccountDto) {
         UserAccount userAccount = new UserAccount();
         userAccount.setUsername(userAccountDto.getUsername());
