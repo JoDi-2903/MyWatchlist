@@ -1,14 +1,22 @@
 package mywatchlist.service;
 
+import mywatchlist.model.dto.UserAccountDto;
+import mywatchlist.model.hibernate.UserAccount;
 import mywatchlist.repository.TitleTypeRepo;
 import mywatchlist.repository.UserAccountRepo;
 import mywatchlist.repository.WatchlistEntryRepo;
 import mywatchlist.repository.WatchlistRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class MyWatchlistService {
+public class MyWatchlistService implements UserDetailsService {
 
     private final UserAccountRepo userAccountRepo;
     private final TitleTypeRepo titleTypeRepo;
@@ -25,9 +33,37 @@ public class MyWatchlistService {
     }
 
 
-    public void getUsers(long id) {
-        userAccountRepo.getById(id);
+    public UserAccountDto getUsers(long id) {
+        UserAccount userAccount = userAccountRepo.getById(id);
+        UserAccountDto userAccountDto = new UserAccountDto();
+        userAccountDto.setUsername(userAccount.getUsername());
+        return userAccountDto;
     }
 
 
+    public void registerUser(UserAccountDto userAccountDto) {
+        UserAccount userAccount = new UserAccount();
+        userAccount.setUsername(userAccountDto.getUsername());
+        userAccount.setEmail(userAccountDto.getEmail());
+        userAccount.setPassword(userAccountDto.getPassword());
+        //passwort hashen und prüfen
+        //Prüfen besser machen. Evtl. Framework dazu nehmen?
+        //Wie fehler nach oben geben?
+        if(!userAccount.getUsername().isEmpty() && !userAccount.getPassword().isEmpty() && !userAccount.getEmail().isEmpty()){
+            if(userAccount.getUsername().length() > 3 && userAccount.getPassword().length() > 3){
+                List<UserAccount> uc = userAccountRepo.findByEmailOrUsername(userAccount.getEmail(), userAccount.getUsername());
+                if(uc.size() == 0){
+                    userAccountRepo.save(userAccount);
+                }
+            }
+        }
+    }
+
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserAccount userAccount = userAccountRepo.findByUsername(username).orElseThrow(() ->
+                new UsernameNotFoundException("User not found in the database" + username));
+        return new User(userAccount.getUsername(), userAccount.getPassword(), null);
+    }
 }
