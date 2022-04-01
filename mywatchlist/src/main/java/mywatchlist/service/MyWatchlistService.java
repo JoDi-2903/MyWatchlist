@@ -49,13 +49,13 @@ public class MyWatchlistService implements UserDetailsService {
         //passwort hashen und prüfen
         //Prüfen besser machen. Evtl. Framework dazu nehmen?
         //Wie fehler nach oben geben?
-        if(!userAccount.getUsername().isEmpty() && !userAccount.getPassword().isEmpty() && !userAccount.getEmail().isEmpty()){
-            if(userAccount.getUsername().length() > 3 && userAccount.getPassword().length() > 3){
+        if(validateUsername(userAccount.getEmail())){
+
                 List<UserAccount> uc = userAccountRepo.findByEmailOrUsername(userAccount.getEmail(), userAccount.getUsername());
                 if(uc.size() == 0){
                     userAccountRepo.save(userAccount);
                 }
-            }
+
         }
     }
 
@@ -66,4 +66,24 @@ public class MyWatchlistService implements UserDetailsService {
                 new UsernameNotFoundException("User not found in the database" + username));
         return new User(userAccount.getUsername(), userAccount.getPassword(), null);
     }
+
+    public boolean checkUsernameExist(String username) {
+        return userAccountRepo.findByUsername(username).isPresent();
+    }
+
+    public boolean validateUsername(String username){
+        String pattern = "^[A-Za-z0-9]{3,20}$";
+        return username.matches(pattern);
+    }
+
+    public boolean validateEmail(){
+        return false;
+    }
+
+    public boolean validatePassword(){
+        return false;
+    }
+
+
+
 }
