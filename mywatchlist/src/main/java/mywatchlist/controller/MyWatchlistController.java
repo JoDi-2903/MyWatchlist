@@ -50,4 +50,9 @@ public class MyWatchlistController {
 
     }
 
+    @GetMapping("/hello")
+    public String testEndpoint(){
+        return "hello world";
+    }
+
 }

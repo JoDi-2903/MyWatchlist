@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.crypto.SecretKey;
+
 
 @Configuration
 @EnableWebSecurity
@@ -18,11 +20,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailService customUserDetailService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final JwtConfig jwtConfig;
+    private final SecretKey secretKey;
 
     @Autowired
-    public WebSecurityConfig(CustomUserDetailService customUserDetailService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public WebSecurityConfig(CustomUserDetailService customUserDetailService, BCryptPasswordEncoder bCryptPasswordEncoder, JwtConfig jwtConfig, SecretKey secretKey) {
         this.customUserDetailService = customUserDetailService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.jwtConfig = jwtConfig;
+        this.secretKey = secretKey;
     }
 
     @Override
@@ -31,7 +37,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/api/v1/mywatchlist/register/**").permitAll()
                 .anyRequest().authenticated();
-        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
+        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean(), jwtConfig, secretKey));
+        http.addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), CustomAuthenticationFilter.class);
     }
     @Bean
     public DaoAuthenticationProvider authProvider() {
