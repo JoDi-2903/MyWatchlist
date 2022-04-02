@@ -1,9 +1,8 @@
-package mywatchlist.security;
+package mywatchlist.security.filter;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
+import mywatchlist.security.config.JwtConfig;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -15,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
+
 import com.google.common.base.Strings;
 
 public class JwtTokenVerifier extends OncePerRequestFilter {
@@ -26,28 +26,23 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
         this.jwtConfig = jwtConfig;
     }
 
-
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-
-
         String authorizationHeader = httpServletRequest.getHeader(jwtConfig.getAuthorizationHeader());
-        if(Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith(jwtConfig.getTokenPrefix())){
+        if (Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith(jwtConfig.getTokenPrefix())) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
 
         }
         String token = authorizationHeader.replace(jwtConfig.getTokenPrefix(), "");
         try {
-
-            Jws<Claims> claimJws =  Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            Jws<Claims> claimJws = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
             Claims body = claimJws.getBody();
             String username = body.getSubject();
 
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null,  Collections.emptyList());
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
-        }catch (JwtException e){
+        } catch (JwtException e) {
             throw new IllegalStateException(String.format("Token cannot be truest %s", token));
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);

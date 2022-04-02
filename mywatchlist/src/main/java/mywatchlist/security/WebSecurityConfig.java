@@ -1,5 +1,8 @@
 package mywatchlist.security;
 
+import mywatchlist.security.filter.CustomAuthenticationFilter;
+import mywatchlist.security.config.JwtConfig;
+import mywatchlist.security.filter.JwtTokenVerifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
