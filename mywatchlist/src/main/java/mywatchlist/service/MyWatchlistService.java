@@ -7,6 +7,7 @@ import mywatchlist.repository.UserAccountRepo;
 import mywatchlist.repository.WatchlistEntryRepo;
 import mywatchlist.repository.WatchlistRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -65,7 +68,8 @@ public class MyWatchlistService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserAccount userAccount = userAccountRepo.findByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException("User not found in the database" + username));
-        return new User(userAccount.getUsername(), userAccount.getPassword(), null);
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        return new User(userAccount.getUsername(), userAccount.getPassword(), authorities);
     }
 
     public boolean checkUsernameExist(String username) {

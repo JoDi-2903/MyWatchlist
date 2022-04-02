@@ -46,7 +46,7 @@ public class MyWatchlistController {
     }
 
     @PostMapping("/login")
-    public void loginUser(){
+    public void loginUser(@RequestBody UserAccountDto userAccountDto){
 
     }
 
