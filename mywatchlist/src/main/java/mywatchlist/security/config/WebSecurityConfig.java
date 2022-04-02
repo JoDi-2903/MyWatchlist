@@ -1,7 +1,7 @@
-package mywatchlist.security;
+package mywatchlist.security.config;
 
-import mywatchlist.security.filter.CustomAuthenticationFilter;
-import mywatchlist.security.config.JwtConfig;
+import mywatchlist.security.CustomUserDetailService;
+import mywatchlist.security.filter.JwtAuthenticationFilter;
 import mywatchlist.security.filter.JwtTokenVerifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -40,8 +40,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/api/v1/mywatchlist/register/**").permitAll()
                 .anyRequest().authenticated();
-        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean(), jwtConfig, secretKey));
-        http.addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), CustomAuthenticationFilter.class);
+        http.addFilter(new JwtAuthenticationFilter(authenticationManagerBean(), jwtConfig, secretKey));
+        http.addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtAuthenticationFilter.class);
     }
     @Bean
     public DaoAuthenticationProvider authProvider() {
@@ -56,9 +56,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception{
         return super.authenticationManagerBean();
     }
-
-
-
-
-
 }

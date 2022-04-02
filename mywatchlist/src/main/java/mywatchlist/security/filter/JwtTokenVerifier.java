@@ -43,7 +43,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         } catch (JwtException e) {
-            throw new IllegalStateException(String.format("Token cannot be truest %s", token));
+            throw new IllegalStateException(String.format("Token cannot be trusted %s", token));
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
