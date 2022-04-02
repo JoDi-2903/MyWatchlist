@@ -7,12 +7,16 @@ import mywatchlist.repository.UserAccountRepo;
 import mywatchlist.repository.WatchlistEntryRepo;
 import mywatchlist.repository.WatchlistRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -32,7 +36,6 @@ public class MyWatchlistService implements UserDetailsService {
         this.watchlistRepo = watchlistRepo;
     }
 
-
     public UserAccountDto getUsers(long id) {
         UserAccount userAccount = userAccountRepo.getById(id);
         UserAccountDto userAccountDto = new UserAccountDto();
@@ -40,23 +43,24 @@ public class MyWatchlistService implements UserDetailsService {
         return userAccountDto;
     }
 
-
     public void registerUser(UserAccountDto userAccountDto) {
         UserAccount userAccount = new UserAccount();
         userAccount.setUsername(userAccountDto.getUsername());
         userAccount.setEmail(userAccountDto.getEmail());
-        userAccount.setPassword(userAccountDto.getPassword());
-        //passwort hashen und prüfen
-        //Prüfen besser machen. Evtl. Framework dazu nehmen?
-        //Wie fehler nach oben geben?
-        if(!userAccount.getUsername().isEmpty() && !userAccount.getPassword().isEmpty() && !userAccount.getEmail().isEmpty()){
-            if(userAccount.getUsername().length() > 3 && userAccount.getPassword().length() > 3){
-                List<UserAccount> uc = userAccountRepo.findByEmailOrUsername(userAccount.getEmail(), userAccount.getUsername());
-                if(uc.size() == 0){
-                    userAccountRepo.save(userAccount);
-                }
-            }
+        userAccount.setPrivateProfile(false);
+
+        String hashedPw = BCrypt.hashpw(userAccountDto.getPassword(), BCrypt.gensalt());
+        userAccount.setPassword(hashedPw);
+        userAccountRepo.save(userAccount);
+    }
+
+    public boolean checkUserOrEmailExist(String email, String username) {
+        boolean exist = false;
+        List<UserAccount> userAccountList = userAccountRepo.findByEmailOrUsername(email, username);
+        if (!userAccountList.isEmpty()) {
+            exist = true;
         }
+        return exist;
     }
 
 
@@ -64,6 +68,28 @@ public class MyWatchlistService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserAccount userAccount = userAccountRepo.findByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException("User not found in the database" + username));
-        return new User(userAccount.getUsername(), userAccount.getPassword(), null);
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        return new User(userAccount.getUsername(), userAccount.getPassword(), authorities);
     }
+
+    public boolean checkUsernameExist(String username) {
+        return userAccountRepo.findByUsername(username).isPresent();
+    }
+
+    public boolean validateUsername(String username) {
+        String pattern = "^[A-Za-z0-9]{3,20}$";
+        return username.matches(pattern);
+    }
+
+    public boolean validateEmail(String email) {
+        String pattern = "^([A-Za-z0-9._+-]{2,20})+@([A-Za-z0-9]{2,20})+(.[A-Za-z]{2,4})$";
+        return email.matches(pattern);
+    }
+
+    public boolean validatePassword(String password) {
+        String pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,30}$";
+        return password.matches(pattern);
+    }
+
+
 }
