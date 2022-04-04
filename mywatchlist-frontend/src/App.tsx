@@ -17,7 +17,7 @@ export default class App extends React.Component<AppProps, AppState> {
             <div className="min-h-screen bg-white_bg dark:bg-dark_bg">
                 <Router>
                     <div>
-                        <Toaster />
+                        <Toaster position="bottom-right" />
                     </div>
                     <Navbar />
                     <Routes>

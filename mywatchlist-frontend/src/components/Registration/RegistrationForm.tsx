@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import toast from "react-hot-toast";
 import { Link, Navigate } from "react-router-dom";
+import { backendURL } from "../../Config";
 import MailInput from "./MailInput";
 import PasswordInput from "./PasswordInput";
 import UserInput from "./UserInput";
@@ -40,7 +41,7 @@ class RegistrationForm extends Component<
         };
     }
 
-    submit_registration = (event: React.SyntheticEvent) => {
+    submit_registration = async (event: React.SyntheticEvent) => {
         event.preventDefault();
 
         if (
@@ -48,11 +49,29 @@ class RegistrationForm extends Component<
             this.state.isMailValid &&
             this.state.isPasswordValid
         ) {
-            this.setState({ isRegistered: true });
+            var httpStatus = 0;
+            var error = "";
+
+            await fetch(backendURL + "/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(this.information),
+            })
+                .then((response) => {
+                    httpStatus = response.status;
+                    return response.text();
+                })
+                .then((data) => (error = data));
+
+            if (httpStatus == 201) {
+                toast.success("User created.");
+                this.setState({ isRegistered: true });
+            } else {
+                toast.error(error);
+            }
         } else {
             toast.error("Something is not valid!");
         }
-
     };
 
     render() {

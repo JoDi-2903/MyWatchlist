@@ -21,23 +21,45 @@ class UserInput extends Component<UserInputProps, UserInputState> {
     }
 
     handleInput = (e: ChangeEvent<HTMLInputElement>) => {
-        this.setState({ username: e.target.value }, () => {
+        this.setState({ username: e.target.value }, async () => {
             if (this.state.username.length > 3) {
-                /*fetch(
+                var httpStatus = 0;
+                await fetch(
                     backendURL +
                         "/register/validateUsername/" +
                         this.state.username,
                     {
                         method: "GET",
                     }
-                ).then((response) => {
-                    
-                });*/
+                ).then(function (response) {
+                    httpStatus = response.status;
+                });
+                if (httpStatus == 200) {
+                    this.setState({ isValid: true }, () => {
+                        this.props.handleInput(
+                            this.state.username,
+                            this.state.isValid
+                        );
+                    });
+                } else {
+                    toast.error("Username is already taken");
+                    this.setState({ isValid: false }, () => {
+                        this.props.handleInput(
+                            this.state.username,
+                            this.state.isValid
+                        );
+                    });
+                }
+            } else {
+                this.setState({ isValid: false }, () => {
+                    this.props.handleInput(
+                        this.state.username,
+                        this.state.isValid
+                    );
+                });
             }
         });
     };
-
-    callBackend;
 
     render() {
         return (
