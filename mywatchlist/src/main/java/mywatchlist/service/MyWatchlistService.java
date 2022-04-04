@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Service
-public class MyWatchlistService implements UserDetailsService {
+public class MyWatchlistService {
 
     private final UserAccountRepo userAccountRepo;
     private final TitleTypeRepo titleTypeRepo;
@@ -61,15 +61,6 @@ public class MyWatchlistService implements UserDetailsService {
             exist = true;
         }
         return exist;
-    }
-
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserAccount userAccount = userAccountRepo.findByUsername(username).orElseThrow(() ->
-                new UsernameNotFoundException("User not found in the database" + username));
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        return new User(userAccount.getUsername(), userAccount.getPassword(), authorities);
     }
 
     public boolean checkUsernameExist(String username) {
