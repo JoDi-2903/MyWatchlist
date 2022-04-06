@@ -1,8 +1,27 @@
 import React, { Component } from "react";
+import { backendURL } from "../../Config";
+
+interface LoginInformation {
+    username: string;
+    password: string;
+}
 
 class Login extends Component {
+    information: LoginInformation = {
+        username: "",
+        password: "",
+    };
+
     submit_login = async (event: React.SyntheticEvent) => {
         event.preventDefault();
+        console.log(this.information);
+        fetch(backendURL + "/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(this.information),
+        }).then((response) => {
+            //console.log(response);
+        });
     };
 
     render() {
@@ -21,6 +40,9 @@ class Login extends Component {
                     type="text"
                     name="username"
                     className="bg-transparent border border-border_primary w-full p-2 mb-5 rounded focus:outline-none focus:border-primary transition-all duration-500 text-black dark:text-white"
+                    onChange={(e) =>
+                        (this.information.username = e.target.value)
+                    }
                 />
 
                 <div className="grid grid-cols-2 items-center">
@@ -44,6 +66,9 @@ class Login extends Component {
                     type="password"
                     name="password"
                     className="bg-transparent border border-border_primary w-full p-2 mb-5 rounded focus:outline-none focus:border-primary transition-all duration-500 text-black dark:text-white"
+                    onChange={(e) =>
+                        (this.information.password = e.target.value)
+                    }
                 />
                 <input
                     type="submit"

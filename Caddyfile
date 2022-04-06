@@ -1,11 +1,11 @@
-{
-        admin off
-}
-
 mywatchlist.server-welt.com {
         handle_path /* {
                 root * /srv
                 try_files {path} /index.html
                 file_server
         }
+}
+
+mywatchlist-backend.server-welt.com {
+        reverse-proxy 127.0.0.1:8080
 }

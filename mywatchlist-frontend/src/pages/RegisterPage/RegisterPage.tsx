@@ -1,6 +1,5 @@
 import { Component } from "react";
-import { Link } from "react-router-dom";
-import Registration from "../../components/Registration/Registration";
+import RegistrationForm from "../../components/Registration/RegistrationForm";
 
 export default class RegisterPage extends Component {
     render() {
@@ -10,7 +9,7 @@ export default class RegisterPage extends Component {
                     Register
                 </h1>
 
-                <Registration />
+                <RegistrationForm />
 
                 <p className="text-center text-gray-500 dark:text-gray-300 text-xs m-2">
                     &copy; 2022 MyWatchlist

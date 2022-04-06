@@ -6,6 +6,7 @@ services:
     ports:
       - 80:80
       - 443:443
+      - 2019:2019
     restart: always
     volumes:
       - ~/caddy_data:/data

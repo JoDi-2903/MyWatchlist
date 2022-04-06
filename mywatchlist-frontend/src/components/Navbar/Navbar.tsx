@@ -1,7 +1,6 @@
 import { Component } from "react";
 import { Link } from "react-router-dom";
 import ThemeSwitch from "../ThemeSwitch/ThemeSwitch";
-import Search from "../Search/Search";
 
 class Navbar extends Component {
     render() {
