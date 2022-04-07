@@ -19,10 +19,10 @@ export default class App extends React.Component<AppProps, AppState> {
         <Navbar />
         <Routes>
           <Route path="*" element={<NotFoundPage />} />
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<WelcomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/welcome" element={<WelcomePage />} />
+          <Route path="/start" element={<HomePage />} />
         </Routes>
       </Router>
       </div>

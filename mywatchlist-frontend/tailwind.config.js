@@ -10,6 +10,8 @@ module.exports = {
           // dark_bg: "#243247",
           dark_bg: "#2E323C",
           white_bg: "#F3F4F6",
+          dark_welcome: "#000000",
+          white_welcome: "#ffffff",
           border_primary: "#A4A9B5",
           // color_primary: "#64ffda",
           primary: {
