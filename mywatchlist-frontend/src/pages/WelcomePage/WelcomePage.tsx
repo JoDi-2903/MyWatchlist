@@ -11,61 +11,61 @@ export default class WelcomePage extends Component {
         return (
             <div className="relative min-h-screen flex items-center justify-center bg-white_welcome dark:bg-dark_welcome" style={pageLimit}>
                 <div className="grid-background absolute inset-0 p-2 grid grid-cols-12 gap-2 transform skew-y-12 skew-x-0 scale-120">
-                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg animation-delay-5s animation-duration-3s"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse" /></div>
-                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse" /></div>
-                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse" /></div>
-                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse" /></div>
-                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-4s" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-4s animation-delay-800ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-4s animation-delay-1600ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-4s animation-delay-2400ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-4s animation-delay-3200ms" /></div>
                     <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"></div>
 
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-2s" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-2s animation-delay-400ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-2s animation-delay-800ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-2s animation-delay-1200ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-2s animation-delay-1600ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"></div>
 
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-4s" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-4s animation-delay-800ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-4s animation-delay-1600ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-4s animation-delay-2400ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-4s animation-delay-3200ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"></div>
 
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-2s" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-2s animation-delay-400ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-2s animation-delay-800ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-2s animation-delay-1200ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-2s animation-delay-1600ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"></div>
 
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-4s" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-4s animation-delay-800ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-4s animation-delay-1600ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-4s animation-delay-2400ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-4s animation-delay-3200ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"></div>
 
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-2s" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-2s animation-delay-400ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-2s animation-delay-800ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-2s animation-delay-1200ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-2s animation-delay-1600ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"></div>
 
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-4s" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-4s animation-delay-800ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-4s animation-delay-1600ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-4s animation-delay-2400ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-4s animation-delay-3200ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"></div>
 
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
-                    <div className="col-span-2 bg-gray-700 rounded-lg animate-pulse"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-2s" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-2s animation-delay-400ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-2s animation-delay-800ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-2s animation-delay-1200ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"><img alt="Cover" src="cover1.jpg" className="object-fill rounded-lg animate-pulse animation-duration-2s animation-delay-1600ms" /></div>
+                    <div className="col-span-2 bg-white_welcome dark:bg-dark_welcome rounded-lg"></div>
                 </div>
 
                 <div className="grid-background absolute inset-0 p-2 grid grid-cols-9 gap-0">
@@ -74,7 +74,6 @@ export default class WelcomePage extends Component {
                 </div>
 
                 <div className="felx content-center justify-center">
-                    
                     <h2 className="absolute py-2.5 text-8xl dark:text-white text-black font-extrabold text-center pt-12">Welcome to <span className="text-primary text-7x1">MyWatchlist</span></h2>
                 </div>
             </div >
