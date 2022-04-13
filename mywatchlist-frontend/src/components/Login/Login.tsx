@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import toast from "react-hot-toast";
 import { backendURL } from "../../Config";
 
 interface LoginInformation {
@@ -6,22 +7,45 @@ interface LoginInformation {
     password: string;
 }
 
-class Login extends Component {
+interface LoginProps {
+    changeJWT: Function;
+    isLoggedIn: boolean;
+}
+
+interface LoginState {}
+
+class Login extends Component<LoginProps, LoginState> {
     information: LoginInformation = {
         username: "",
         password: "",
     };
 
+    constructor(props: LoginProps) {
+        super(props);
+    }
+
     submit_login = async (event: React.SyntheticEvent) => {
         event.preventDefault();
-        console.log(this.information);
-        fetch(backendURL + "/login", {
+
+        let status: number = 0;
+        let token: string = "";
+
+        await fetch(backendURL + "/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(this.information),
         }).then((response) => {
-            //console.log(response);
+            status = response.status;
+            token = response.headers
+                .get("authorization")
+                ?.split(" ")[1] as string;
         });
+
+        if (status == 200) {
+            this.props.changeJWT(token);
+        } else {
+            toast.error("Login failed. Please try again.");
+        }
     };
 
     render() {
