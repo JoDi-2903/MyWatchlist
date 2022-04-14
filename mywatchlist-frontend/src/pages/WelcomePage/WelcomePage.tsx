@@ -1,25 +1,15 @@
 import { Component } from "react";
+import disableScroll from 'disable-scroll';
 
+
+// prevent scrolling and hide scrollbar
+disableScroll.on();
+document.body.style.overflow = 'hidden';
 
 const pageLimit: React.CSSProperties = {
     height: '100vh',
     overflow: 'hidden'
 };
-
-// Deactivate buttons for scrolling
-window.addEventListener("keydown", function(e) {
-    // space, page up, page down and arrow keys:
-    if([32, 33, 34, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
-        e.preventDefault();
-    }
-}, false);
-
-// Deactivate scroll with mousewheel click
-window.addEventListener("mousedown", function(e) {
-    if (e.which === 2) {
-      e.preventDefault();
-    }
-  });
 
 export default class WelcomePage extends Component {
     render() {
