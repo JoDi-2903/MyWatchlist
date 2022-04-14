@@ -3,6 +3,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import LoginPage from "./pages/LoginPage/LoginPage";
+import LogoutPage from "./pages/LogoutPage/LogoutPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import HomePage from "./pages/StartPage/StartPage";
@@ -10,6 +11,7 @@ import WelcomePage from "./pages/WelcomePage/WelcomePage";
 import {
     expiredJWT,
     getJWT,
+    isLoggedIn,
     JWTContext,
     JWTInfo,
     updateJWT,
@@ -39,7 +41,7 @@ export default class App extends React.Component<AppProps, AppState> {
                     this.setState({
                         jwtInfo: { username: username, jwt: jwt },
                     });
-                    if (username !== ""){
+                    if (username !== "") {
                         toast.success("Welcome " + username);
                     }
                 });
@@ -71,16 +73,39 @@ export default class App extends React.Component<AppProps, AppState> {
                             <Toaster position="bottom-right" />
                         </div>
                         <Navbar />
-                        <Routes>
-                            <Route path="*" element={<NotFoundPage />} />
-                            <Route path="/" element={<WelcomePage />} />
-                            <Route path="/login" element={<LoginPage />} />
-                            <Route
-                                path="/register"
-                                element={<RegisterPage />}
-                            />
-                            <Route path="/start" element={<HomePage />} />
-                        </Routes>
+                        <JWTContext.Consumer>
+                            {({ jwtInfo, changeJWT }) => (
+                                <Routes>
+                                    <Route
+                                        path="*"
+                                        element={<NotFoundPage />}
+                                    />
+                                    <Route
+                                        path="/login"
+                                        element={<LoginPage />}
+                                    />
+                                    <Route
+                                        path="/logout"
+                                        element={<LogoutPage />}
+                                    />
+                                    <Route
+                                        path="/register"
+                                        element={<RegisterPage />}
+                                    />
+
+                                    <Route
+                                        path="/"
+                                        element={
+                                            isLoggedIn(jwtInfo.jwt) ? (
+                                                <HomePage />
+                                            ) : (
+                                                <WelcomePage />
+                                            )
+                                        }
+                                    />
+                                </Routes>
+                            )}
+                        </JWTContext.Consumer>
                     </JWTContext.Provider>
                 </Router>
             </div>

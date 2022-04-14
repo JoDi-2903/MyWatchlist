@@ -25,6 +25,18 @@ export function getJWT(): string {
     return jwt as string;
 }
 
+export function setUsername(username: string) {
+    localStorage.setItem("username", username);
+}
+
+export function clearUsername() {
+    localStorage.removeItem("username");
+}
+
+export function getUsername() {
+    return localStorage.getItem("username") as string;
+}
+
 export function decodeJWT(token: string) {
     if (token != null && token !== "") {
         // Split into header, payload and signature
@@ -43,7 +55,7 @@ export function expiredJWT() {
 
         if (decoded.exp !== "" && decoded["exp"] * 1000 < today.getTime()) {
             clearJWT();
-            toast.error("Token is expired. Please login again.")
+            toast.error("Token is expired. Please login again.");
         }
     }
 }
@@ -53,11 +65,19 @@ export function updateJWT(jwt: string, updateApp: Function) {
     if (jwtDecoded.sub !== "") {
         let username = jwtDecoded.sub as string;
         setJWT(jwt);
-        localStorage.setItem("username", username);
-        updateApp(username)
-    }else {
-        localStorage.removeItem('username')
+        setUsername(username);
+        updateApp(username);
+    } else {
+        clearUsername();
         updateApp("");
+    }
+}
+
+export function isLoggedIn(jwt: string): boolean {
+    if (jwt === "") {
+        return false;
+    } else {
+        return true;
     }
 }
 

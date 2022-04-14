@@ -1,23 +1,16 @@
 import { Component } from "react";
 import { Navigate } from "react-router";
 import Login from "../../components/Login/Login";
-import { JWTContext } from "../../security/JWTContext";
+import { isLoggedIn, JWTContext } from "../../security/JWTContext";
 
 export default class LoginPage extends Component {
-    isLoggedIn = (token: string) => {
-        if (token === "") {
-            return true;
-        } else {
-            return false;
-        }
-    };
 
     render() {
         return (
             <JWTContext.Consumer>
                 {({jwtInfo, changeJWT}) => (
                     <main className="p-10">
-                        {!this.isLoggedIn(jwtInfo.jwt) ? (
+                        {isLoggedIn(jwtInfo.jwt) ? (
                             <Navigate to="/" />
                         ) : (
                             <div>
@@ -28,7 +21,7 @@ export default class LoginPage extends Component {
                                     </span>
                                 </h1>
                                 <Login
-                                    isLoggedIn={this.isLoggedIn(
+                                    isLoggedIn={isLoggedIn(
                                         jwtInfo.jwt
                                     )}
                                     changeJWT={changeJWT}
