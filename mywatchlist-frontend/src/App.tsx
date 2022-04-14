@@ -6,7 +6,9 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import LogoutPage from "./pages/LogoutPage/LogoutPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
+import SettingsPage from "./pages/SettingsPage/SettingsPage";
 import HomePage from "./pages/StartPage/StartPage";
+import UserProfilePage from "./pages/UserProfilePage/UserProfilePage";
 import WelcomePage from "./pages/WelcomePage/WelcomePage";
 import {
     expiredJWT,
@@ -92,6 +94,11 @@ export default class App extends React.Component<AppProps, AppState> {
                                         path="/register"
                                         element={<RegisterPage />}
                                     />
+                                    <Route
+                                        path="/settings"
+                                        element={<SettingsPage />}
+                                    />
+                                    <Route path="/user/:id" element={<UserProfilePage />}/>
 
                                     <Route
                                         path="/"
