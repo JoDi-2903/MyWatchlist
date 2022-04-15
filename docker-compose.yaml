@@ -11,6 +11,7 @@ services:
 
   backend:
     build: ./mywatchlist
+    env_file: ./config_spring.env
     container_name: mywatchlist_backend
     ports:
       - 8080:8080
