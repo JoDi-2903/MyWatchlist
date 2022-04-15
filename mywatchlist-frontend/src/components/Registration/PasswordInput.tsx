@@ -1,5 +1,6 @@
 import { Line } from "rc-progress";
 import React, { Component } from "react";
+import { classesInvalidInput, classesValidInput } from "../ComponentClasses";
 
 interface PasswordInputProps {
     handleInput;
@@ -92,8 +93,8 @@ class PasswordInput extends Component<PasswordInputProps, PasswordInputState> {
                     onChange={this.handleInput}
                     className={
                         this.state.isPasswordValid
-                            ? "bg-transparent border border-primary_green w-full p-2 rounded focus:outline-none focus:border-primary_green transition-all duration-500 text-black dark:text-white peer mb-2"
-                            : "bg-transparent border border-border_primary w-full p-2 rounded focus:outline-none focus:border-primary transition-all duration-500 text-black dark:text-white peer mb-2"
+                            ? classesValidInput + " peer mb-2"
+                            : classesInvalidInput + " peer mb-2"
                     }
                 />
                 <Line
@@ -103,7 +104,7 @@ class PasswordInput extends Component<PasswordInputProps, PasswordInputState> {
                         this.state.isPasswordValid ? "#72E885" : "#E67082"
                     }
                 />
-                <div className="invisible h-0 mb-5 peer-focus:visible peer-focus:h-full transition-all duration-300">
+                <div className="invisible h-0 mb-5 peer-focus:visible peer-focus:h-full transition-all">
                     <div className="grid grid-cols-1">
                         <div
                             className={

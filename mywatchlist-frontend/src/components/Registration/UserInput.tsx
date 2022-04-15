@@ -1,6 +1,7 @@
 import { ChangeEvent, Component, ReactNode } from "react";
 import toast from "react-hot-toast";
 import { backendURL } from "../../Config";
+import { classesInvalidInput, classesValidInput } from "../ComponentClasses";
 
 interface UserInputProps {
     handleInput;
@@ -12,6 +13,7 @@ interface UserInputState {
 }
 
 class UserInput extends Component<UserInputProps, UserInputState> {
+
     constructor(props: UserInputProps) {
         super(props);
         this.state = {
@@ -76,8 +78,8 @@ class UserInput extends Component<UserInputProps, UserInputState> {
                     onChange={this.handleInput}
                     className={
                         this.state.isValid
-                            ? "bg-transparent border border-primary_green w-full p-2 rounded focus:outline-none focus:primary_green transition-all duration-500 text-black dark:text-white"
-                            : "bg-transparent border border-border_primary w-full p-2 rounded focus:outline-none focus:border-primary transition-all duration-500 text-black dark:text-white peer"
+                            ? classesValidInput
+                            : classesInvalidInput +" peer"
                     }
                 />
                 <div className="opacity-0 h-0 peer-focus:opacity-100 peer-focus:h-full transition-all duration-300">
