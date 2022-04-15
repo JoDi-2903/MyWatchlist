@@ -13,8 +13,7 @@ services:
     build: ./mywatchlist
     env_file: ./config_spring.env
     container_name: mywatchlist_backend
-    ports:
-      - 8080:8080
+    network_mode: "host"
     restart: always
   
   db:
@@ -22,7 +21,6 @@ services:
     container_name: mywatchlist_db
     restart: always
     env_file: ./config.env
-    ports:
-      - 5432:5432
+    network_mode: "host"
     volumes:
       - ~/postgres_data:/var/lib/postgresql/data

@@ -20,7 +20,7 @@ class Navbar extends Component {
 
                 <JWTContext.Consumer>
                     {({ jwtInfo, changeJWT }) => (
-                        <div className="justify-self-end lg:justify-self-end m-2 flex items-center gap-5">
+                        <div className="justify-self-center lg:justify-self-end m-2 flex items-center gap-5">
                             <ThemeSwitch />
                             {isLoggedIn(jwtInfo.jwt) ? (
                                 <DropDownMenu />
