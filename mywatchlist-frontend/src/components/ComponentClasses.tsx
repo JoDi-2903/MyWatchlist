@@ -1,0 +1,2 @@
+export var classesValidInput = "bg-transparent appearance-none border border-primary_green w-full p-2 rounded focus:outline-none focus:primary_green transition-colors duration-100 text-black dark:text-white leading-tight ";
+export var classesInvalidInput = "bg-transparent appearance-none border border-border_primary w-full p-2 rounded focus:outline-none focus:border-primary transition-colors duration-100 text-black dark:text-white leading-tight "

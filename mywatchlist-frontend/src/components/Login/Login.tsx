@@ -1,27 +1,52 @@
 import React, { Component } from "react";
+import toast from "react-hot-toast";
 import { backendURL } from "../../Config";
+import { classesInvalidInput } from "../ComponentClasses";
 
 interface LoginInformation {
     username: string;
     password: string;
 }
 
-class Login extends Component {
+interface LoginProps {
+    changeJWT: Function;
+    isLoggedIn: boolean;
+}
+
+interface LoginState {}
+
+class Login extends Component<LoginProps, LoginState> {
     information: LoginInformation = {
         username: "",
         password: "",
     };
 
+    constructor(props: LoginProps) {
+        super(props);
+    }
+
     submit_login = async (event: React.SyntheticEvent) => {
         event.preventDefault();
-        console.log(this.information);
-        fetch(backendURL + "/login", {
+
+        let status: number = 0;
+        let token: string = "";
+
+        await fetch(backendURL + "/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(this.information),
         }).then((response) => {
-            //console.log(response);
+            status = response.status;
+            token = response.headers
+                .get("authorization")
+                ?.split(" ")[1] as string;
         });
+
+        if (status == 200) {
+            this.props.changeJWT(token);
+        } else {
+            toast.error("Login failed. Please try again.");
+        }
     };
 
     render() {
@@ -39,7 +64,7 @@ class Login extends Component {
                 <input
                     type="text"
                     name="username"
-                    className="bg-transparent border border-border_primary w-full p-2 mb-5 rounded focus:outline-none focus:border-primary transition-all duration-500 text-black dark:text-white"
+                    className={classesInvalidInput + " mb-5"}
                     onChange={(e) =>
                         (this.information.username = e.target.value)
                     }
@@ -65,7 +90,7 @@ class Login extends Component {
                 <input
                     type="password"
                     name="password"
-                    className="bg-transparent border border-border_primary w-full p-2 mb-5 rounded focus:outline-none focus:border-primary transition-all duration-500 text-black dark:text-white"
+                    className={classesInvalidInput + " mb-5"}
                     onChange={(e) =>
                         (this.information.password = e.target.value)
                     }
