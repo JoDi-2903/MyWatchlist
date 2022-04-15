@@ -10,6 +10,7 @@ import SettingsPage from "./pages/SettingsPage/SettingsPage";
 import HomePage from "./pages/StartPage/StartPage";
 import UserProfilePage from "./pages/UserProfilePage/UserProfilePage";
 import WelcomePage from "./pages/WelcomePage/WelcomePage";
+import MoviePage from "./pages/MoviePage/MoviePage"
 import {
     expiredJWT,
     getJWT,
@@ -97,6 +98,10 @@ export default class App extends React.Component<AppProps, AppState> {
                                     <Route
                                         path="/settings"
                                         element={<SettingsPage />}
+                                    />
+                                    <Route
+                                        path="/movie/:id"
+                                        element={<MoviePage />}
                                     />
                                     <Route path="/user/:id" element={<UserProfilePage />}/>
 

@@ -1,5 +1,10 @@
 import { Component } from "react";
+import disableScroll from 'disable-scroll';
 
+
+// prevent scrolling and hide scrollbar
+disableScroll.on();
+document.body.style.overflow = 'hidden';
 
 const pageLimit: React.CSSProperties = {
     height: '100vh',
