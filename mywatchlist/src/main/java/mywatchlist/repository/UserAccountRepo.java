@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface UserAccountRepo extends JpaRepository<UserAccount, Long> {
     Optional<UserAccount> findByUsername(String username);
     //Optional<UserAccount> findById(long userId);
-
+    //UserAccount findByUsername(String username);
     //geht nicht wie umsetzen?
 
    List<UserAccount> findByEmailOrUsername(String eMail, String username);

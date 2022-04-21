@@ -1,23 +1,18 @@
 package mywatchlist.service;
 
 import mywatchlist.model.dto.UserAccountDto;
+import mywatchlist.model.dto.UserSettingsDto;
 import mywatchlist.model.hibernate.UserAccount;
 import mywatchlist.repository.TitleTypeRepo;
 import mywatchlist.repository.UserAccountRepo;
 import mywatchlist.repository.WatchlistEntryRepo;
 import mywatchlist.repository.WatchlistRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MyWatchlistService {
@@ -82,5 +77,23 @@ public class MyWatchlistService {
         return password.matches(pattern);
     }
 
+    public UserAccount getUserProfile(String username){
+        return null;//userAccountRepo.findByUsername(username);
+    }
 
+
+    public UserAccount getProfile(){
+        return null;
+    }
+
+    public UserSettingsDto getUserSettings(String username){
+        UserAccount userAccount = userAccountRepo.findByUsername(username).orElse(null);
+        UserSettingsDto userSettingsDto = new UserSettingsDto();
+        if(userAccount != null){
+            userSettingsDto.setUsername(userAccount.getUsername());
+            userSettingsDto.setEmail(userAccount.getEmail());
+            userSettingsDto.setPrivateProfile(userAccount.isPrivateProfile());
+        }
+        return userSettingsDto;
+    }
 }

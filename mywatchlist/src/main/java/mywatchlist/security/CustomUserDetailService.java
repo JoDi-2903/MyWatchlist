@@ -23,4 +23,8 @@ public class CustomUserDetailService implements UserDetailsService {
 
         return new User(userAccount.getUsername(), userAccount.getPassword(), Collections.emptyList());
     }
+
+    public boolean test(String test){
+        return true;
+    }
 }
