@@ -1,11 +1,22 @@
 import { Component } from "react";
+import { Link } from "react-router-dom";
 
-export default class StartPage extends Component{
-    render(){
-        return(
-            <div className="h-80">
-                <h2 className="font-extrabold text-7x1 text-center">Coming soon!</h2>
-            </div>
+import MovieList from '../../components/MovieList/MovieList';
+import { category, movieType, tvType } from "../../api/tmdbApi";
+
+export default class StartPage extends Component {
+    render() {
+        return (
+            <>
+                <div className="container">
+                    <div className="section mb-3">
+                        <div className="section__header mb-2">
+                            <h2>Trending Movies</h2>
+                        </div>
+                        <MovieList category={category.movie} type={movieType.popular} />
+                    </div>
+                </div>
+            </>
         )
     }
 }
