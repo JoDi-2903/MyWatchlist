@@ -60,8 +60,17 @@ public class MyWatchlistService {
         return exist;
     }
 
+    public boolean checkEmailExist(String email){
+        return userAccountRepo.findByEmail(email).isPresent();
+    }
+
     public boolean checkUsernameExist(String username) {
         return userAccountRepo.findByUsername(username).isPresent();
+    }
+
+    public boolean verifyPassword(String password, String username){
+        UserProfile userAccount = userAccountRepo.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+        return BCrypt.checkpw(password,userAccount.getPassword());
     }
 
     public boolean validateUsername(String username) {
@@ -143,24 +152,25 @@ public class MyWatchlistService {
     }
 
     public List<WatchlistDto> test(String username){
+
+        return null;
+    }
+
+    public void changeEmail(String email, String username) {
+        userAccountRepo.updateEmail(email, getUserId(username));
+    }
+
+    public void changePrivateProfile(boolean privateProfile, String username) {
+        userAccountRepo.updatePrivateProfile(privateProfile, getUserId(username));
+    }
+
+    public void changePassword(String password, String username) {
+        String hashedPw = BCrypt.hashpw(password, BCrypt.gensalt());
+        userAccountRepo.updatePassword(hashedPw, getUserId(username));
+    }
+
+    private long getUserId(String username){
         UserProfile userAccount = userAccountRepo.findByUsername(username).orElseThrow(EntityNotFoundException::new);
-        List<Watchlist> watchlists = watchlistRepo.findAllByUserUserId(userAccount.getUserId());
-
-        List<WatchlistDto> watchlistDtoList = new ArrayList<>();
-        for (var watchlist : watchlists) {
-            WatchlistDto watchlistDto = new WatchlistDto();
-            watchlistDto.setWatchlistName(watchlist.getWatchlistName());
-            watchlistDtoList.add(watchlistDto);
-
-            List<WatchlistEntry> watchlistEntries = watchlistEntryRepo.findAllByWatchlistWatchlistId(watchlist.getWatchlistId());
-
-            for (var entry : watchlistEntries) {
-                WatchlistEntryDto watchlistEntryDto = new WatchlistEntryDto();
-                watchlistEntryDto.setTitleId(entry.getTitleId());
-                watchlistDto.AddEntry(watchlistEntryDto); //todo
-            }
-
-        }
-        return watchlistDtoList;
+        return userAccount.getUserId();
     }
 }
