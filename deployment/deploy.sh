@@ -5,6 +5,7 @@ echo "Repository cloned"
 cd ./MyWatchlist
 
 cp ../config.env ./config.env
+cp ../config_spring.env ./config_spring.env
 
 echo "Starting container..."
 docker-compose build

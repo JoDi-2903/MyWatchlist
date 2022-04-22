@@ -1,5 +1,10 @@
 mywatchlist.server-welt.com {
-        handle_path /* {
+        handle_path /user/* {
+                root * /srv
+                try_files {path} /index.html
+                file_server
+        }
+        handle {
                 root * /srv
                 try_files {path} /index.html
                 file_server
@@ -7,5 +12,5 @@ mywatchlist.server-welt.com {
 }
 
 mywatchlist-backend.server-welt.com {
-        reverse-proxy 127.0.0.1:8080
+        reverse_proxy 127.0.0.1:8080
 }

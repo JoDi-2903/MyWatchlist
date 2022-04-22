@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { classesInvalidInput, classesValidInput } from "../ComponentClasses";
 
 interface MailInputProps {
     handleInput;
@@ -51,13 +52,13 @@ class MailInput extends Component<MailInputProps, MailInputState> {
                     id="email"
                     className={
                         this.state.isValid
-                            ? "bg-transparent border border-primary_green w-full p-2 rounded focus:outline-none focus:border-primary_green transition-all duration-500 text-black dark:text-white peer mb-1"
-                            : "bg-transparent border border-border_primary w-full p-2 rounded focus:outline-none focus:border-primary transition-all duration-500 text-black dark:text-white peer mb-1"
+                            ? classesValidInput + " peer mb-1"
+                            : classesInvalidInput + " peer mb-1"
                     }
                     value={this.state.mail}
                     onChange={this.handleInput}
                 />
-                <div className="opacity-0 h-0 peer-focus:opacity-100 peer-focus:h-full transition-all duration-300">
+                <div className="opacity-0 h-0 peer-focus:opacity-100 peer-focus:h-full transition-all duration-100">
                     <p
                         className={
                             this.state.isValid ? "hidden" : "text-primary"
