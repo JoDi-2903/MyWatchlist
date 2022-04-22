@@ -1,10 +1,13 @@
 package mywatchlist.model.dto;
 
-public class UserProfile {
+import java.util.List;
+
+public class MyProfileDto {
 
     private String username;
     private String email;
     private boolean isPrivateProfile;
+    private List<WatchlistDto> watchlistList;
 
     public String getUsername() {
         return username;
@@ -30,5 +33,11 @@ public class UserProfile {
         isPrivateProfile = privateProfile;
     }
 
+    public List<WatchlistDto> getWatchlistList() {
+        return watchlistList;
+    }
 
+    public void setWatchlistList(List<WatchlistDto> watchlistList) {
+        this.watchlistList = watchlistList;
+    }
 }

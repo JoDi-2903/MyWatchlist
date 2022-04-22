@@ -12,7 +12,9 @@ public class Watchlist {
     private long watchlistId;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserAccount user;
+    private UserProfile user;
+    @Column(name = "watchlist_name", nullable = false)
+    private String watchlistName;
 
     public long getWatchlistId() {
         return watchlistId;
@@ -22,11 +24,19 @@ public class Watchlist {
         this.watchlistId = watchlistId;
     }
 
-    public UserAccount getUser() {
+    public UserProfile getUser() {
         return user;
     }
 
-    public void setUser(UserAccount user) {
+    public void setUser(UserProfile user) {
         this.user = user;
+    }
+
+    public String getWatchlistName() {
+        return watchlistName;
+    }
+
+    public void setWatchlistName(String watchlistName) {
+        this.watchlistName = watchlistName;
     }
 }

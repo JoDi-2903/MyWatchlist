@@ -1,15 +1,22 @@
 package mywatchlist.controller;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import mywatchlist.model.dto.MyProfileDto;
 import mywatchlist.model.dto.UserAccountDto;
 import mywatchlist.model.dto.UserSettingsDto;
+import mywatchlist.model.dto.WatchlistDto;
 import mywatchlist.security.CustomUserDetailService;
 import mywatchlist.service.MyWatchlistService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -72,37 +79,41 @@ public class MyWatchlistController {
     @GetMapping("/user/profile/{username}")
     public ResponseEntity<String> getExternalUserProfile(@PathVariable String username){
         JsonObject resp = new JsonObject();
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         if(myWatchlistService.checkUsernameExist(username)){
-            resp.addProperty(jsonKey, "User does not exist");
-            return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+            Gson gson = new Gson();
+            String profile = gson.toJson(myWatchlistService.getProfile(username));
+            resp.addProperty(jsonKey, gson.toJson(myWatchlistService.getProfile(username)));
+            return new ResponseEntity<>(profile, responseHeaders, HttpStatus.OK);
+
         }
         resp.addProperty(jsonKey, "User does not exist");
-        return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(resp.toString(), responseHeaders, HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/user/myprofile/{username}")
     @PreAuthorize("#username == authentication.name")
-    public ResponseEntity<String> getMyProfile(@PathVariable String username){
-        JsonObject resp = new JsonObject();
-
-        resp.addProperty(jsonKey, "User does not exist");
-        return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+    public MyProfileDto getMyProfile(@PathVariable String username){
+        return  myWatchlistService.getMyProfile(username);
     }
 
     @GetMapping("/user/settings/{username}")
     @PreAuthorize("#username == authentication.name")
     public UserSettingsDto getUserSettings(@PathVariable String username){
-        JsonObject resp = new JsonObject();
         return myWatchlistService.getUserSettings(username);
     }
 
+    //Test endpoint
     @GetMapping("/hello/{username}")
     @PreAuthorize("#username == authentication.name")
     //@PreAuthorize("@customUserDetailService.test(#username)")
-    public ResponseEntity<String> testEndpoint(@PathVariable String username){
+    public List<WatchlistDto> testEndpoint(@PathVariable String username){
         JsonObject resp = new JsonObject();
         resp.addProperty("response", "ddd");
-        return new ResponseEntity<>(resp.toString(), HttpStatus.OK);
+        //myWatchlistService.test(username);
+        //return new ResponseEntity<WatchlistDto>(myWatchlistService.test(username), HttpStatus.OK);
+        return myWatchlistService.test(username);
     }
 
 }

@@ -1,8 +1,9 @@
 package mywatchlist.service;
 
-import mywatchlist.model.dto.UserAccountDto;
-import mywatchlist.model.dto.UserSettingsDto;
-import mywatchlist.model.hibernate.UserAccount;
+import mywatchlist.model.dto.*;
+import mywatchlist.model.hibernate.UserProfile;
+import mywatchlist.model.hibernate.Watchlist;
+import mywatchlist.model.hibernate.WatchlistEntry;
 import mywatchlist.repository.TitleTypeRepo;
 import mywatchlist.repository.UserAccountRepo;
 import mywatchlist.repository.WatchlistEntryRepo;
@@ -11,8 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MyWatchlistService {
@@ -32,14 +34,14 @@ public class MyWatchlistService {
     }
 
     public UserAccountDto getUsers(long id) {
-        UserAccount userAccount = userAccountRepo.getById(id);
+        UserProfile userAccount = userAccountRepo.getById(id);
         UserAccountDto userAccountDto = new UserAccountDto();
         userAccountDto.setUsername(userAccount.getUsername());
         return userAccountDto;
     }
 
     public void registerUser(UserAccountDto userAccountDto) {
-        UserAccount userAccount = new UserAccount();
+        UserProfile userAccount = new UserProfile();
         userAccount.setUsername(userAccountDto.getUsername());
         userAccount.setEmail(userAccountDto.getEmail());
         userAccount.setPrivateProfile(false);
@@ -51,7 +53,7 @@ public class MyWatchlistService {
 
     public boolean checkUserOrEmailExist(String email, String username) {
         boolean exist = false;
-        List<UserAccount> userAccountList = userAccountRepo.findByEmailOrUsername(email, username);
+        List<UserProfile> userAccountList = userAccountRepo.findByEmailOrUsername(email, username);
         if (!userAccountList.isEmpty()) {
             exist = true;
         }
@@ -77,23 +79,88 @@ public class MyWatchlistService {
         return password.matches(pattern);
     }
 
-    public UserAccount getUserProfile(String username){
-        return null;//userAccountRepo.findByUsername(username);
-    }
+    public ProfileDto getProfile(String username) {
+        UserProfile userAccount = userAccountRepo.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+        ProfileDto profileDto = new ProfileDto();
+        profileDto.setPrivateProfile(userAccount.isPrivateProfile());
+        profileDto.setUsername(userAccount.getUsername());
 
+        if(!userAccount.isPrivateProfile()){
+            List<Watchlist> watchlists = watchlistRepo.findAllByUserUserId(userAccount.getUserId());
+            List<WatchlistDto> watchlistDtoList = new ArrayList<>();
+            for (var watchlist : watchlists) {
+                WatchlistDto watchlistDto = new WatchlistDto();
+                watchlistDto.setWatchlistName(watchlist.getWatchlistName());
+                watchlistDtoList.add(watchlistDto);
 
-    public UserAccount getProfile(){
-        return null;
-    }
-
-    public UserSettingsDto getUserSettings(String username){
-        UserAccount userAccount = userAccountRepo.findByUsername(username).orElse(null);
-        UserSettingsDto userSettingsDto = new UserSettingsDto();
-        if(userAccount != null){
-            userSettingsDto.setUsername(userAccount.getUsername());
-            userSettingsDto.setEmail(userAccount.getEmail());
-            userSettingsDto.setPrivateProfile(userAccount.isPrivateProfile());
+                List<WatchlistEntry> watchlistEntries = watchlistEntryRepo.findAllByWatchlistWatchlistId(watchlist.getWatchlistId());
+                for (var entry : watchlistEntries) {
+                    WatchlistEntryDto watchlistEntryDto = new WatchlistEntryDto();
+                    watchlistEntryDto.setTitleId(entry.getTitleId());
+                    watchlistDto.AddEntry(watchlistEntryDto); //todo
+                }
+            }
+            profileDto.setWatchlistList(watchlistDtoList);
         }
+
+        return profileDto;
+    }
+
+
+    public MyProfileDto getMyProfile(String username) {
+        UserProfile userAccount = userAccountRepo.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+        List<Watchlist> watchlists = watchlistRepo.findAllByUserUserId(userAccount.getUserId());
+        MyProfileDto profileDto = new MyProfileDto();
+        profileDto.setPrivateProfile(userAccount.isPrivateProfile());
+        profileDto.setEmail(userAccount.getEmail());
+        profileDto.setUsername(userAccount.getUsername());
+
+        List<WatchlistDto> watchlistDtoList = new ArrayList<>();
+        for (var watchlist : watchlists) {
+            WatchlistDto watchlistDto = new WatchlistDto();
+            watchlistDto.setWatchlistName(watchlist.getWatchlistName());
+            watchlistDtoList.add(watchlistDto);
+
+            List<WatchlistEntry> watchlistEntries = watchlistEntryRepo.findAllByWatchlistWatchlistId(watchlist.getWatchlistId());
+
+            for (var entry : watchlistEntries) {
+                WatchlistEntryDto watchlistEntryDto = new WatchlistEntryDto();
+                watchlistEntryDto.setTitleId(entry.getTitleId());
+                watchlistDto.AddEntry(watchlistEntryDto); //todo
+            }
+        }
+        profileDto.setWatchlistList(watchlistDtoList);
+        return profileDto;
+    }
+
+    public UserSettingsDto getUserSettings(String username) {
+        UserProfile userAccount = userAccountRepo.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+        UserSettingsDto userSettingsDto = new UserSettingsDto();
+        userSettingsDto.setUsername(userAccount.getUsername());
+        userSettingsDto.setEmail(userAccount.getEmail());
+        userSettingsDto.setPrivateProfile(userAccount.isPrivateProfile());
         return userSettingsDto;
+    }
+
+    public List<WatchlistDto> test(String username){
+        UserProfile userAccount = userAccountRepo.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+        List<Watchlist> watchlists = watchlistRepo.findAllByUserUserId(userAccount.getUserId());
+
+        List<WatchlistDto> watchlistDtoList = new ArrayList<>();
+        for (var watchlist : watchlists) {
+            WatchlistDto watchlistDto = new WatchlistDto();
+            watchlistDto.setWatchlistName(watchlist.getWatchlistName());
+            watchlistDtoList.add(watchlistDto);
+
+            List<WatchlistEntry> watchlistEntries = watchlistEntryRepo.findAllByWatchlistWatchlistId(watchlist.getWatchlistId());
+
+            for (var entry : watchlistEntries) {
+                WatchlistEntryDto watchlistEntryDto = new WatchlistEntryDto();
+                watchlistEntryDto.setTitleId(entry.getTitleId());
+                watchlistDto.AddEntry(watchlistEntryDto); //todo
+            }
+
+        }
+        return watchlistDtoList;
     }
 }

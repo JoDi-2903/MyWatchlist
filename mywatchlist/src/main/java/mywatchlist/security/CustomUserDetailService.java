@@ -1,6 +1,6 @@
 package mywatchlist.security;
 
-import mywatchlist.model.hibernate.UserAccount;
+import mywatchlist.model.hibernate.UserProfile;
 import mywatchlist.repository.UserAccountRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -18,7 +18,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserAccount userAccount = userAccountRepo.findByUsername(username)
+        UserProfile userAccount = userAccountRepo.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not present"));
 
         return new User(userAccount.getUsername(), userAccount.getPassword(), Collections.emptyList());
