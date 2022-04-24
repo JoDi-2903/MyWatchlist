@@ -54,9 +54,6 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
             var exists: boolean = true;
             await fetch(backendURL + "/user/profile/" + this.props.username, {
                 method: "GET",
-                headers: {
-                    Authorization: "Bearer " + this.props.jwtInfo.jwt,
-                },
             })
                 .then((response) => {
                     if (response.status !== 201) {
@@ -66,12 +63,22 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                 })
                 .then((data) => {
                     if (exists) {
-                        this.setState({
-                            existUser: true,
-                            email: "",
-                            privateProfile: data.privateProfile,
-                            watchlist: [],
-                        });
+                        if (data.privateProfile) {
+                            this.setState({
+                                existUser: true,
+                                email: "",
+                                privateProfile: data.privateProfile,
+                                watchlist: [],
+                            });
+                        }else{
+                            this.setState({
+                                existUser: true,
+                                email: "",
+                                privateProfile: data.privateProfile,
+                                watchlist: data.watchlist,
+                            });
+                        }
+                        
                     } else {
                         toast.error(data.response)
                         this.setState({
