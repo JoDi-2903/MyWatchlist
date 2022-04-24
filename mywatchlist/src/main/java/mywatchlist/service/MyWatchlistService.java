@@ -75,7 +75,7 @@ public class MyWatchlistService {
     }
 
     public boolean validatePassword(String password) {
-        String pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,30}$";
+        String pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!\"#$§€%&'+,./:;=?@\\^`|~\\-_\\(\\)\\[\\]]).{8,30}$";
         return password.matches(pattern);
     }
 
