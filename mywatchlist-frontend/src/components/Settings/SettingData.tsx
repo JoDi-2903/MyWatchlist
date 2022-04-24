@@ -93,7 +93,7 @@ class SettingData extends Component<SettingDataProps, SettingDataState> {
                                 Privacy Settings
                             </h2>
                             <p>
-                                {this.state.privateProfile
+                                {!this.state.privateProfile
                                     ? "Profile is public"
                                     : "Profile is private"}
                             </p>
