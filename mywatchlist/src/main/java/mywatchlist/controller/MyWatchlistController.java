@@ -128,6 +128,7 @@ public class MyWatchlistController {
         }
     }
 
+    //todo password prüfen ob es das alte war?
     @PutMapping("/user/changePassword")
     @PreAuthorize("#changePasswordDto.getUsername == authentication.name")
     public ResponseEntity<String> changePasswordSettings(@RequestBody ChangePasswordDto changePasswordDto) {
@@ -171,6 +172,42 @@ public class MyWatchlistController {
             resp.addProperty(jsonKey, "User does not exist");
             return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PostMapping("/watchlist/newWatchlist")
+    @PreAuthorize("#watchlistDto.getUsername == authentication.name")
+    public ResponseEntity<String> changePrivateProfile(@RequestBody CreateUpdateWatchlistDto watchlistDto) {
+        String username = watchlistDto.getUsername();
+        String watchlistName = watchlistDto.getWatchlistName();
+        JsonObject resp = new JsonObject();
+
+        if (myWatchlistService.checkUsernameExist(username)) {
+            if(!myWatchlistService.checkWatchlistName(watchlistName, username)){
+                myWatchlistService.createWatchlist(watchlistName, username);
+                resp.addProperty(jsonKey, "New watchlist " + watchlistName + " was created");
+                return new ResponseEntity<>(resp.toString(), HttpStatus.CREATED);
+            }else{
+                resp.addProperty(jsonKey, "Watchlist name does not meet the requirements");
+                return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            resp.addProperty(jsonKey, "User does not exist");
+            return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/watchlist/deleteWatchlist/{username}/{watchlistId}")
+    @PreAuthorize("#newWatchlistDto.getUsername == authentication.name")
+    public ResponseEntity<String> deleteWatchlist(@PathVariable String username, @PathVariable long watchlistId) {
+        JsonObject resp = new JsonObject();
+
+        if (myWatchlistService.checkUsernameExist(username)) {
+            myWatchlistService.deleteWatchlist(watchlistId, username);
+        } else {
+            resp.addProperty(jsonKey, "User does not exist");
+            return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+        }
+        return null;
     }
 
     //Test endpoint

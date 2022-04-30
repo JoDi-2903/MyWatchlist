@@ -44,7 +44,7 @@ public class MyWatchlistService {
         UserProfile userAccount = new UserProfile();
         userAccount.setUsername(userAccountDto.getUsername());
         userAccount.setEmail(userAccountDto.getEmail());
-        userAccount.setPrivateProfile(false);
+        userAccount.setPrivateProfile(true);
 
         String hashedPw = BCrypt.hashpw(userAccountDto.getPassword(), BCrypt.gensalt());
         userAccount.setPassword(hashedPw);
@@ -84,7 +84,7 @@ public class MyWatchlistService {
     }
 
     public boolean validatePassword(String password) {
-        String pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,30}$";
+        String pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!\"#$§€%&'+,./:;=?@\\^`|~\\-_\\(\\)\\[\\]]).{8,30}$";
         return password.matches(pattern);
     }
 
@@ -170,7 +170,34 @@ public class MyWatchlistService {
     }
 
     private long getUserId(String username){
-        UserProfile userAccount = userAccountRepo.findByUsername(username).orElseThrow(EntityNotFoundException::new);
-        return userAccount.getUserId();
+        return getUserAccount(username).getUserId();
+    }
+
+    public void createWatchlist(String watchlistName, String username) {
+        Watchlist watchlist = new Watchlist();
+        watchlist.setWatchlistName(watchlistName);
+        watchlist.setUser(getUserAccount(username));
+        watchlistRepo.save(watchlist);
+    }
+
+    private UserProfile getUserAccount(String username){
+        return userAccountRepo.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+    }
+
+    public boolean checkWatchlistName(String watchlistName, String username) {
+        return watchlistRepo.findByUserUserIdAndWatchlistName(getUserId(username), watchlistName).isPresent();
+
+    }
+
+    public void deleteWatchlist(long watchlistId, String username) {
+        Watchlist watchlist = new Watchlist();
+        watchlist.setWatchlistId(watchlistId);
+        watchlistRepo.delete(watchlist);
+    }
+
+    public boolean checkWatchlistExistToUser(long watchlistId, String username){
+        boolean exist = false;
+        //watchlistRepo.
+        return false;
     }
 }
