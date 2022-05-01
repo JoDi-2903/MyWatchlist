@@ -44,13 +44,18 @@ class RegistrationForm extends Component<
     submit_registration = async (event: React.SyntheticEvent) => {
         event.preventDefault();
 
-        if (
-            this.state.isUsernameValid &&
-            this.state.isMailValid &&
-            this.state.isPasswordValid
-        ) {
+        if (!this.state.isUsernameValid){
+            toast.error("Username is not valid.")
+            return;
+        }else if (!this.state.isMailValid){
+            toast.error("E-Mail is not valid.")
+            return;
+        }else if (!this.state.isPasswordValid){
+            toast.error("Password is not valid.")
+            return;
+        }else {
             var httpStatus = 0;
-            var error = "";
+            var respone_text = "";
 
             await fetch(backendURL + "/register", {
                 method: "POST",
@@ -59,18 +64,16 @@ class RegistrationForm extends Component<
             })
                 .then((response) => {
                     httpStatus = response.status;
-                    return response.text();
+                    return response.json();
                 })
-                .then((data) => (error = data));
+                .then((data) => (respone_text = data.response));
 
-            if (httpStatus == 201) {
+            if (httpStatus === 201) {
                 toast.success("User created.");
                 this.setState({ isRegistered: true });
             } else {
-                toast.error(error);
+                toast.error(respone_text);
             }
-        } else {
-            toast.error("Something is not valid!");
         }
     };
 

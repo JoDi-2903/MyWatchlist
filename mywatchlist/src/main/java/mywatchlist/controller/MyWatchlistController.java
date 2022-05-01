@@ -56,8 +56,8 @@ public class MyWatchlistController {
     public ResponseEntity<String> validateUsername(@PathVariable String username) {
         JsonObject resp = new JsonObject();
 
-        if (!myWatchlistService.validateUsername(username)) {
-            resp.addProperty(jsonKey, "Only letters A-Z with at least 3 characters and numbers are allowed.");
+        if(!myWatchlistService.validateUsername(username)){
+            resp.addProperty(jsonKey, "Only letters a-z, A-Z with at least 3 characters and numbers are allowed.");
             return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
         }
         if (myWatchlistService.checkUsernameExist(username)) {
