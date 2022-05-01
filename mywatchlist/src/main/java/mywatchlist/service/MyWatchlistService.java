@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MyWatchlistService {
@@ -189,15 +190,28 @@ public class MyWatchlistService {
 
     }
 
-    public void deleteWatchlist(long watchlistId, String username) {
+    public void deleteWatchlist(long watchlistId) {
         Watchlist watchlist = new Watchlist();
         watchlist.setWatchlistId(watchlistId);
         watchlistRepo.delete(watchlist);
     }
 
-    public boolean checkWatchlistExistToUser(long watchlistId, String username){
-        boolean exist = false;
+    public boolean checkWatchlistExistsToUser(long watchlistId, String username){
+        return watchlistRepo.findByUserUserIdAndWatchlistId(getUserId(username), watchlistId).isPresent();
+        //watchlistRepo.findAllByUserUserId(getUserId(username)).stream().filter(x -> x.getWatchlistId() == watchlistId);
+        //List<Watchlist> watchlistList =
+
         //watchlistRepo.
-        return false;
+        //return false; todo eigenes search skript
+        //exist = watchlistRepo.findAllByUserUserId(getUserId(username)).stream().anyMatch(x -> x.getWatchlistId() == watchlistId);
+        //var test = watchlistRepo.findAllByUserUserId(getUserId(username));
+    }
+
+    public boolean checkWatchlistEntryExistsToUser(long entryId, String username) {
+      return watchlistEntryRepo.findWatchlistEntryByEntryIdAndUsername(entryId, username).isPresent();
+    }
+
+    public void deleteWatchlistEntry(long entryId) {
+        watchlistEntryRepo.deleteById(entryId); //todo die anderen auch byId löschen
     }
 }

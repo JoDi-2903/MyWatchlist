@@ -30,6 +30,7 @@ public class MyWatchlistController {
         this.customUserDetailService = customUserDetailService;
     }
 
+    //todo response bei erfolg. registrierung
     @PostMapping(path = "/register")
     public ResponseEntity<String> registerUser(@RequestBody UserAccountDto userAccountDto) {
         JsonObject resp = new JsonObject();
@@ -196,19 +197,58 @@ public class MyWatchlistController {
         }
     }
 
+    //todo delete cascade
     @DeleteMapping("/watchlist/deleteWatchlist/{username}/{watchlistId}")
-    @PreAuthorize("#newWatchlistDto.getUsername == authentication.name")
+    @PreAuthorize("#username == authentication.name")
     public ResponseEntity<String> deleteWatchlist(@PathVariable String username, @PathVariable long watchlistId) {
         JsonObject resp = new JsonObject();
 
         if (myWatchlistService.checkUsernameExist(username)) {
-            myWatchlistService.deleteWatchlist(watchlistId, username);
+            if(myWatchlistService.checkWatchlistExistsToUser(watchlistId, username)){
+                myWatchlistService.deleteWatchlist(watchlistId);
+                resp.addProperty(jsonKey, "Successfully deleted the watchlist");
+                return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+            }else{
+                resp.addProperty(jsonKey, "The watchlist cannot be assigned to the user");
+                return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+            }
         } else {
             resp.addProperty(jsonKey, "User does not exist");
             return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    //todo
+    @DeleteMapping("/watchlist/deleteWatchlistEntry/{username}/{entryId}")
+    @PreAuthorize("#username == authentication.name")
+    public ResponseEntity<String> deleteWatchlistEntry(@PathVariable String username, @PathVariable long entryId) {
+        JsonObject resp = new JsonObject();
+
+        if (myWatchlistService.checkUsernameExist(username)) {
+            if(myWatchlistService.checkWatchlistEntryExistsToUser(entryId, username)){
+                myWatchlistService.deleteWatchlistEntry(entryId);
+                resp.addProperty(jsonKey, "Successfully deleted the watchlist entry");
+                return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+            }else{
+                resp.addProperty(jsonKey, "The watchlist entry cannot be assigned to the user");
+                return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            resp.addProperty(jsonKey, "User does not exist");
+            return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    //todo
+    @PostMapping("/watchlist/addWatchlistlistEntry")
+    @PreAuthorize("#username == authentication.name")
+    public ResponseEntity<String> addWatchlistEntry() {
+        JsonObject resp = new JsonObject();
+
+
         return null;
     }
+
 
     //Test endpoint
     @GetMapping("/hello/{username}")
