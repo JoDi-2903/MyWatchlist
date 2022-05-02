@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MyWatchlistService {
@@ -44,7 +45,7 @@ public class MyWatchlistService {
         UserProfile userAccount = new UserProfile();
         userAccount.setUsername(userAccountDto.getUsername());
         userAccount.setEmail(userAccountDto.getEmail());
-        userAccount.setPrivateProfile(false);
+        userAccount.setPrivateProfile(true);
 
         String hashedPw = BCrypt.hashpw(userAccountDto.getPassword(), BCrypt.gensalt());
         userAccount.setPassword(hashedPw);
@@ -60,8 +61,17 @@ public class MyWatchlistService {
         return exist;
     }
 
+    public boolean checkEmailExist(String email){
+        return userAccountRepo.findByEmail(email).isPresent();
+    }
+
     public boolean checkUsernameExist(String username) {
         return userAccountRepo.findByUsername(username).isPresent();
+    }
+
+    public boolean verifyPassword(String password, String username){
+        UserProfile userAccount = userAccountRepo.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+        return BCrypt.checkpw(password,userAccount.getPassword());
     }
 
     public boolean validateUsername(String username) {
@@ -143,24 +153,65 @@ public class MyWatchlistService {
     }
 
     public List<WatchlistDto> test(String username){
-        UserProfile userAccount = userAccountRepo.findByUsername(username).orElseThrow(EntityNotFoundException::new);
-        List<Watchlist> watchlists = watchlistRepo.findAllByUserUserId(userAccount.getUserId());
 
-        List<WatchlistDto> watchlistDtoList = new ArrayList<>();
-        for (var watchlist : watchlists) {
-            WatchlistDto watchlistDto = new WatchlistDto();
-            watchlistDto.setWatchlistName(watchlist.getWatchlistName());
-            watchlistDtoList.add(watchlistDto);
+        return null;
+    }
 
-            List<WatchlistEntry> watchlistEntries = watchlistEntryRepo.findAllByWatchlistWatchlistId(watchlist.getWatchlistId());
+    public void changeEmail(String email, String username) {
+        userAccountRepo.updateEmail(email, getUserId(username));
+    }
 
-            for (var entry : watchlistEntries) {
-                WatchlistEntryDto watchlistEntryDto = new WatchlistEntryDto();
-                watchlistEntryDto.setTitleId(entry.getTitleId());
-                watchlistDto.AddEntry(watchlistEntryDto); //todo
-            }
+    public void changePrivateProfile(boolean privateProfile, String username) {
+        userAccountRepo.updatePrivateProfile(privateProfile, getUserId(username));
+    }
 
-        }
-        return watchlistDtoList;
+    public void changePassword(String password, String username) {
+        String hashedPw = BCrypt.hashpw(password, BCrypt.gensalt());
+        userAccountRepo.updatePassword(hashedPw, getUserId(username));
+    }
+
+    private long getUserId(String username){
+        return getUserAccount(username).getUserId();
+    }
+
+    public void createWatchlist(String watchlistName, String username) {
+        Watchlist watchlist = new Watchlist();
+        watchlist.setWatchlistName(watchlistName);
+        watchlist.setUser(getUserAccount(username));
+        watchlistRepo.save(watchlist);
+    }
+
+    private UserProfile getUserAccount(String username){
+        return userAccountRepo.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+    }
+
+    public boolean checkWatchlistName(String watchlistName, String username) {
+        return watchlistRepo.findByUserUserIdAndWatchlistName(getUserId(username), watchlistName).isPresent();
+
+    }
+
+    public void deleteWatchlist(long watchlistId) {
+        Watchlist watchlist = new Watchlist();
+        watchlist.setWatchlistId(watchlistId);
+        watchlistRepo.delete(watchlist);
+    }
+
+    public boolean checkWatchlistExistsToUser(long watchlistId, String username){
+        return watchlistRepo.findByUserUserIdAndWatchlistId(getUserId(username), watchlistId).isPresent();
+        //watchlistRepo.findAllByUserUserId(getUserId(username)).stream().filter(x -> x.getWatchlistId() == watchlistId);
+        //List<Watchlist> watchlistList =
+
+        //watchlistRepo.
+        //return false; todo eigenes search skript
+        //exist = watchlistRepo.findAllByUserUserId(getUserId(username)).stream().anyMatch(x -> x.getWatchlistId() == watchlistId);
+        //var test = watchlistRepo.findAllByUserUserId(getUserId(username));
+    }
+
+    public boolean checkWatchlistEntryExistsToUser(long entryId, String username) {
+      return watchlistEntryRepo.findWatchlistEntryByEntryIdAndUsername(entryId, username).isPresent();
+    }
+
+    public void deleteWatchlistEntry(long entryId) {
+        watchlistEntryRepo.deleteById(entryId); //todo die anderen auch byId löschen
     }
 }

@@ -1,5 +1,8 @@
 package mywatchlist.model.hibernate;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 
 @Entity
@@ -16,6 +19,7 @@ public class WatchlistEntry {
     @JoinColumn(name = "title_type_id", nullable = false)
     private TitleType titleType;
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "watchlist_id", nullable = false)
     private Watchlist watchlist;
 
