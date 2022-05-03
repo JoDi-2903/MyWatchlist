@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(name = "user_account")
+@Table(name = "user_account") //todo zu user account umbenennen oder warum hab ich es damals profile genannt?
 public class UserProfile implements UserDetails {
 
     @Id

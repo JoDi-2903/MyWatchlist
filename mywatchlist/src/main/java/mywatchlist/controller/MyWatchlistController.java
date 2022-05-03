@@ -90,6 +90,7 @@ public class MyWatchlistController {
         return new ResponseEntity<>(resp.toString(), responseHeaders, HttpStatus.BAD_REQUEST);
     }
 
+    //todo watchlist json ändern mit tv
     @GetMapping("/user/myprofile/{username}")
     @PreAuthorize("#username == authentication.name")
     public MyProfileDto getMyProfile(@PathVariable String username) {
