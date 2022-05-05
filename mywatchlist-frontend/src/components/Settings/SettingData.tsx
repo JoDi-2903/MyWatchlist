@@ -1,12 +1,10 @@
-import {
-    UserIcon,
-    MailIcon,
-    ShieldCheckIcon,
-    PencilIcon,
-} from "@heroicons/react/solid";
+import { UserIcon, ShieldCheckIcon, PencilIcon } from "@heroicons/react/solid";
 import { Component } from "react";
+import toast from "react-hot-toast";
 import { backendURL } from "../../Config";
-import { JWTInfo } from "../../security/JWTContext";
+import { getUsername, JWTInfo } from "../../security/JWTContext";
+import ChangeEmail from "./ChangeMail";
+import ChangePassword from "./ChangePassword";
 
 interface SettingDataProps {
     jwtInfo: JWTInfo;
@@ -26,6 +24,8 @@ class SettingData extends Component<SettingDataProps, SettingDataState> {
             email: "",
             privateProfile: false,
         };
+
+        this.togglePrivacy = this.togglePrivacy.bind(this);
     }
 
     componentDidMount() {
@@ -52,38 +52,56 @@ class SettingData extends Component<SettingDataProps, SettingDataState> {
             });
     }
 
+    async togglePrivacy() {
+        var responseStatus = 0;
+        var responseText = "";
+        await fetch(backendURL + "/user/changePrivateProfile", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + this.props.jwtInfo.jwt,
+            },
+            body: JSON.stringify({
+                username: getUsername(),
+                privateProfile: !this.state.privateProfile,
+            }),
+        })
+            .then((response) => {
+                responseStatus = response.status;
+                return response.json();
+            })
+            .then((data) => (responseText = data.response));
+        if (responseStatus === 200) {
+            toast.success(responseText);
+            this.setState({privateProfile: !this.state.privateProfile})
+        } else {
+            toast.error(responseText);
+        }
+    }
+
     render() {
         return (
-            <div className="grid-rows-1 justify-center">
-                <div className="dark:text-white border border-black dark:border-white rounded m-5 p-5 flex justify-between">
-                    <div className="flex justify-center gap-5">
-                        <UserIcon className="w-10" />
-                        <div>
-                            <h2 className="text-xl dark:text-white">
-                                Username
-                            </h2>
-                            {this.state.username}
+            <div className="grid-rows-1 justify-center w-full xs:w-3/4 xl:w-1/2 m-auto h-auto">
+                <div className="dark:text-white border border-black dark:border-white rounded m-5 p-5">
+                    <div className="flex justify-between">
+                        <div className="flex justify-center gap-5">
+                            <UserIcon className="w-10" />
+                            <div>
+                                <h2 className="text-xl dark:text-white">
+                                    Username
+                                </h2>
+                                {this.state.username}
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex justify-between gap-2 rounded border border-black dark:border-white cursor-pointer p-2">
-                        <PencilIcon className="w-5" />
-                        <p className="pt-1">Edit</p>
                     </div>
                 </div>
 
-                <div className="dark:text-white border border-black dark:border-white rounded m-5 p-5 flex justify-between">
-                    <div className="flex justify-center gap-5">
-                        <MailIcon className="w-10" />
-                        <div>
-                            <h2 className="text-xl dark:text-white">E-Mail</h2>
-                            {this.state.email}
-                        </div>
-                    </div>
-                    <div className="flex justify-between gap-2 rounded border border-black dark:border-white cursor-pointer p-2">
-                        <PencilIcon className="w-5" />
-                        <p className="pt-1">Edit</p>
-                    </div>
-                </div>
+                <ChangeEmail
+                    jwtInfo={this.props.jwtInfo}
+                    email={this.state.email}
+                />
+
+                <ChangePassword jwtInfo={this.props.jwtInfo} />
 
                 <div className="dark:text-white border border-black dark:border-white rounded m-5 p-5 flex justify-between">
                     <div className="flex justify-center gap-5">
@@ -99,9 +117,12 @@ class SettingData extends Component<SettingDataProps, SettingDataState> {
                             </p>
                         </div>
                     </div>
-                    <div className="flex justify-between gap-2 rounded border border-black dark:border-white cursor-pointer p-2">
+                    <div
+                        className="flex justify-between gap-2 rounded border border-black dark:border-white cursor-pointer p-2"
+                        onClick={this.togglePrivacy}
+                    >
                         <PencilIcon className="w-5" />
-                        <p className="pt-1">Edit</p>
+                        <p className="pt-1">Switch</p>
                     </div>
                 </div>
 

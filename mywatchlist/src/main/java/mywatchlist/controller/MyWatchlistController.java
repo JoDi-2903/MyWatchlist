@@ -146,7 +146,7 @@ public class MyWatchlistController {
                     return new ResponseEntity<>(resp.toString(), HttpStatus.OK);
                 } else {
                     resp.addProperty(jsonKey, "Old password does not match");
-                    return new ResponseEntity<>(resp.toString(), HttpStatus.OK);
+                    return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
                 }
             } else {
                 resp.addProperty(jsonKey, "Password does not meet the requirements");
@@ -167,7 +167,9 @@ public class MyWatchlistController {
 
         if (myWatchlistService.checkUsernameExist(username)) {
             myWatchlistService.changePrivateProfile(privateProfile, username);
-            resp.addProperty(jsonKey, "The privat profile status was set to: " + privateProfile);
+            if(privateProfile){
+                resp.addProperty(jsonKey, "The privacy status was set to private");
+            }else resp.addProperty(jsonKey, "The privacy status was set to public");
             return new ResponseEntity<>(resp.toString(), HttpStatus.OK);
         } else {
             resp.addProperty(jsonKey, "User does not exist");
