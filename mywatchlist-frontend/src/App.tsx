@@ -19,6 +19,7 @@ import {
     JWTInfo,
     updateJWT,
 } from "./security/JWTContext";
+import SearchPage from "./pages/SearchPage/SearchPage";
 
 interface AppProps {}
 
@@ -99,6 +100,10 @@ export default class App extends React.Component<AppProps, AppState> {
                                     <Route
                                         path="/settings"
                                         element={<SettingsPage />}
+                                    />
+                                    <Route
+                                        path="/search"
+                                        element={<SearchPage />}
                                     />
                                     <Route
                                         path="/movie/:id"

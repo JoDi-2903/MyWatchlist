@@ -4,7 +4,8 @@ import {
     UserIcon,
     LogoutIcon,
     AdjustmentsIcon,
-    CollectionIcon
+    CollectionIcon,
+    SearchIcon
 } from "@heroicons/react/solid";
 import { Link } from "react-router-dom";
 
@@ -62,6 +63,15 @@ class DropDownMenu extends Component<DropDownMenuProps, DropDownMenuState> {
                             >
                                 <p>My Watchlist</p>
                                 <CollectionIcon className="w-5" />
+                            </Link>
+                        </li>
+                        <li className="p-2 w-30 hover:bg-primary dark:hover:text-dark_navbar cursor-pointer">
+                            <Link
+                                to="/search"
+                                className="flex justify-between gap-2"
+                            >
+                                <p>Search</p>
+                                <SearchIcon className="w-5" />
                             </Link>
                         </li>
                         <li className="p-2 w-30 hover:bg-primary dark:hover:text-dark_navbar cursor-pointer">
