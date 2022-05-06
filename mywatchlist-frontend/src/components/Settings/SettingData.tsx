@@ -99,6 +99,7 @@ class SettingData extends Component<SettingDataProps, SettingDataState> {
                 <ChangeEmail
                     jwtInfo={this.props.jwtInfo}
                     email={this.state.email}
+                    onMailChange={(email) => this.setState({email: email})}
                 />
 
                 <ChangePassword jwtInfo={this.props.jwtInfo} />
@@ -127,7 +128,7 @@ class SettingData extends Component<SettingDataProps, SettingDataState> {
                 </div>
 
                 <div className="flex justify-center">
-                    <button className="p-2 text-white dark:text-dark_navbar border border-primary hover:border-primary-200 rounded-lg shadow bg-primary hover:bg-primary-200">
+                    <button onClick={() => window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank')?.focus()} className="p-2 text-white dark:text-dark_navbar border border-primary hover:border-primary-200 rounded-lg shadow bg-primary hover:bg-primary-200">
                         Delete Account
                     </button>
                 </div>

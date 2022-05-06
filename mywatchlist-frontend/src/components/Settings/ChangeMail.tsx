@@ -8,6 +8,7 @@ import MailInput from "../Registration/MailInput";
 interface ChangeEmailProps {
     jwtInfo: JWTInfo;
     email: string;
+    onMailChange;
 }
 
 interface ChangeEmailState {
@@ -57,7 +58,9 @@ class ChangeEmail extends Component<ChangeEmailProps, ChangeEmailState> {
                 .then((data) => (responseText = data.response));
             if (responseStatus === 200) {
                 toast.success(responseText);
-                this.setState({ email: this.state.newEmail.email });
+                this.setState({ email: this.state.newEmail.email }, () =>
+                    this.props.onMailChange(this.state.email)
+                );
             } else {
                 toast.error(responseText);
             }
