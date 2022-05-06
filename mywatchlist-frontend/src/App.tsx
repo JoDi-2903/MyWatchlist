@@ -7,7 +7,7 @@ import LogoutPage from "./pages/LogoutPage/LogoutPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import SettingsPage from "./pages/SettingsPage/SettingsPage";
-import HomePage from "./pages/StartPage/StartPage";
+import StartPage from "./pages/StartPage/StartPage";
 import UserProfilePage from "./pages/UserProfilePage/UserProfilePage";
 import WelcomePage from "./pages/WelcomePage/WelcomePage";
 import MoviePage from "./pages/MoviePage/MoviePage";
@@ -113,7 +113,7 @@ export default class App extends React.Component<AppProps, AppState> {
                                         path="/"
                                         element={
                                             isLoggedIn(jwtInfo.jwt) ? (
-                                                <HomePage />
+                                                <StartPage />
                                             ) : (
                                                 <WelcomePage />
                                             )
