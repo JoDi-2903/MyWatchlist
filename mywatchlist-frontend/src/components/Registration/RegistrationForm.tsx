@@ -4,7 +4,7 @@ import { Link, Navigate } from "react-router-dom";
 import { backendURL } from "../../Config";
 import MailInput from "./MailInput";
 import PasswordInput from "./PasswordInput";
-import UserInput from "./UserInput";
+import UsernameInput from "./UserNameInput";
 
 interface RegistrationProps {}
 
@@ -87,7 +87,7 @@ class RegistrationForm extends Component<
                         className="w-full md:w-1/2 xl:w-1/4 mx-auto p-5 lg:p-10 border border-border_primary rounded"
                         onSubmit={this.submit_registration}
                     >
-                        <UserInput
+                        <UsernameInput
                             handleInput={(
                                 username: string,
                                 isValid: boolean
@@ -98,6 +98,7 @@ class RegistrationForm extends Component<
                         />
 
                         <MailInput
+                            title="E-Mail"
                             handleInput={(mail: string, isValid: boolean) => {
                                 this.information.email = mail;
                                 this.setState({ isMailValid: isValid });

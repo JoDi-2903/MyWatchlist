@@ -8,7 +8,7 @@ class SettingsPage extends Component {
         return (
             <JWTContext.Consumer>
                 {({ jwtInfo, changeJWT }) => (
-                    <main className="w-3/4 mx-auto my-10 p-10 flex justify-center">
+                    <main className="w-full md:w-3/4 mx-auto my-10 p-5 flex justify-center">
                         {isLoggedIn(jwtInfo.jwt) ? (
                             <div className="w-full">
                                 <div className="p-5 border-b border-black dark:border-white w-full">

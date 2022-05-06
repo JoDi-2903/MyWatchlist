@@ -1,4 +1,4 @@
-import { Component, ReactEventHandler } from "react";
+import { Component } from "react";
 import {
     ChevronDownIcon,
     UserIcon,
@@ -22,8 +22,7 @@ class DropDownMenu extends Component<DropDownMenuProps, DropDownMenuState> {
     }
 
     btnChangeHandler = () => {
-        let state: boolean = this.state.isVisible;
-        this.setState({ isVisible: !state });
+        this.setState({ isVisible: !this.state.isVisible });
     };
 
     render() {

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { classesInvalidInput, classesValidInput } from "../ComponentClasses";
 
 interface MailInputProps {
+    title: string;
     handleInput;
 }
 
@@ -30,7 +31,7 @@ class MailInput extends Component<MailInputProps, MailInputState> {
 
             this.setState(
                 {
-                    isValid: match != 0,
+                    isValid: match !== 0,
                 },
                 () => {
                     this.props.handleInput(this.state.mail, this.state.isValid);
@@ -46,7 +47,7 @@ class MailInput extends Component<MailInputProps, MailInputState> {
                     htmlFor="email"
                     className="block text-black dark:text-white text-md font-bold mb-2"
                 >
-                    E-Mail
+                    {this.props.title}
                 </label>
                 <input
                     id="email"

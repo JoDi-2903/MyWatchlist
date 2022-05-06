@@ -10,7 +10,7 @@ import SettingsPage from "./pages/SettingsPage/SettingsPage";
 import HomePage from "./pages/StartPage/StartPage";
 import UserProfilePage from "./pages/UserProfilePage/UserProfilePage";
 import WelcomePage from "./pages/WelcomePage/WelcomePage";
-import MoviePage from "./pages/MoviePage/MoviePage"
+import MoviePage from "./pages/MoviePage/MoviePage";
 import {
     expiredJWT,
     getJWT,
@@ -54,6 +54,7 @@ export default class App extends React.Component<AppProps, AppState> {
     }
 
     componentDidMount() {
+        document.body.style.backgroundColor = "#2E323C";
         let jwt = getJWT();
         updateJWT(jwt, (username) => {
             this.setState({
@@ -103,7 +104,10 @@ export default class App extends React.Component<AppProps, AppState> {
                                         path="/movie/:id"
                                         element={<MoviePage />}
                                     />
-                                    <Route path="/user/:id" element={<UserProfilePage />}/>
+                                    <Route
+                                        path="/user/:id"
+                                        element={<UserProfilePage />}
+                                    />
 
                                     <Route
                                         path="/"

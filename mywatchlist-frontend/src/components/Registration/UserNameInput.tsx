@@ -3,17 +3,17 @@ import toast from "react-hot-toast";
 import { backendURL } from "../../Config";
 import { classesInvalidInput, classesValidInput } from "../ComponentClasses";
 
-interface UserInputProps {
+interface UsernameInputProps {
     handleInput;
 }
 
-interface UserInputState {
+interface UsernameInputState {
     username: string;
     isValid: boolean;
 }
 
-class UserInput extends Component<UserInputProps, UserInputState> {
-    constructor(props: UserInputProps) {
+class UsernameInput extends Component<UsernameInputProps, UsernameInputState> {
+    constructor(props: UsernameInputProps) {
         super(props);
         this.state = {
             username: "",
@@ -87,7 +87,7 @@ class UserInput extends Component<UserInputProps, UserInputState> {
                             : classesInvalidInput + " peer"
                     }
                 />
-                <div className="opacity-0 h-0 peer-focus:opacity-100 peer-focus:h-full transition-all duration-300">
+                <div className="invisible h-0 peer-focus:visible peer-focus:h-full transition-all duration-300">
                     <p
                         className={
                             this.state.isValid ? "hidden" : "text-primary"
@@ -101,4 +101,4 @@ class UserInput extends Component<UserInputProps, UserInputState> {
     }
 }
 
-export default UserInput;
+export default UsernameInput;
