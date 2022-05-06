@@ -147,7 +147,7 @@ public class MyWatchlistController {
                     return new ResponseEntity<>(resp.toString(), HttpStatus.OK);
                 } else {
                     resp.addProperty(jsonKey, "Old password does not match");
-                    return new ResponseEntity<>(resp.toString(), HttpStatus.OK);
+                    return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
                 }
             } else {
                 resp.addProperty(jsonKey, "Password does not meet the requirements");
@@ -175,6 +175,24 @@ public class MyWatchlistController {
             return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/watchlist/getwatchlists/{username}")
+    @PreAuthorize("#username == authentication.name")
+    public ResponseEntity<String> getWatchslists(@PathVariable String username) {
+        JsonObject resp = new JsonObject();
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        if (myWatchlistService.checkUsernameExist(username)) {
+            Gson gson = new Gson();
+            String watchtlists = gson.toJson(myWatchlistService.getWatchlists(username));
+            resp.addProperty(jsonKey, gson.toJson(myWatchlistService.getProfile(username)));
+            return new ResponseEntity<>(watchtlists, responseHeaders, HttpStatus.OK);
+
+        }
+        resp.addProperty(jsonKey, "User does not exist");
+        return new ResponseEntity<>(resp.toString(), responseHeaders, HttpStatus.BAD_REQUEST);
+    }
+
 
     @PostMapping("/watchlist/newWatchlist")
     @PreAuthorize("#watchlistDto.getUsername == authentication.name")
@@ -239,6 +257,21 @@ public class MyWatchlistController {
             return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    //todo
+    @DeleteMapping("/watchlist/deleteUser/{username}")
+    @PreAuthorize("#username == authentication.name")
+    public ResponseEntity<String> deleteUser(@PathVariable String username) {
+        JsonObject resp = new JsonObject();
+
+        if (myWatchlistService.checkUsernameExist(username)) {
+            return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+        } else {
+            resp.addProperty(jsonKey, "User does not exist");
+            return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
     //todo
     @PostMapping("/watchlist/addWatchlistlistEntry")

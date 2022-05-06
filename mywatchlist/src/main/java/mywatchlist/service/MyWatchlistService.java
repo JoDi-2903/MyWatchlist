@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -109,36 +108,41 @@ public class MyWatchlistService {
                     WatchlistEntryDto watchlistEntryDto = new WatchlistEntryDto();
                     watchlistEntryDto.setTitleId(entry.getTitleId());
                     watchlistEntryDto.setTitleType(entry.getTitleType().getTitleTypeId());
-                    watchlistDto.AddEntry(watchlistEntryDto); //todo
+                    watchlistDto.AddEntry(watchlistEntryDto);
 
                     List<TvInfo> tvInfoList = tvInfoRepo.findAllByWatchlistEntryEntryIdOrderBySeasonAscEpisode(entry.getEntryId());
                     List<TvInfoDto> tvInfoDtoList = new ArrayList<>();
-
                     List<Short> seasonList = new ArrayList<>();
+
                     for (var tvInfo : tvInfoList) {
                         seasonList.add(tvInfo.getSeason());
                     }
+
                     seasonList = seasonList.stream().distinct().collect(Collectors.toList());
 
                     for (var season : seasonList) {
                         TvInfoDto tvInfoDto = new TvInfoDto();
-                        tvInfoDto.setSeason(season);
                         List<Short> episodes = new ArrayList<>();
+                        tvInfoDto.setSeason(season);
                         for (var tvInfo : tvInfoList) {
-                            if(season == tvInfo.getSeason()){
+                            if (season == tvInfo.getSeason()) {
                                 episodes.add(tvInfo.getEpisode());
                             }
                         }
                         tvInfoDto.setEpisodes(episodes);
                         tvInfoDtoList.add(tvInfoDto);
                     }
-                    watchlistEntryDto.setTvInfoDtoList(tvInfoDtoList);
+                    watchlistEntryDto.setTvInfoList(tvInfoDtoList);
                 }
             }
             profileDto.setWatchlistList(watchlistDtoList);
         }
-
         return profileDto;
+    }
+
+    //todo auslagern
+    private void getWatchlist(){
+
     }
 
 
@@ -238,5 +242,16 @@ public class MyWatchlistService {
 
     public void deleteWatchlistEntry(long entryId) {
         watchlistEntryRepo.deleteById(entryId); //todo die anderen auch byId löschen
+    }
+
+    public List<GetWatchlistsDto> getWatchlists(String username) {
+        List<GetWatchlistsDto> watchlistDtoList = new ArrayList<>();
+        for (var watchtlist: watchlistRepo.findAllByUserUserId(getUserId(username))) {
+            GetWatchlistsDto watchlistDto = new GetWatchlistsDto();
+            watchlistDto.setWatchlistId(watchtlist.getWatchlistId());
+            watchlistDto.setWatchlistName(watchtlist.getWatchlistName());
+            watchlistDtoList.add(watchlistDto);
+        }
+        return watchlistDtoList;
     }
 }
