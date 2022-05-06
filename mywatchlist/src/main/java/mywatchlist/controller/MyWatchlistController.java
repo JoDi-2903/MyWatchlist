@@ -49,7 +49,7 @@ public class MyWatchlistController {
         }
         myWatchlistService.registerUser(userAccountDto);
         resp.addProperty(jsonKey, "User was created");
-        return new ResponseEntity<>(jsonKey, HttpStatus.CREATED);
+        return new ResponseEntity<>(resp.toString(), HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/register/validateUsername/{username}")
