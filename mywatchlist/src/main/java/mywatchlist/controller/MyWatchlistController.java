@@ -82,7 +82,7 @@ public class MyWatchlistController {
         if (myWatchlistService.checkUsernameExist(username)) {
             Gson gson = new Gson();
             String profile = gson.toJson(myWatchlistService.getProfile(username));
-            resp.addProperty(jsonKey, gson.toJson(myWatchlistService.getProfile(username)));
+            resp.addProperty(jsonKey, gson.toJson(myWatchlistService.getProfile(username))); //todo fehler!!!!!!!!!!!!!!!!!!!!!!!!
             return new ResponseEntity<>(profile, responseHeaders, HttpStatus.OK);
 
         }
@@ -178,15 +178,30 @@ public class MyWatchlistController {
 
     @GetMapping("/watchlist/getwatchlists/{username}")
     @PreAuthorize("#username == authentication.name")
-    public ResponseEntity<String> getWatchslists(@PathVariable String username) {
+    public ResponseEntity<String> getWatchlists(@PathVariable String username) {
         JsonObject resp = new JsonObject();
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         if (myWatchlistService.checkUsernameExist(username)) {
             Gson gson = new Gson();
             String watchtlists = gson.toJson(myWatchlistService.getWatchlists(username));
-            resp.addProperty(jsonKey, gson.toJson(myWatchlistService.getProfile(username)));
             return new ResponseEntity<>(watchtlists, responseHeaders, HttpStatus.OK);
+
+        }
+        resp.addProperty(jsonKey, "User does not exist");
+        return new ResponseEntity<>(resp.toString(), responseHeaders, HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/watchlist/getwatchlist/{watchlistId}/{username}")
+    @PreAuthorize("#username == authentication.name")
+    public ResponseEntity<String> getWatchlist(@PathVariable String username, @PathVariable long watchlistId) {
+        JsonObject resp = new JsonObject();
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        if (myWatchlistService.checkUsernameExist(username)) {
+            Gson gson = new Gson();
+            String watchtlist = gson.toJson(myWatchlistService.getWatchlist(watchlistId));
+            return new ResponseEntity<>(watchtlist, responseHeaders, HttpStatus.OK);
 
         }
         resp.addProperty(jsonKey, "User does not exist");

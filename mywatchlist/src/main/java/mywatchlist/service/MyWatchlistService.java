@@ -101,39 +101,7 @@ public class MyWatchlistService {
             for (var watchlist : watchlists) {
                 WatchlistDto watchlistDto = new WatchlistDto();
                 watchlistDto.setWatchlistName(watchlist.getWatchlistName());
-                watchlistDtoList.add(watchlistDto);
-
-                List<WatchlistEntry> watchlistEntries = watchlistEntryRepo.findAllByWatchlistWatchlistId(watchlist.getWatchlistId());
-                for (var entry : watchlistEntries) {
-                    WatchlistEntryDto watchlistEntryDto = new WatchlistEntryDto();
-                    watchlistEntryDto.setTitleId(entry.getTitleId());
-                    watchlistEntryDto.setTitleType(entry.getTitleType().getTitleTypeId());
-                    watchlistDto.AddEntry(watchlistEntryDto);
-
-                    List<TvInfo> tvInfoList = tvInfoRepo.findAllByWatchlistEntryEntryIdOrderBySeasonAscEpisode(entry.getEntryId());
-                    List<TvInfoDto> tvInfoDtoList = new ArrayList<>();
-                    List<Short> seasonList = new ArrayList<>();
-
-                    for (var tvInfo : tvInfoList) {
-                        seasonList.add(tvInfo.getSeason());
-                    }
-
-                    seasonList = seasonList.stream().distinct().collect(Collectors.toList());
-
-                    for (var season : seasonList) {
-                        TvInfoDto tvInfoDto = new TvInfoDto();
-                        List<Short> episodes = new ArrayList<>();
-                        tvInfoDto.setSeason(season);
-                        for (var tvInfo : tvInfoList) {
-                            if (season == tvInfo.getSeason()) {
-                                episodes.add(tvInfo.getEpisode());
-                            }
-                        }
-                        tvInfoDto.setEpisodes(episodes);
-                        tvInfoDtoList.add(tvInfoDto);
-                    }
-                    watchlistEntryDto.setTvInfoList(tvInfoDtoList);
-                }
+                watchlistDtoList.add(getWatchlist(watchlist.getWatchlistId()));
             }
             profileDto.setWatchlistList(watchlistDtoList);
         }
@@ -141,7 +109,7 @@ public class MyWatchlistService {
     }
 
     //todo auslagern
-    private void getWatchlist(){
+    private void getWatchlist() {
 
     }
 
@@ -156,17 +124,7 @@ public class MyWatchlistService {
 
         List<WatchlistDto> watchlistDtoList = new ArrayList<>();
         for (var watchlist : watchlists) {
-            WatchlistDto watchlistDto = new WatchlistDto();
-            watchlistDto.setWatchlistName(watchlist.getWatchlistName());
-            watchlistDtoList.add(watchlistDto);
-
-            List<WatchlistEntry> watchlistEntries = watchlistEntryRepo.findAllByWatchlistWatchlistId(watchlist.getWatchlistId());
-
-            for (var entry : watchlistEntries) {
-                WatchlistEntryDto watchlistEntryDto = new WatchlistEntryDto();
-                watchlistEntryDto.setTitleId(entry.getTitleId());
-                watchlistDto.AddEntry(watchlistEntryDto); //todo
-            }
+            watchlistDtoList.add(getWatchlist(watchlist.getWatchlistId()));
         }
         profileDto.setWatchlistList(watchlistDtoList);
         return profileDto;
@@ -246,12 +204,52 @@ public class MyWatchlistService {
 
     public List<GetWatchlistsDto> getWatchlists(String username) {
         List<GetWatchlistsDto> watchlistDtoList = new ArrayList<>();
-        for (var watchtlist: watchlistRepo.findAllByUserUserId(getUserId(username))) {
+        for (var watchtlist : watchlistRepo.findAllByUserUserId(getUserId(username))) {
             GetWatchlistsDto watchlistDto = new GetWatchlistsDto();
             watchlistDto.setWatchlistId(watchtlist.getWatchlistId());
             watchlistDto.setWatchlistName(watchtlist.getWatchlistName());
             watchlistDtoList.add(watchlistDto);
         }
         return watchlistDtoList;
+    }
+
+    public WatchlistDto getWatchlist(long watchlistId) {
+
+        Watchlist watchlist = watchlistRepo.findById(watchlistId).orElseThrow(EntityNotFoundException::new);
+        WatchlistDto watchlistDto = new WatchlistDto();
+        watchlistDto.setWatchlistName(watchlist.getWatchlistName());
+
+        List<WatchlistEntry> watchlistEntries = watchlistEntryRepo.findAllByWatchlistWatchlistId(watchlist.getWatchlistId());
+        for (var entry : watchlistEntries) {
+            WatchlistEntryDto watchlistEntryDto = new WatchlistEntryDto();
+            watchlistEntryDto.setTitleId(entry.getTitleId());
+            watchlistEntryDto.setTitleType(entry.getTitleType().getTitleTypeId());
+            watchlistDto.AddEntry(watchlistEntryDto);
+
+            List<TvInfo> tvInfoList = tvInfoRepo.findAllByWatchlistEntryEntryIdOrderBySeasonAscEpisode(entry.getEntryId());
+            List<TvInfoDto> tvInfoDtoList = new ArrayList<>();
+            List<Short> seasonList = new ArrayList<>();
+
+            for (var tvInfo : tvInfoList) {
+                seasonList.add(tvInfo.getSeason());
+            }
+
+            seasonList = seasonList.stream().distinct().collect(Collectors.toList());
+
+            for (var season : seasonList) {
+                TvInfoDto tvInfoDto = new TvInfoDto();
+                List<Short> episodes = new ArrayList<>();
+                tvInfoDto.setSeason(season);
+                for (var tvInfo : tvInfoList) {
+                    if (season == tvInfo.getSeason()) {
+                        episodes.add(tvInfo.getEpisode());
+                    }
+                }
+                tvInfoDto.setEpisodes(episodes);
+                tvInfoDtoList.add(tvInfoDto);
+            }
+            watchlistEntryDto.setTvInfoList(tvInfoDtoList);
+        }
+        return watchlistDto;
     }
 }
