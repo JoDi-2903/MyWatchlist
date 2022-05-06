@@ -33,8 +33,8 @@ export const getTVImages = async (movie_id: number) => {
     return await request("tv/" + movie_id + "/images", "GET", "");
 };
 export const searchMovie = async (query: string) => {
-    return await request("search/movie", "GET", query);
+    return await request("search/movie", "GET", query + "&include_adult=false");
 };
 export const searchTV = async (query: string) => {
-    return await request("search/tv", "GET", query);
+    return await request("search/tv", "GET", query + "&include_adult=false");
 };

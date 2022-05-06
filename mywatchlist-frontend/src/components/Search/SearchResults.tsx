@@ -24,20 +24,14 @@ class SearchResults extends Component<SearchResultsProps, SearchResultsState> {
 
     componentDidUpdate() {
         if (this.state.resultMovie !== this.props.resultMovie) {
-            this.setState(
-                {
-                    resultMovie: this.props.resultMovie,
-                },
-                () => console.log(this.state.resultMovie)
-            );
+            this.setState({
+                resultMovie: this.props.resultMovie,
+            });
         }
         if (this.state.resultTV !== this.props.resultTV) {
-            this.setState(
-                {
-                    resultTV: this.props.resultTV,
-                },
-                () => console.log(this.state.resultTV)
-            );
+            this.setState({
+                resultTV: this.props.resultTV,
+            });
         }
     }
 
@@ -73,8 +67,9 @@ class SearchResults extends Component<SearchResultsProps, SearchResultsState> {
                                             edit={false}
                                             size="20"
                                         />
+
                                         <p className="self-start text-black dark:text-white text-xs w-full">
-                                            {result.overview}
+                                            Release: {result.release_date}
                                         </p>
                                     </div>
                                 </div>
@@ -114,8 +109,8 @@ class SearchResults extends Component<SearchResultsProps, SearchResultsState> {
                                             size="20"
                                         />
                                         <p className="self-start text-black dark:text-white text-xs w-full">
-                                            {result.overview.substring(0, 64) +
-                                                " ..."}
+                                            First aired on:{" "}
+                                            {result.first_air_date}
                                         </p>
                                     </div>
                                 </div>

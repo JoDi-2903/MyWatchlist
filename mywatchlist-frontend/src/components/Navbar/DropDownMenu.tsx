@@ -31,19 +31,20 @@ class DropDownMenu extends Component<DropDownMenuProps, DropDownMenuState> {
             <div>
                 <button
                     onClick={this.btnChangeHandler}
-                    className="p-2 text-white border border-primary rounded shadow hover:bg-primary dark:hover:text-dark_navbar flex justify-between gap-2 w-40"
+                    // className="p-2 text-white border border-primary rounded shadow hover:bg-primary dark:hover:text-dark_navbar flex justify-between gap-2 w-40"
+                    className="p-2 text-white  rounded shadow bg-dark_dropdown flex justify-between gap-2 w-40"
                 >
                     {localStorage.getItem("username") as string}
                     <ChevronDownIcon className="w-5" />
                 </button>
                 {this.state.isVisible ? (
-                    <ul className="absolute text-white justify-center rounded z-40 bg-dark_navbar w-40">
+                    <ul className="absolute text-white justify-center rounded z-40 bg-dark_dropdown w-40">
                         <li className="p-2 w-30 hover:bg-primary dark:hover:text-dark_navbar cursor-pointer">
                             <Link
                                 to={"/user/" + localStorage.getItem("username") as string}
                                 className="flex justify-between gap-2"
                             >
-                                <p>My Profile</p>
+                                <p>Public Profile</p>
                                 <UserIcon className="w-5" />
                             </Link>
                         </li>
