@@ -21,10 +21,6 @@ class Login extends Component<LoginProps, LoginState> {
         password: "",
     };
 
-    constructor(props: LoginProps) {
-        super(props);
-    }
-
     submit_login = async (event: React.SyntheticEvent) => {
         event.preventDefault();
 
@@ -42,7 +38,7 @@ class Login extends Component<LoginProps, LoginState> {
                 ?.split(" ")[1] as string;
         });
 
-        if (status == 200) {
+        if (status === 200) {
             this.props.changeJWT(token);
         } else {
             toast.error("Login failed. Please try again.");

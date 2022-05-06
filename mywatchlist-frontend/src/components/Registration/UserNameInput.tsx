@@ -1,20 +1,19 @@
-import { ChangeEvent, Component, ReactNode } from "react";
+import { ChangeEvent, Component } from "react";
 import toast from "react-hot-toast";
 import { backendURL } from "../../Config";
 import { classesInvalidInput, classesValidInput } from "../ComponentClasses";
 
-interface UserInputProps {
+interface UsernameInputProps {
     handleInput;
 }
 
-interface UserInputState {
+interface UsernameInputState {
     username: string;
     isValid: boolean;
 }
 
-class UserInput extends Component<UserInputProps, UserInputState> {
-
-    constructor(props: UserInputProps) {
+class UsernameInput extends Component<UsernameInputProps, UsernameInputState> {
+    constructor(props: UsernameInputProps) {
         super(props);
         this.state = {
             username: "",
@@ -26,6 +25,7 @@ class UserInput extends Component<UserInputProps, UserInputState> {
         this.setState({ username: e.target.value }, async () => {
             if (this.state.username.length > 3) {
                 var httpStatus = 0;
+                var respone_text;
                 await fetch(
                     backendURL +
                         "/register/validateUsername/" +
@@ -33,10 +33,15 @@ class UserInput extends Component<UserInputProps, UserInputState> {
                     {
                         method: "GET",
                     }
-                ).then(function (response) {
-                    httpStatus = response.status;
-                });
-                if (httpStatus == 200) {
+                )
+                    .then((response) => {
+                        httpStatus = response.status;
+                        return response.json();
+                    })
+                    .then((data) => {
+                        respone_text = data.response;
+                    });
+                if (httpStatus === 200) {
                     this.setState({ isValid: true }, () => {
                         this.props.handleInput(
                             this.state.username,
@@ -44,7 +49,7 @@ class UserInput extends Component<UserInputProps, UserInputState> {
                         );
                     });
                 } else {
-                    toast.error("Username is already taken");
+                    toast.error(respone_text);
                     this.setState({ isValid: false }, () => {
                         this.props.handleInput(
                             this.state.username,
@@ -79,10 +84,10 @@ class UserInput extends Component<UserInputProps, UserInputState> {
                     className={
                         this.state.isValid
                             ? classesValidInput
-                            : classesInvalidInput +" peer"
+                            : classesInvalidInput + " peer"
                     }
                 />
-                <div className="opacity-0 h-0 peer-focus:opacity-100 peer-focus:h-full transition-all duration-300">
+                <div className="invisible h-0 peer-focus:visible peer-focus:h-full transition-all duration-300">
                     <p
                         className={
                             this.state.isValid ? "hidden" : "text-primary"
@@ -96,4 +101,4 @@ class UserInput extends Component<UserInputProps, UserInputState> {
     }
 }
 
-export default UserInput;
+export default UsernameInput;

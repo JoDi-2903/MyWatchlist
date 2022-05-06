@@ -4,7 +4,7 @@ import { Link, Navigate } from "react-router-dom";
 import { backendURL } from "../../Config";
 import MailInput from "./MailInput";
 import PasswordInput from "./PasswordInput";
-import UserInput from "./UserInput";
+import UsernameInput from "./UserNameInput";
 
 interface RegistrationProps {}
 
@@ -44,13 +44,18 @@ class RegistrationForm extends Component<
     submit_registration = async (event: React.SyntheticEvent) => {
         event.preventDefault();
 
-        if (
-            this.state.isUsernameValid &&
-            this.state.isMailValid &&
-            this.state.isPasswordValid
-        ) {
+        if (!this.state.isUsernameValid){
+            toast.error("Username is not valid.")
+            return;
+        }else if (!this.state.isMailValid){
+            toast.error("E-Mail is not valid.")
+            return;
+        }else if (!this.state.isPasswordValid){
+            toast.error("Password is not valid.")
+            return;
+        }else {
             var httpStatus = 0;
-            var error = "";
+            var respone_text = "";
 
             await fetch(backendURL + "/register", {
                 method: "POST",
@@ -59,18 +64,16 @@ class RegistrationForm extends Component<
             })
                 .then((response) => {
                     httpStatus = response.status;
-                    return response.text();
+                    return response.json();
                 })
-                .then((data) => (error = data));
+                .then((data) => (respone_text = data.response));
 
-            if (httpStatus == 201) {
+            if (httpStatus === 201) {
                 toast.success("User created.");
                 this.setState({ isRegistered: true });
             } else {
-                toast.error(error);
+                toast.error(respone_text);
             }
-        } else {
-            toast.error("Something is not valid!");
         }
     };
 
@@ -84,7 +87,7 @@ class RegistrationForm extends Component<
                         className="w-full md:w-1/2 xl:w-1/4 mx-auto p-5 lg:p-10 border border-border_primary rounded"
                         onSubmit={this.submit_registration}
                     >
-                        <UserInput
+                        <UsernameInput
                             handleInput={(
                                 username: string,
                                 isValid: boolean
@@ -95,6 +98,7 @@ class RegistrationForm extends Component<
                         />
 
                         <MailInput
+                            title="E-Mail"
                             handleInput={(mail: string, isValid: boolean) => {
                                 this.information.email = mail;
                                 this.setState({ isMailValid: isValid });

@@ -16,9 +16,11 @@ class ThemeSwitch extends Component<{}, ThemeState> {
     toggleThemeHandler = () => {
         if (this.state.darkMode) {
             document.documentElement.className = "white";
+            document.body.style.backgroundColor = "#F3F4F6";
             this.setState({ darkMode: false });
         } else {
             document.documentElement.className = "dark";
+            document.body.style.backgroundColor = "#2E323C";
             this.setState({ darkMode: true });
         }
     };

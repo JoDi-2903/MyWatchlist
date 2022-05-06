@@ -8,7 +8,7 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "user_account")
-public class UserAccount implements UserDetails {
+public class UserProfile implements UserDetails {
 
     @Id
     @GeneratedValue
