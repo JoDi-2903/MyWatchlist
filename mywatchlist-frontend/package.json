@@ -4,6 +4,8 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
+    "@egjs/flicking": "^4.6.3",
+    "@egjs/react-flicking": "^4.6.2",
     "@heroicons/react": "^1.0.6",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",

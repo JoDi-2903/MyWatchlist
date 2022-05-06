@@ -4,6 +4,16 @@ mywatchlist.server-welt.com {
                 try_files {path} /index.html
                 file_server
         }
+        handle_path /movie/* {
+                root * /srv
+                try_files {path} /index.html
+                file_server
+        }
+        handle_path /tv/* {
+                root * /srv
+                try_files {path} /index.html
+                file_server
+        }
         handle {
                 root * /srv
                 try_files {path} /index.html
