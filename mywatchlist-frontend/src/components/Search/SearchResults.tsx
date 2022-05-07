@@ -2,6 +2,7 @@ import ReactStars from "react-rating-stars-component";
 import { Component } from "react";
 import { Link } from "react-router-dom";
 import { apiConfig } from "../../Config";
+import Cover from "./Cover";
 
 interface SearchResultsProps {
     resultMovie;
@@ -38,7 +39,7 @@ class SearchResults extends Component<SearchResultsProps, SearchResultsState> {
     render() {
         return (
             <div>
-                <div className="mx-auto w-3/4 xl:w-full">
+                <div className="mx-auto w-3/4 xl:w-full mt-10">
                     <h1 className="text-black dark:text-white text-5xl">
                         Movies
                     </h1>
@@ -48,15 +49,15 @@ class SearchResults extends Component<SearchResultsProps, SearchResultsState> {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-5">
                         {this.state.resultMovie.results !== undefined ? (
                             this.state.resultMovie.results.map((result) => (
-                                <div className="m-2 border bg-white dark:bg-dark_navbar dark:border-dark_navbar rounded-sm flex justify-start drop-shadow-xl gap-3 p-3 w-80 h-44">
-                                    <img
-                                        src={apiConfig.w500Image(
-                                            result.poster_path
-                                        )}
-                                        alt={result.original_title}
-                                        className="h-40 relative -top-5 drop-shadow-xl"
+                                <div
+                                    className="m-2 border bg-white dark:bg-dark_navbar dark:border-dark_navbar rounded-sm grid grid-cols-8 drop-shadow-xl p-4 w-80 h-44 gap-3"
+                                    key={result.id}
+                                >
+                                    <Cover
+                                        name={result.original_title}
+                                        path={result.poster_path}
                                     />
-                                    <div className="grid grid-cols-1 items-start content-start overflow-hidden">
+                                    <div className="col-span-5 grid grid-cols-1 items-start content-start overflow-hidden">
                                         <Link to={"/movie/" + result.id}>
                                             <h1 className="text-black dark:text-white text-xl">
                                                 {result.original_title}
@@ -65,7 +66,7 @@ class SearchResults extends Component<SearchResultsProps, SearchResultsState> {
                                         <ReactStars
                                             value={result.vote_average / 2}
                                             edit={false}
-                                            size="20"
+                                            size={20}
                                         />
 
                                         <p className="self-start text-black dark:text-white text-xs w-full">
@@ -89,15 +90,15 @@ class SearchResults extends Component<SearchResultsProps, SearchResultsState> {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-5">
                         {this.state.resultTV.results !== undefined ? (
                             this.state.resultTV.results.map((result) => (
-                                <div className="m-2 border bg-white dark:bg-dark_navbar dark:border-dark_navbar rounded-sm flex justify-start gap-3 drop-shadow p-3 w-80 h-44">
-                                    <img
-                                        src={apiConfig.w500Image(
-                                            result.poster_path
-                                        )}
-                                        alt={result.original_name}
-                                        className="h-40 relative -top-5 drop-shadow-lg"
+                                <div
+                                    className="m-2 border bg-white dark:bg-dark_navbar dark:border-dark_navbar rounded-sm grid grid-cols-8 drop-shadow-xl p-4 w-80 h-44 gap-3"
+                                    key={result.id}
+                                >
+                                    <Cover
+                                        name={result.original_name}
+                                        path={result.poster_path}
                                     />
-                                    <div className="grid grid-cols-1 items-start content-start">
+                                    <div className="col-span-5 grid grid-cols-1 items-start content-start overflow-hidden">
                                         <Link to={"/tv/" + result.id}>
                                             <h1 className="text-black dark:text-white text-xl">
                                                 {result.original_name}
@@ -106,7 +107,7 @@ class SearchResults extends Component<SearchResultsProps, SearchResultsState> {
                                         <ReactStars
                                             value={result.vote_average / 2}
                                             edit={false}
-                                            size="20"
+                                            size={20}
                                         />
                                         <p className="self-start text-black dark:text-white text-xs w-full">
                                             First aired on:{" "}

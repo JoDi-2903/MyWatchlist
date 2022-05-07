@@ -20,6 +20,7 @@ import {
     updateJWT,
 } from "./security/JWTContext";
 import SearchPage from "./pages/SearchPage/SearchPage";
+import MyWatchlistPage from "./pages/MyWatchlistPage/MyWatchlistPage";
 
 interface AppProps {}
 
@@ -104,6 +105,10 @@ export default class App extends React.Component<AppProps, AppState> {
                                     <Route
                                         path="/search"
                                         element={<SearchPage />}
+                                    />
+                                    <Route 
+                                        path="/mywatchlist"
+                                        element={<MyWatchlistPage />}
                                     />
                                     <Route
                                         path="/movie/:id"
