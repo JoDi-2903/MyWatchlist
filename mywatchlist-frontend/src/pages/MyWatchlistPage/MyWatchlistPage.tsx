@@ -1,9 +1,11 @@
 import { Component } from "react";
 import { Navigate } from "react-router-dom";
 import AddList from "../../components/List/AddList";
+import ListOverview from "../../components/List/ListOverview";
 import { isLoggedIn, JWTContext } from "../../security/JWTContext";
 
 class MyWatchlistPage extends Component {
+
     render() {
         return (
             <JWTContext.Consumer>
@@ -17,6 +19,7 @@ class MyWatchlistPage extends Component {
                                     </h1>
                                 </div>
                                 <AddList jwtInfo={jwtInfo} />
+                                <ListOverview />
                             </div>
                         ) : (
                             <Navigate to="/login" />
