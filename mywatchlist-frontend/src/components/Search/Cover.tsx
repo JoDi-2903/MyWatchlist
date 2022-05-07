@@ -12,9 +12,10 @@ class Cover extends Component<CoverProps, {}> {
     render() {
         return (
             <LazyLoad
-                debounce={500}
                 className="h-40 w-auto col-span-3"
-                placeholder={<ScaleLoader css="text-black dark:text-white" />}
+                offset={50}
+                once
+                placeholder={<ScaleLoader color="#E67082" />}
             >
                 <img
                     src={apiConfig.w500Image(this.props.path)}
