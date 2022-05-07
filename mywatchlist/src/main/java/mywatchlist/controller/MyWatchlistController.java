@@ -187,7 +187,7 @@ public class MyWatchlistController {
         if (myWatchlistService.checkUsernameExist(username)) {
             if(!myWatchlistService.checkWatchlistName(watchlistName, username)){
                 myWatchlistService.createWatchlist(watchlistName, username);
-                resp.addProperty(jsonKey, "New watchlist " + watchlistName + " was created");
+                resp.addProperty(jsonKey, "New watchlist \"" + watchlistName + "\" was created");
                 return new ResponseEntity<>(resp.toString(), HttpStatus.CREATED);
             }else{
                 resp.addProperty(jsonKey, "Watchlist name does not meet the requirements");

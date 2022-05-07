@@ -6,6 +6,7 @@ module.exports = {
         colors: {
           // dark_navbar: "#0a192f",
           dark_navbar: "#262A33",
+          dark_dropdown: "#393F4D",
           white_navbar: "#2E323C",
           // dark_bg: "#243247",
           dark_bg: "#2E323C",
@@ -13,6 +14,7 @@ module.exports = {
           dark_welcome: "#000000",
           white_welcome: "#ffffff",
           border_primary: "#A4A9B5",
+          dark_input: "#393E4A",
           // color_primary: "#64ffda",
           primary: {
             DEFAULT: "#E67082",
