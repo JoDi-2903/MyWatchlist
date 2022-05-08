@@ -5,6 +5,7 @@ import { getUsername, JWTInfo } from "../../security/JWTContext";
 
 interface AddListProps {
     jwtInfo: JWTInfo;
+    onAdded;
 }
 interface AddListState {
     newTitle: string;
@@ -45,6 +46,7 @@ class AddList extends Component<AddListProps, AddListState> {
 
         if (responeStatus === 201) {
             toast.success(responseText);
+            this.props.onAdded();
         } else {
             toast.error(responseText);
         }
@@ -61,12 +63,12 @@ class AddList extends Component<AddListProps, AddListState> {
                         this.setState({ newTitle: e.target.value })
                     }
                     placeholder="Title"
-                    className="col-span-3 m-4 p-4 bg-dark_input rounded-full drop-shadow-xl h-10 text-xl focus:outline-none  bg-transparent text-white"
+                    className="col-span-3 m-4 p-4 bg-white dark:bg-dark_input rounded drop-shadow-xl h-10 text-xl focus:outline-none bg-transparent text-black dark:text-white"
                 />
                 <input
                     type="submit"
                     value="Create new List"
-                    className="col-span-1 w-fit h-10 p-2 text-white dark:text-dark_navbar border border-primary hover:border-primary-200 rounded-lg shadow bg-primary hover:bg-primary-200"
+                    className="col-span-1 w-fit h-10 p-2 text-white dark:text-dark_navbar border border-primary hover:border-primary-200 rounded shadow bg-primary hover:bg-primary-200 cursor-pointer drop-shadow-xl"
                 />
             </form>
         );

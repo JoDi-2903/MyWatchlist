@@ -4,6 +4,8 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
+    "@dicebear/avatars": "^4.10.2",
+    "@dicebear/avatars-identicon-sprites": "^4.10.2",
     "@egjs/flicking": "^4.6.3",
     "@egjs/react-flicking": "^4.6.2",
     "@heroicons/react": "^1.0.6",

@@ -62,7 +62,7 @@ class DropDownMenu extends Component<DropDownMenuProps, DropDownMenuState> {
                                 to="/mywatchlist"
                                 className="flex justify-between gap-2"
                             >
-                                <p>My Watchlist</p>
+                                <p>My Watchlists</p>
                                 <CollectionIcon className="w-5" />
                             </Link>
                         </li>

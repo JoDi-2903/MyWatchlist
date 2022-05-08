@@ -15,7 +15,7 @@ module.exports = {
           white_welcome: "#ffffff",
           border_primary: "#A4A9B5",
           dark_input: "#393E4A",
-          // color_primary: "#64ffda",
+          //"#64ffda"
           primary: {
             DEFAULT: "#E67082",
             100: "#BF5E6C",

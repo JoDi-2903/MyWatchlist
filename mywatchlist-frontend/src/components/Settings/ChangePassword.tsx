@@ -5,6 +5,7 @@ import { backendURL } from "../../Config";
 import { getUsername, JWTInfo } from "../../security/JWTContext";
 import { classesInvalidInput } from "../ComponentClasses";
 import PasswordInput from "../Registration/PasswordInput";
+import Card from "../Wrapper/Card";
 
 interface ChangePasswordProps {
     jwtInfo: JWTInfo;
@@ -66,7 +67,7 @@ class ChangePassword extends Component<
 
     render() {
         return (
-            <div className="dark:text-white border border-black dark:border-white rounded m-5 p-5">
+            <Card classes="dark:text-white">
                 <div className="flex justify-between">
                     <div className="flex justify-center gap-5">
                         <MailIcon className="w-10" />
@@ -127,7 +128,7 @@ class ChangePassword extends Component<
                         Save
                     </button>
                 </div>
-            </div>
+            </Card>
         );
     }
 }

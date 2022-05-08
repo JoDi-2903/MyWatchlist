@@ -3,6 +3,7 @@ import { Component } from "react";
 import toast from "react-hot-toast";
 import { backendURL } from "../../Config";
 import { getUsername, JWTInfo } from "../../security/JWTContext";
+import Card from "../Wrapper/Card";
 import ChangeEmail from "./ChangeMail";
 import ChangePassword from "./ChangePassword";
 
@@ -73,7 +74,7 @@ class SettingData extends Component<SettingDataProps, SettingDataState> {
             .then((data) => (responseText = data.response));
         if (responseStatus === 200) {
             toast.success(responseText);
-            this.setState({privateProfile: !this.state.privateProfile})
+            this.setState({ privateProfile: !this.state.privateProfile });
         } else {
             toast.error(responseText);
         }
@@ -82,7 +83,7 @@ class SettingData extends Component<SettingDataProps, SettingDataState> {
     render() {
         return (
             <div className="grid-rows-1 justify-center w-full xs:w-3/4 xl:w-1/2 m-auto h-auto">
-                <div className="dark:text-white border border-black dark:border-white rounded m-5 p-5">
+                <Card classes="dark:text-white">
                     <div className="flex justify-between">
                         <div className="flex justify-center gap-5">
                             <UserIcon className="w-10" />
@@ -94,17 +95,17 @@ class SettingData extends Component<SettingDataProps, SettingDataState> {
                             </div>
                         </div>
                     </div>
-                </div>
+                </Card>
 
                 <ChangeEmail
                     jwtInfo={this.props.jwtInfo}
                     email={this.state.email}
-                    onMailChange={(email) => this.setState({email: email})}
+                    onMailChange={(email) => this.setState({ email: email })}
                 />
 
                 <ChangePassword jwtInfo={this.props.jwtInfo} />
 
-                <div className="dark:text-white border border-black dark:border-white rounded m-5 p-5 flex justify-between">
+                <Card classes="dark:text-white flex justify-between">
                     <div className="flex justify-center gap-5">
                         <ShieldCheckIcon className="w-10" />
                         <div>
@@ -118,17 +119,33 @@ class SettingData extends Component<SettingDataProps, SettingDataState> {
                             </p>
                         </div>
                     </div>
-                    <div
-                        className="flex justify-between gap-2 rounded border border-black dark:border-white cursor-pointer p-2"
-                        onClick={this.togglePrivacy}
-                    >
-                        <PencilIcon className="w-5" />
-                        <p className="pt-1">Switch</p>
+                    <div className="flex relative">
+                        <input
+                            type="checkbox"
+                            name="toggle"
+                            className="absolute left-1 top-1 w-6 h-6 rounded-full align-middle appearance-none cursor-pointer checked:bg-primary_green checked:translate-x-8 bg-primary transition-transform ease-in-out duration-300 translate-x-0.5"
+                            checked={this.state.privateProfile}
+                            onChange={this.togglePrivacy}
+                        />
+                        <label
+                            htmlFor="toggle"
+                            className="flex w-16 h-8 px-2 gap-4 align-middle rounded-full border border-black dark:border-white cursor-pointer"
+                        ></label>
                     </div>
-                </div>
+                </Card>
 
                 <div className="flex justify-center">
-                    <button onClick={() => window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank')?.focus()} className="p-2 text-white dark:text-dark_navbar border border-primary hover:border-primary-200 rounded-lg shadow bg-primary hover:bg-primary-200">
+                    <button
+                        onClick={() =>
+                            window
+                                .open(
+                                    "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                                    "_blank"
+                                )
+                                ?.focus()
+                        }
+                        className="p-2 text-white dark:text-dark_navbar border border-primary hover:border-primary-200 rounded-lg shadow bg-primary hover:bg-primary-200"
+                    >
                         Delete Account
                     </button>
                 </div>

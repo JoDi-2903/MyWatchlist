@@ -41,13 +41,11 @@ class SearchPage extends Component<SearchPageProps, SearchPageState> {
                 {({ jwtInfo, changeJWT }) => (
                     <main className="w-full md:w-11/12 mx-auto my-10 p-5 flex justify-center">
                         {isLoggedIn(jwtInfo.jwt) ? (
-                            <div className="w-full">
-                                <div className="p-5 border-b border-black dark:border-white w-full">
-                                    <h1 className="text-black dark:text-white text-center text-3xl">
-                                        Search
-                                    </h1>
-                                </div>
-                                <div className="w-full grid grid-cols-1">
+                            <div className="w-3/4">
+                                <h1 className="text-black dark:text-white text-4xl">
+                                    Search
+                                </h1>
+                                <div className="w-full grid grid-cols-1 justify-start">
                                     <Search
                                         onSearchChange={(query: string) =>
                                             this.setState(

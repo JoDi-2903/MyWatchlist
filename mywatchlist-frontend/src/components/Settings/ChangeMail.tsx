@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { backendURL } from "../../Config";
 import { getUsername, JWTInfo } from "../../security/JWTContext";
 import MailInput from "../Registration/MailInput";
+import Card from "../Wrapper/Card";
 
 interface ChangeEmailProps {
     jwtInfo: JWTInfo;
@@ -71,7 +72,7 @@ class ChangeEmail extends Component<ChangeEmailProps, ChangeEmailState> {
 
     render() {
         return (
-            <div className="dark:text-white border border-black dark:border-white rounded m-5 p-5">
+            <Card classes="dark:text-white">
                 <div className="flex justify-between">
                     <div className="flex justify-center gap-5">
                         <MailIcon className="w-10" />
@@ -121,7 +122,7 @@ class ChangeEmail extends Component<ChangeEmailProps, ChangeEmailState> {
                         Save
                     </button>
                 </div>
-            </div>
+            </Card>
         );
     }
 }

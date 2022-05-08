@@ -12,7 +12,7 @@ class Cover extends Component<CoverProps, {}> {
     render() {
         return (
             <LazyLoad
-                className="h-40 w-auto col-span-3"
+                className="h-36 w-auto col-span-3"
                 offset={50}
                 once
                 placeholder={<ScaleLoader color="#E67082" />}
@@ -20,7 +20,7 @@ class Cover extends Component<CoverProps, {}> {
                 <img
                     src={apiConfig.w500Image(this.props.path)}
                     alt="No image found."
-                    className="h-40 w-auto relative -top-6 drop-shadow-xl bg-primary-100 text-center"
+                    className="h-36 w-auto relative -top-6 drop-shadow-xl bg-primary-100 text-center"
                 />
             </LazyLoad>
         );
