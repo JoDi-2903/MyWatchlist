@@ -72,7 +72,7 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                             });
                         }else{
                             this.setState({
-                                existUser: true,
+                                existUser: false,
                                 email: "",
                                 privateProfile: data.privateProfile,
                                 watchlist: data.watchlist,
