@@ -18,7 +18,7 @@ interface UserProfileState {
     existUser: boolean;
     username: string;
     email: string;
-    privateProfile: boolean;
+    isPrivateProfile: boolean;
     watchlist;
 }
 
@@ -31,7 +31,7 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
             existUser: true,
             username: props.username,
             email: "",
-            privateProfile: true,
+            isPrivateProfile: true,
             watchlist: [],
         };
     }
@@ -52,7 +52,7 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                 .then((data) => {
                     this.setState({
                         email: data.email,
-                        privateProfile: data.privateProfile,
+                        isPrivateProfile: data.privateProfile,
                         watchlist: data.watchlistList,
                     });
                 });
@@ -69,26 +69,20 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                 })
                 .then((data) => {
                     if (exists) {
-                        if (data.privateProfile) {
+                        console.log(data)
+                        if (data.isPrivateProfile) {
                             this.setState({
                                 existUser: true,
                                 email: "",
-                                privateProfile: data.privateProfile,
+                                isPrivateProfile: data.isPrivateProfile,
                                 watchlist: [],
-                            },
-                            () => {
-                                this.numberEntries = 0;
-                                this.state.watchlist.forEach((element) => {
-                                    this.numberEntries += element.length;
-                                });
-                                
                             });
                         } else {
                             this.setState(
                                 {
                                     existUser: true,
                                     email: "",
-                                    privateProfile: data.privateProfile,
+                                    isPrivateProfile: data.isPrivateProfile,
                                     watchlist: data.watchlistList,
                                 },
                                 () => {
@@ -106,7 +100,7 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                             username: "User does not exist!",
                             existUser: false,
                             email: "",
-                            privateProfile: false,
+                            isPrivateProfile: false,
                             watchlist: [],
                         });
                     }
@@ -135,12 +129,12 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                                     <div
                                         className={
                                             "px-2 bg-white_bg dark:bg-dark_bg text-white_text dark:text-dark_text w-fit rounded-full " +
-                                            (this.state.privateProfile
+                                            (this.state.isPrivateProfile
                                                 ? "blur-sm"
                                                 : "")
                                         }
                                     >
-                                        {this.state.privateProfile
+                                        {this.state.isPrivateProfile
                                             ? "-- -----"
                                             : this.state.watchlist.length +
                                               " Lists"}
@@ -148,18 +142,18 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                                     <div
                                         className={
                                             "px-2 bg-white_bg dark:bg-dark_bg text-white_text dark:text-dark_text w-fit rounded-full " +
-                                            (this.state.privateProfile
+                                            (this.state.isPrivateProfile
                                                 ? "blur-sm"
                                                 : "")
                                         }
                                     >
-                                        {this.state.privateProfile
+                                        {this.state.isPrivateProfile
                                             ? "-- -------"
                                             : this.numberEntries +
                                               " Entries"}
                                     </div>
                                 </div>
-                                {!this.state.privateProfile ? (
+                                {!this.state.isPrivateProfile ? (
                                     <p className="text-white_text dark:text-dark_text">
                                         {this.state.email}
                                     </p>
@@ -168,7 +162,7 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                                 )}
                             </div>
                         </Card>
-                        {!this.state.privateProfile ? (
+                        {!this.state.isPrivateProfile ? (
                             <ListOverview
                                 lists={this.state.watchlist}
                                 deleteWatchlists={false}

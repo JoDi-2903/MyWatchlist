@@ -66,7 +66,7 @@ class ListElement extends Component<ListElementProps, ListElementState> {
                             watchlistId: responseData[result.value].watchlistId,
                             watchlistEntry: {
                                 titleId: this.props.id,
-                                titleType: "Movie",
+                                titleType: "movie",
                                 tvInfoList: [],
                             },
                         };
@@ -91,7 +91,7 @@ class ListElement extends Component<ListElementProps, ListElementState> {
                             return response.json();
                         })
                         .then((data) => (addStatusText = data.response));
-                    if (addStatus === 200) {
+                    if (addStatus === 201) {
                         Swal.fire({
                             icon: "success",
                             title: addStatusText,
