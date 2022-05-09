@@ -63,7 +63,7 @@ class AddList extends Component<AddListProps, AddListState> {
                         this.setState({ newTitle: e.target.value })
                     }
                     placeholder="Title"
-                    className="col-span-3 m-4 p-4 bg-white dark:bg-dark_input rounded drop-shadow-xl h-12 text-xl focus:outline-none bg-transparent text-black dark:text-white"
+                    className="col-span-3 m-4 p-4 bg-white dark:bg-dark_input rounded drop-shadow h-12 text-xl focus:outline-none bg-transparent text-black dark:text-white"
                 />
                 <input
                     type="submit"
