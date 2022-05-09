@@ -5,6 +5,7 @@ import { backendURL } from "../../Config";
 import { getUsername, JWTInfo } from "../../security/JWTContext";
 import { classesInvalidInput } from "../ComponentClasses";
 import PasswordInput from "../Registration/PasswordInput";
+import Card from "../Wrapper/Card";
 
 interface ChangePasswordProps {
     jwtInfo: JWTInfo;
@@ -66,19 +67,17 @@ class ChangePassword extends Component<
 
     render() {
         return (
-            <div className="dark:text-white border border-black dark:border-white rounded m-5 p-5">
+            <Card classes="dark:text-white p-6">
                 <div className="flex justify-between">
                     <div className="flex justify-center gap-5">
                         <MailIcon className="w-10" />
                         <div>
-                            <h2 className="text-xl dark:text-white">
-                                Password
-                            </h2>
+                            <h2 className="text-xl ">Password</h2>
                             *************
                         </div>
                     </div>
                     <div
-                        className="flex justify-between gap-2 rounded border border-black dark:border-white cursor-pointer p-2"
+                        className="flex justify-between gap-2 rounded-md border-2 bg-white_bg dark:bg-dark_bg border-white_bg dark:border-dark_bg cursor-pointer p-2 drop-shadow dark:text-dark_text"
                         onClick={() =>
                             this.setState({
                                 editPassword: !this.state.editPassword,
@@ -96,7 +95,9 @@ class ChangePassword extends Component<
                             : "hidden"
                     }
                 >
-                    <h1 className="text-lg text-primary font-bold">Change Password</h1>
+                    <h1 className="text-lg text-primary font-bold">
+                        Change Password
+                    </h1>
                     <PasswordInput
                         handleInput={(password, isValid) =>
                             this.setState({
@@ -108,7 +109,12 @@ class ChangePassword extends Component<
                         }
                     />
 
-                    <label className="block text-black dark:text-white text-md font-bold mb-2" htmlFor="oldPassword">Old Password</label>
+                    <label
+                        className="block text-md font-bold mb-2"
+                        htmlFor="oldPassword"
+                    >
+                        Old Password
+                    </label>
                     <input
                         id="oldPassword"
                         className={classesInvalidInput + "mb-3"}
@@ -121,13 +127,13 @@ class ChangePassword extends Component<
 
                     <button
                         onClick={this.savePassword}
-                        className="p-2 text-white dark:text-dark_navbar border border-primary hover:border-primary-200 rounded-lg shadow bg-primary hover:bg-primary-200 w-1/8 m-auto disabled:bg-primary-300 disabled:border-primary-300 disabled:dark:text-white w-1/3"
+                        className="p-2 border border-primary hover:border-primary-200 rounded-lg shadow bg-primary hover:bg-primary-200 w-1/8 m-auto disabled:bg-primary-300 disabled:border-primary-300 disabled:dark:text-white w-1/3"
                         disabled={!this.state.newPassword.isValid}
                     >
                         Save
                     </button>
                 </div>
-            </div>
+            </Card>
         );
     }
 }

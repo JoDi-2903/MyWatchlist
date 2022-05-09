@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import toast from "react-hot-toast";
 import { Link, Navigate } from "react-router-dom";
 import { backendURL } from "../../Config";
+import Card from "../Wrapper/Card";
 import MailInput from "./MailInput";
 import PasswordInput from "./PasswordInput";
 import UsernameInput from "./UserNameInput";
@@ -44,16 +45,16 @@ class RegistrationForm extends Component<
     submit_registration = async (event: React.SyntheticEvent) => {
         event.preventDefault();
 
-        if (!this.state.isUsernameValid){
-            toast.error("Username is not valid.")
+        if (!this.state.isUsernameValid) {
+            toast.error("Username is not valid.");
             return;
-        }else if (!this.state.isMailValid){
-            toast.error("E-Mail is not valid.")
+        } else if (!this.state.isMailValid) {
+            toast.error("E-Mail is not valid.");
             return;
-        }else if (!this.state.isPasswordValid){
-            toast.error("Password is not valid.")
+        } else if (!this.state.isPasswordValid) {
+            toast.error("Password is not valid.");
             return;
-        }else {
+        } else {
             var httpStatus = 0;
             var respone_text = "";
 
@@ -79,14 +80,11 @@ class RegistrationForm extends Component<
 
     render() {
         return (
-            <div>
+            <Card classes="w-full md:w-1/2 xl:w-1/4 mx-auto p-5 lg:p-10 rounded">
                 {this.state.isRegistered ? (
                     <Navigate to="/login" />
                 ) : (
-                    <form
-                        className="w-full md:w-1/2 xl:w-1/4 mx-auto p-5 lg:p-10 border border-border_primary rounded"
-                        onSubmit={this.submit_registration}
-                    >
+                    <form onSubmit={this.submit_registration}>
                         <UsernameInput
                             handleInput={(
                                 username: string,
@@ -143,7 +141,7 @@ class RegistrationForm extends Component<
                         />
                     </form>
                 )}
-            </div>
+            </Card>
         );
     }
 }

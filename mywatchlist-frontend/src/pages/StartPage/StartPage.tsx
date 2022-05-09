@@ -1,35 +1,89 @@
 import { Component } from "react";
 import Flicking from "@egjs/react-flicking";
 import "@egjs/react-flicking/dist/flicking.css";
-import { getTVImages } from "../../api/API";
+import { discoverMovie, discoverTV, getTVImages } from "../../api/API";
 import { apiConfig } from "../../Config";
+import Card from "../../components/Wrapper/Card";
+import ListElement from "../../components/List/ListElement";
 
-export default class StartPage extends Component<{}, { poster: string }> {
-    constructor(props) {
+interface StartPageProps {}
+
+interface StartPageState {
+    discoverMovie;
+    discoverTV;
+}
+
+export default class StartPage extends Component<
+    StartPageProps,
+    StartPageState
+> {
+    constructor(props: StartPageProps) {
         super(props);
         this.state = {
-            poster: "",
+            discoverMovie: [],
+            discoverTV: [],
         };
     }
     async componentDidMount() {
-        var mandalorian = await getTVImages(82856);
-        var posters = mandalorian.data.posters;
+        var resultsMovie = await discoverMovie();
+        var resultsTV = await discoverTV();
         this.setState({
-            poster: apiConfig.w500Image(posters[0].file_path),
+            discoverMovie: resultsMovie.data.results,
+            discoverTV: resultsTV.data.results,
         });
     }
     render() {
         return (
-            <Flicking circular={true}>
-                <div style={{ width: "120px" }}>1</div>
-                <div style={{ width: "20%" }}>2</div>
-                <div style={{ width: "500px" }}>3</div>
-                <div style={{ width: "300px" }}>4</div>
-                <div style={{ width: "100%" }}>5</div>
-                <div className="m-2">
-                    <img src={this.state.poster} className="w-1/2"/>
+            <main className="p-5">
+                <div>
+                    <h1 className="font-bold text-3xl text-white_text dark:text-dark_text">
+                        Discover movies
+                    </h1>
+                    <Flicking
+                        circular={false}
+                        renderOnlyVisible={true}
+                        align={"prev"}
+                    >
+                        {this.state.discoverMovie.map((movie) => (
+                            <div key={movie.id}>
+                                <ListElement
+                                    id={movie.id}
+                                    title={movie.original_title}
+                                    poster_path={movie.poster_path}
+                                    vote_average={movie.vote_average}
+                                    first_air_date={movie.release_date}
+                                    type="movie"
+                                    key={movie.id}
+                                />
+                            </div>
+                        ))}
+                    </Flicking>
                 </div>
-            </Flicking>
+                <div>
+                    <h1 className="font-bold text-3xl text-white_text dark:text-dark_text">
+                        Discover TV shows
+                    </h1>
+                    <Flicking
+                        circular={false}
+                        renderOnlyVisible={true}
+                        align={"prev"}
+                    >
+                        {this.state.discoverTV.map((movie) => (
+                            <div key={movie.id}>
+                                <ListElement
+                                    id={movie.id}
+                                    title={movie.original_name}
+                                    poster_path={movie.poster_path}
+                                    vote_average={movie.vote_average}
+                                    first_air_date={movie.first_air_date}
+                                    type="tv"
+                                    key={movie.id}
+                                />
+                            </div>
+                        ))}
+                    </Flicking>
+                </div>
+            </main>
         );
     }
 }

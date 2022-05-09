@@ -5,17 +5,26 @@ module.exports = {
       extend:{
         colors: {
           // dark_navbar: "#0a192f",
-          dark_navbar: "#262A33",
-          dark_dropdown: "#393F4D",
+          // dark_navbar: "#262A33",
+          dark_navbar: "#272B33",
+          dark_dropdown: "#33364F",
           white_navbar: "#2E323C",
           // dark_bg: "#243247",
+          // dark_bg: "#2E323C",
           dark_bg: "#2E323C",
           white_bg: "#F3F4F6",
           dark_welcome: "#000000",
           white_welcome: "#ffffff",
           border_primary: "#A4A9B5",
           dark_input: "#393E4A",
-          // color_primary: "#64ffda",
+
+          card_dark: "#393E4A",
+
+          button_dark: "#7C84BF",
+
+          white_text: "#393E4A",
+          dark_text: "#E6E6E6",
+          //"#64ffda"
           primary: {
             DEFAULT: "#E67082",
             100: "#BF5E6C",

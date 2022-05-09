@@ -4,6 +4,10 @@ import { backendURL } from "../../Config";
 import { JWTInfo } from "../../security/JWTContext";
 import toast from "react-hot-toast";
 import { Navigate } from "react-router-dom";
+import ListOverview from "../List/ListOverview";
+import Card from "../Wrapper/Card";
+import { createAvatar } from "@dicebear/avatars";
+import * as style from "@dicebear/avatars-identicon-sprites";
 
 interface UserProfileProps {
     username: string;
@@ -19,6 +23,8 @@ interface UserProfileState {
 }
 
 class UserProfile extends Component<UserProfileProps, UserProfileState> {
+    numberEntries: number = 0;
+
     constructor(props: UserProfileProps) {
         super(props);
         this.state = {
@@ -56,7 +62,7 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                 method: "GET",
             })
                 .then((response) => {
-                    if (response.status !== 201) {
+                    if (response.status !== 200) {
                         exists = false;
                     }
                     return response.json();
@@ -69,18 +75,33 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                                 email: "",
                                 privateProfile: data.privateProfile,
                                 watchlist: [],
+                            },
+                            () => {
+                                this.numberEntries = 0;
+                                this.state.watchlist.forEach((element) => {
+                                    this.numberEntries += element.length;
+                                });
+                                
                             });
-                        }else{
-                            this.setState({
-                                existUser: false,
-                                email: "",
-                                privateProfile: data.privateProfile,
-                                watchlist: data.watchlist,
-                            });
+                        } else {
+                            this.setState(
+                                {
+                                    existUser: true,
+                                    email: "",
+                                    privateProfile: data.privateProfile,
+                                    watchlist: data.watchlistList,
+                                },
+                                () => {
+                                    this.numberEntries = 0;
+                                    this.state.watchlist.forEach((element) => {
+                                        this.numberEntries += element.length;
+                                    });
+                                    
+                                }
+                            );
                         }
-                        
                     } else {
-                        toast.error(data.response)
+                        toast.error(data.response);
                         this.setState({
                             username: "User does not exist!",
                             existUser: false,
@@ -98,32 +119,60 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
             <div className="w-full">
                 {this.state.existUser ? (
                     <div>
-                        <div className="flex gap-5 justify-center p-5 mx-auto border-b border-black dark:border-white">
-                            <UserIcon className="w-14 text-dark dark:text-white" />
-                            <div>
-                                <h1 className="text-3xl text-dark dark:text-white">
+                        <Card classes="flex justify-items-start gap-4 p-6 mx-auto">
+                            <img
+                                src={createAvatar(style, {
+                                    seed: this.props.username,
+                                    dataUri: true,
+                                })}
+                                className="w-20 h-20 rounded bg-white_bg dark:bg-dark_bg m-4"
+                            />
+                            <div className="m-4">
+                                <h1 className="text-4xl text-white_text dark:text-dark_text font-bold">
                                     {this.props.username}
                                 </h1>
+                                <div className="flex gap-2">
+                                    <div
+                                        className={
+                                            "px-2 bg-white_bg dark:bg-dark_bg text-white_text dark:text-dark_text w-fit rounded-full " +
+                                            (this.state.privateProfile
+                                                ? "blur-sm"
+                                                : "")
+                                        }
+                                    >
+                                        {this.state.privateProfile
+                                            ? "-- -----"
+                                            : this.state.watchlist.length +
+                                              " Lists"}
+                                    </div>
+                                    <div
+                                        className={
+                                            "px-2 bg-white_bg dark:bg-dark_bg text-white_text dark:text-dark_text w-fit rounded-full " +
+                                            (this.state.privateProfile
+                                                ? "blur-sm"
+                                                : "")
+                                        }
+                                    >
+                                        {this.state.privateProfile
+                                            ? "-- -------"
+                                            : this.numberEntries +
+                                              " Entries"}
+                                    </div>
+                                </div>
                                 {!this.state.privateProfile ? (
-                                    <p className="dark:text-white">
+                                    <p className="text-white_text dark:text-dark_text">
                                         {this.state.email}
                                     </p>
                                 ) : (
                                     ""
                                 )}
                             </div>
-                        </div>
+                        </Card>
                         {!this.state.privateProfile ? (
-                            this.state.watchlist.map((list) => (
-                                <div
-                                    className="w-3/4 mx-auto"
-                                    key={list.watchlistName}
-                                >
-                                    <h2 className="text-3xl text-primary pt-5 mt-10 mb-5 border-b border-primary">
-                                        {list.watchlistName}
-                                    </h2>
-                                </div>
-                            ))
+                            <ListOverview
+                                lists={this.state.watchlist}
+                                deleteWatchlists={false}
+                            />
                         ) : (
                             <p className="dark:text-white text-center">
                                 This profile is private.
