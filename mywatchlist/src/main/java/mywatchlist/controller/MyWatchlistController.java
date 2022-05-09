@@ -280,7 +280,7 @@ public class MyWatchlistController {
             if (myWatchlistService.checkWatchlistEntryExistsToUser(entryId, username)) {
                 myWatchlistService.deleteWatchlistEntry(entryId);
                 resp.addProperty(jsonKey, "Successfully deleted the watchlist entry");
-                return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(resp.toString(), HttpStatus.OK);
             } else {
                 resp.addProperty(jsonKey, "The watchlist entry cannot be assigned to the user");
                 return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
@@ -291,7 +291,7 @@ public class MyWatchlistController {
         }
     }
 
-    @DeleteMapping("/watchlist/deleteUser/{username}")
+    @DeleteMapping("/user/deleteUser/{username}")
     @PreAuthorize("#username == authentication.name")
     public ResponseEntity<String> deleteUser(@PathVariable String username) {
         JsonObject resp = new JsonObject();
