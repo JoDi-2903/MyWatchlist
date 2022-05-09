@@ -265,17 +265,16 @@ public class MyWatchlistService {
     public void addWatchlistEntry(AddWatchlistEntryDto watchlistEntryDto) {
         short titleTypeId = 0;
         Title title = Title.valueOf(watchlistEntryDto.getWatchlistEntry().getTitleType().toUpperCase());
-
+        TitleType titleType = new TitleType();
         for (var type : titleTypeRepo.findAll()) {
             if (type.getName().equalsIgnoreCase(watchlistEntryDto.getWatchlistEntry().getTitleType())) {
-                titleTypeId = type.getTitleTypeId();
+                titleType = type;
             }
         }
+        titleType.setTitleTypeId(titleTypeId);
+
         Watchlist watchlist = new Watchlist();
         watchlist.setWatchlistId(watchlistEntryDto.getWatchlistId());
-
-        TitleType titleType = new TitleType();
-        titleType.setTitleTypeId(titleTypeId);
 
         WatchlistEntry watchlistEntry = new WatchlistEntry();
         watchlistEntry.setTitleId(watchlistEntryDto.getWatchlistEntry().getTitleId());
