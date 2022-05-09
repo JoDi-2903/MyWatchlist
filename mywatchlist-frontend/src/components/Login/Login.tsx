@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import toast from "react-hot-toast";
 import { backendURL } from "../../Config";
 import { classesInvalidInput } from "../ComponentClasses";
+import Card from "../Wrapper/Card";
 
 interface LoginInformation {
     username: string;
@@ -47,56 +48,57 @@ class Login extends Component<LoginProps, LoginState> {
 
     render() {
         return (
-            <form
-                onSubmit={this.submit_login}
-                className="border border-border_primary rounded p-8 w-full md:w-1/2 xl:w-1/4 mx-auto"
-            >
-                <label
-                    htmlFor="username"
-                    className="block text-black dark:text-white text-md font-bold mb-2"
+            <Card classes="p-8 w-full md:w-1/2 xl:w-1/4 mx-auto rounded">
+                <form
+                    onSubmit={this.submit_login}
                 >
-                    Username
-                </label>
-                <input
-                    type="text"
-                    name="username"
-                    className={classesInvalidInput + " mb-5"}
-                    onChange={(e) =>
-                        (this.information.username = e.target.value)
-                    }
-                />
-
-                <div className="grid grid-cols-2 items-center">
                     <label
-                        htmlFor="password"
-                        className="justify-self-start block text-black dark:text-white text-md font-bold mb-2"
+                        htmlFor="username"
+                        className="block text-black dark:text-white text-md font-bold mb-2"
                     >
-                        Password
+                        Username
                     </label>
+                    <input
+                        type="text"
+                        name="username"
+                        className={classesInvalidInput + " mb-5"}
+                        onChange={(e) =>
+                            (this.information.username = e.target.value)
+                        }
+                    />
 
-                    <a
-                        href="https://youtu.be/dQw4w9WgXcQ"
-                        target="_blank"
-                        className="justify-self-end text-sm text-primary hover:text-primary-100"
-                    >
-                        Forgot Password?
-                    </a>
-                </div>
+                    <div className="grid grid-cols-2 items-center">
+                        <label
+                            htmlFor="password"
+                            className="justify-self-start block text-black dark:text-white text-md font-bold mb-2"
+                        >
+                            Password
+                        </label>
 
-                <input
-                    type="password"
-                    name="password"
-                    className={classesInvalidInput + " mb-5"}
-                    onChange={(e) =>
-                        (this.information.password = e.target.value)
-                    }
-                />
-                <input
-                    type="submit"
-                    value="Sign in"
-                    className="w-full p-2 text-white dark:text-dark_bg border border-primary rounded cursor-pointer bg-primary hover:bg-primary-100 hover:border-primary-100"
-                />
-            </form>
+                        <a
+                            href="https://youtu.be/dQw4w9WgXcQ"
+                            target="_blank"
+                            className="justify-self-end text-sm text-primary hover:text-primary-100"
+                        >
+                            Forgot Password?
+                        </a>
+                    </div>
+
+                    <input
+                        type="password"
+                        name="password"
+                        className={classesInvalidInput + " mb-5"}
+                        onChange={(e) =>
+                            (this.information.password = e.target.value)
+                        }
+                    />
+                    <input
+                        type="submit"
+                        value="Sign in"
+                        className="w-full p-2 text-white dark:text-dark_bg border border-primary rounded cursor-pointer bg-primary hover:bg-primary-100 hover:border-primary-100"
+                    />
+                </form>
+            </Card>
         );
     }
 }

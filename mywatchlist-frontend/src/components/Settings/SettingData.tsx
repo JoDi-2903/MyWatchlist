@@ -1,4 +1,9 @@
-import { UserIcon, ShieldCheckIcon, PencilIcon } from "@heroicons/react/solid";
+import {
+    UserIcon,
+    ShieldCheckIcon,
+    PencilIcon,
+    TrashIcon,
+} from "@heroicons/react/solid";
 import { Component } from "react";
 import toast from "react-hot-toast";
 import { backendURL } from "../../Config";
@@ -82,15 +87,13 @@ class SettingData extends Component<SettingDataProps, SettingDataState> {
 
     render() {
         return (
-            <div className="grid-rows-1 justify-center w-full xs:w-3/4 xl:w-1/2 m-auto h-auto">
-                <Card classes="dark:text-white">
+            <div className="grid-rows-1 justify-center w-full xs:w-3/4 xl:w-1/2 m-auto h-auto text-white_text dark:text-dark_text">
+                <Card classes="dark:dark_text p-6">
                     <div className="flex justify-between">
                         <div className="flex justify-center gap-5">
                             <UserIcon className="w-10" />
                             <div>
-                                <h2 className="text-xl dark:text-white">
-                                    Username
-                                </h2>
+                                <h2 className="text-xl">Username</h2>
                                 {this.state.username}
                             </div>
                         </div>
@@ -105,13 +108,11 @@ class SettingData extends Component<SettingDataProps, SettingDataState> {
 
                 <ChangePassword jwtInfo={this.props.jwtInfo} />
 
-                <Card classes="dark:text-white flex justify-between">
+                <Card classes="dark:dark_text flex justify-between p-6">
                     <div className="flex justify-center gap-5">
                         <ShieldCheckIcon className="w-10" />
                         <div>
-                            <h2 className="text-xl dark:text-white">
-                                Privacy Settings
-                            </h2>
+                            <h2 className="text-xl">Privacy Settings</h2>
                             <p>
                                 {!this.state.privateProfile
                                     ? "Profile is public"
@@ -123,13 +124,13 @@ class SettingData extends Component<SettingDataProps, SettingDataState> {
                         <input
                             type="checkbox"
                             name="toggle"
-                            className="absolute left-1 top-1 w-6 h-6 rounded-full align-middle appearance-none cursor-pointer checked:bg-primary_green checked:translate-x-8 bg-primary transition-transform ease-in-out duration-300 translate-x-0.5"
+                            className="absolute left-[3px] top-1 w-6 h-6 rounded-full align-middle appearance-none cursor-pointer checked:bg-primary_green checked:translate-x-8 bg-primary transition-transform ease-in-out duration-300 translate-x-0.5"
                             checked={this.state.privateProfile}
                             onChange={this.togglePrivacy}
                         />
                         <label
                             htmlFor="toggle"
-                            className="flex w-16 h-8 px-2 gap-4 align-middle rounded-full border border-black dark:border-white cursor-pointer"
+                            className="flex w-16 h-8 p-2 align-middle rounded-full border-2 border-white_text dark:border-dark_text cursor-pointer"
                         ></label>
                     </div>
                 </Card>
@@ -144,8 +145,9 @@ class SettingData extends Component<SettingDataProps, SettingDataState> {
                                 )
                                 ?.focus()
                         }
-                        className="p-2 text-white dark:text-dark_navbar border border-primary hover:border-primary-200 rounded-lg shadow bg-primary hover:bg-primary-200"
+                        className="flex justify-between gap-2 rounded-md bg-white_bg dark:bg-dark_navbar  cursor-pointer p-4 drop-shadow dark:text-dark_text hover:dark:bg-card_dark"
                     >
+                        <TrashIcon className="w-5" />
                         Delete Account
                     </button>
                 </div>

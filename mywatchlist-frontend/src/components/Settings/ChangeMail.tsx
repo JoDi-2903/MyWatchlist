@@ -72,17 +72,17 @@ class ChangeEmail extends Component<ChangeEmailProps, ChangeEmailState> {
 
     render() {
         return (
-            <Card classes="dark:text-white">
+            <Card classes="dark:text-white p-6">
                 <div className="flex justify-between">
                     <div className="flex justify-center gap-5">
                         <MailIcon className="w-10" />
                         <div>
-                            <h2 className="text-xl dark:text-white">E-Mail</h2>
+                            <h2 className="text-xl">E-Mail</h2>
                             {this.state.email}
                         </div>
                     </div>
                     <div
-                        className="flex justify-between gap-2 rounded border border-black dark:border-white cursor-pointer p-2"
+                        className="flex justify-between gap-2 rounded-md border-2 bg-white_bg dark:bg-dark_bg border-white_bg dark:border-dark_bg cursor-pointer p-2 drop-shadow dark:text-dark_text"
                         onClick={() =>
                             this.setState({
                                 editEmail: !this.state.editEmail,

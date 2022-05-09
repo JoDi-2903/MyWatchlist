@@ -14,7 +14,7 @@ export default class LoginPage extends Component {
                             <Navigate to="/" />
                         ) : (
                             <div>
-                                <h1 className="text-center text-black dark:text-white text-4xl m-5">
+                                <h1 className="text-center text-black dark:text-white text-4xl m-5 font-bold">
                                     Sign in into{" "}
                                     <span className="text-primary">
                                         MyWatchlist

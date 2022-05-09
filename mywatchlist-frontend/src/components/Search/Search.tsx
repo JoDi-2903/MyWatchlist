@@ -21,7 +21,7 @@ class Search extends Component<SearchProps, SearchState> {
             <div className="inline-flex justify-self-center align-middle w-full m-3 p-2 bg-white dark:bg-dark_input rounded drop-shadow-xl">
                 <SearchIcon className="h-10 p-1 text-primary hover:text-color_primary" />
                 <input
-                    className="h-10 p-2 text-2xl focus:outline-none w-full bg-transparent text-black dark:text-white"
+                    className="h-10 p-2 text-2xl focus:outline-none w-full bg-transparent text-white_text dark:text-white"
                     type="search"
                     name="search"
                     placeholder="Search"

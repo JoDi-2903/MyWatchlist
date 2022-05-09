@@ -120,13 +120,13 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                                 className="w-20 h-20 rounded bg-white_bg dark:bg-dark_bg m-4"
                             />
                             <div className="m-4">
-                                <h1 className="text-4xl text-dark dark:text-white">
+                                <h1 className="text-4xl text-white_text dark:text-dark_text font-bold">
                                     {this.props.username}
                                 </h1>
                                 <div className="flex gap-2">
                                     <div
                                         className={
-                                            "px-2 bg-white_bg dark:bg-dark_bg text-dark dark:text-white w-fit rounded-full " +
+                                            "px-2 bg-white_bg dark:bg-dark_bg text-white_text dark:text-dark_text w-fit rounded-full " +
                                             (this.state.privateProfile
                                                 ? "blur-sm"
                                                 : "")
@@ -139,7 +139,7 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                                     </div>
                                     <div
                                         className={
-                                            "px-2 bg-white_bg dark:bg-dark_bg text-dark dark:text-white w-fit rounded-full " +
+                                            "px-2 bg-white_bg dark:bg-dark_bg text-white_text dark:text-dark_text w-fit rounded-full " +
                                             (this.state.privateProfile
                                                 ? "blur-sm"
                                                 : "")
@@ -152,7 +152,7 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                                     </div>
                                 </div>
                                 {!this.state.privateProfile ? (
-                                    <p className="dark:text-white">
+                                    <p className="text-white_text dark:text-dark_text">
                                         {this.state.email}
                                     </p>
                                 ) : (

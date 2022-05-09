@@ -63,12 +63,12 @@ class AddList extends Component<AddListProps, AddListState> {
                         this.setState({ newTitle: e.target.value })
                     }
                     placeholder="Title"
-                    className="col-span-3 m-4 p-4 bg-white dark:bg-dark_input rounded drop-shadow-xl h-10 text-xl focus:outline-none bg-transparent text-black dark:text-white"
+                    className="col-span-3 m-4 p-4 bg-white dark:bg-dark_input rounded drop-shadow-xl h-12 text-xl focus:outline-none bg-transparent text-black dark:text-white"
                 />
                 <input
                     type="submit"
-                    value="Create new List"
-                    className="col-span-1 w-fit h-10 p-2 text-white dark:text-dark_navbar border border-primary hover:border-primary-200 rounded shadow bg-primary hover:bg-primary-200 cursor-pointer drop-shadow-xl"
+                    value="Add new List"
+                    className="col-span-1 h-12 flex justify-between gap-2 rounded-md bg-white_bg dark:bg-dark_navbar cursor-pointer  drop-shadow dark:text-dark_text hover:dark:bg-card_dark text-xl"
                 />
             </form>
         );

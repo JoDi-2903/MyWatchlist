@@ -42,7 +42,7 @@ class SearchPage extends Component<SearchPageProps, SearchPageState> {
                     <main className="w-full md:w-11/12 mx-auto my-10 p-5 flex justify-center">
                         {isLoggedIn(jwtInfo.jwt) ? (
                             <div className="w-3/4">
-                                <h1 className="text-black dark:text-white text-4xl">
+                                <h1 className="text-white_text dark:text-white text-4xl text-center font-bold">
                                     Search
                                 </h1>
                                 <div className="w-full grid grid-cols-1 justify-start">
