@@ -213,7 +213,7 @@ public class MyWatchlistController {
 
     @GetMapping("/watchlist/getCompleteWatchlists/{username}")
     @PreAuthorize("#username == authentication.name")
-    public ResponseEntity<String> getCompleteWatchlist(@PathVariable String username) {
+    public ResponseEntity<String> getEveryWatchlistComplete(@PathVariable String username) {
         JsonObject resp = new JsonObject();
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
