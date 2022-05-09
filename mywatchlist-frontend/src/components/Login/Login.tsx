@@ -78,6 +78,7 @@ class Login extends Component<LoginProps, LoginState> {
                         <a
                             href="https://youtu.be/dQw4w9WgXcQ"
                             target="_blank"
+                            rel="noreferrer"
                             className="justify-self-end text-sm text-primary hover:text-primary-100"
                         >
                             Forgot Password?

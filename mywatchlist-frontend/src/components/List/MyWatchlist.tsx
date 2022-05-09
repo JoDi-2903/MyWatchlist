@@ -25,9 +25,6 @@ class MyWatchlist extends Component<MyWatchlistProps, MyWatchlistState> {
     }
 
     async loadData() {
-        var responseStatus = 0;
-        var responseData;
-
         await fetch(
             backendURL + "/user/myprofile/" + this.props.jwtInfo.username,
             {
@@ -56,7 +53,9 @@ class MyWatchlist extends Component<MyWatchlistProps, MyWatchlistState> {
                     lists={this.state.list}
                     deleteWatchlists={true}
                     jwtInfo={this.props.jwtInfo}
-                    onDelete={() => {this.loadData()}}
+                    onDelete={() => {
+                        this.loadData();
+                    }}
                 />
             </div>
         );

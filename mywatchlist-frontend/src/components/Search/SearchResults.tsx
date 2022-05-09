@@ -1,8 +1,4 @@
-import ReactStars from "react-rating-stars-component";
 import { Component } from "react";
-import { Link } from "react-router-dom";
-import Cover from "./Cover";
-import Card from "../Wrapper/Card";
 import ListElement from "../List/ListElement";
 
 interface SearchResultsProps {

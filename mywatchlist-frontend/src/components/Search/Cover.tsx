@@ -19,7 +19,7 @@ class Cover extends Component<CoverProps, {}> {
             >
                 <img
                     src={apiConfig.w500Image(this.props.path)}
-                    alt="No image found."
+                    alt="Not found."
                     className="h-32 w-auto relative -top-6 drop-shadow-xl bg-primary-100 text-center"
                 />
             </LazyLoad>

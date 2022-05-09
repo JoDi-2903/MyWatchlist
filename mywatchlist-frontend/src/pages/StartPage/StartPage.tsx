@@ -1,9 +1,7 @@
 import { Component } from "react";
 import Flicking from "@egjs/react-flicking";
 import "@egjs/react-flicking/dist/flicking.css";
-import { discoverMovie, discoverTV, getTVImages } from "../../api/API";
-import { apiConfig } from "../../Config";
-import Card from "../../components/Wrapper/Card";
+import { discoverMovie, discoverTV } from "../../api/API";
 import ListElement from "../../components/List/ListElement";
 
 interface StartPageProps {}

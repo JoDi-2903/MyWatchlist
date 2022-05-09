@@ -1,4 +1,3 @@
-import { Component } from "react";
 import {useParams} from "react-router-dom";
 
 
