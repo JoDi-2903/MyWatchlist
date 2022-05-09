@@ -294,8 +294,9 @@ public class MyWatchlistController {
     public ResponseEntity<String> deleteUser(@PathVariable String username) {
         JsonObject resp = new JsonObject();
         if (myWatchlistService.checkUsernameExist(username)) {
-            resp.addProperty(jsonKey, "Endpoint does not exist yet");
-            return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+            myWatchlistService.deleteUser(username);
+            resp.addProperty(jsonKey, "User successfully deleted");
+            return new ResponseEntity<>(resp.toString(), HttpStatus.OK);
         } else {
             resp.addProperty(jsonKey, "User does not exist");
             return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);

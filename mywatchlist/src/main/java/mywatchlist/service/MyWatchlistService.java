@@ -311,4 +311,8 @@ public class MyWatchlistService {
     public boolean checkTitleIdIsUsed(long watchlistId, int titleId) {
         return watchlistEntryRepo.findByTitleIdAndWatchlistWatchlistId(titleId, watchlistId).isPresent();
     }
+
+    public void deleteUser(String username) {
+        userAccountRepo.deleteById(getUserId(username));
+    }
 }
