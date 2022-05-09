@@ -38,3 +38,10 @@ export const searchMovie = async (query: string) => {
 export const searchTV = async (query: string) => {
     return await request("search/tv", "GET", query + "&include_adult=false");
 };
+
+export const discoverMovie = async () => {
+    return await request("discover/movie", "GET", "");
+}
+export const discoverTV = async () => {
+    return await request("discover/tv", "GET", "");
+}
