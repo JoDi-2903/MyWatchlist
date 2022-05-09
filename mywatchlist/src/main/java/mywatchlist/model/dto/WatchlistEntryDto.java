@@ -1,11 +1,21 @@
 package mywatchlist.model.dto;
 
-import mywatchlist.model.hibernate.TitleType;
+import java.util.List;
 
+//todo löschen weil neues dto objekt
 public class WatchlistEntryDto {
 
     private int titleId;
-    private int titleType;
+    private String titleType;
+    private List<TvInfoDto> tvInfoList;
+
+    public List<TvInfoDto> getTvInfoList() {
+        return tvInfoList;
+    }
+
+    public void setTvInfoList(List<TvInfoDto> tvInfoList) {
+        this.tvInfoList = tvInfoList;
+    }
 
     public int getTitleId() {
         return titleId;
@@ -15,11 +25,11 @@ public class WatchlistEntryDto {
         this.titleId = titleId;
     }
 
-    public int getTitleType() {
+    public String getTitleType() {
         return titleType;
     }
 
-    public void setTitleType(int titleType) {
+    public void setTitleType(String titleType) {
         this.titleType = titleType;
     }
 }

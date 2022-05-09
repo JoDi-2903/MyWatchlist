@@ -13,7 +13,7 @@ public class TitleType {
     @Column(name = "name", nullable = false)
     private String name;
 
-    public int getTitleTypeId() {
+    public short getTitleTypeId() {
         return titleTypeId;
     }
 

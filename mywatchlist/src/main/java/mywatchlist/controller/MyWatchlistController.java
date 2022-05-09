@@ -2,6 +2,7 @@ package mywatchlist.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import mywatchlist.model.Title;
 import mywatchlist.model.dto.*;
 import mywatchlist.security.CustomUserDetailService;
 import mywatchlist.service.MyWatchlistService;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -55,8 +57,7 @@ public class MyWatchlistController {
     @GetMapping(path = "/register/validateUsername/{username}")
     public ResponseEntity<String> validateUsername(@PathVariable String username) {
         JsonObject resp = new JsonObject();
-
-        if(!myWatchlistService.validateUsername(username)){
+        if (!myWatchlistService.validateUsername(username)) {
             resp.addProperty(jsonKey, "Only letters a-z, A-Z with at least 3 characters and numbers are allowed.");
             return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
         }
@@ -84,12 +85,12 @@ public class MyWatchlistController {
             String profile = gson.toJson(myWatchlistService.getProfile(username));
             resp.addProperty(jsonKey, gson.toJson(myWatchlistService.getProfile(username)));
             return new ResponseEntity<>(profile, responseHeaders, HttpStatus.OK);
-
         }
         resp.addProperty(jsonKey, "User does not exist");
         return new ResponseEntity<>(resp.toString(), responseHeaders, HttpStatus.BAD_REQUEST);
     }
 
+    //todo watchlist json ändern mit tv
     @GetMapping("/user/myprofile/{username}")
     @PreAuthorize("#username == authentication.name")
     public MyProfileDto getMyProfile(@PathVariable String username) {
@@ -133,11 +134,10 @@ public class MyWatchlistController {
     @PutMapping("/user/changePassword")
     @PreAuthorize("#changePasswordDto.getUsername == authentication.name")
     public ResponseEntity<String> changePasswordSettings(@RequestBody ChangePasswordDto changePasswordDto) {
+        JsonObject resp = new JsonObject();
         String oldPassword = changePasswordDto.getOldPassword();
         String newPassword = changePasswordDto.getNewPassword();
         String username = changePasswordDto.getUsername();
-        JsonObject resp = new JsonObject();
-
         if (myWatchlistService.checkUsernameExist(username)) {
             if (myWatchlistService.validatePassword(newPassword)) {
                 if (myWatchlistService.verifyPassword(oldPassword, username)) {
@@ -177,19 +177,71 @@ public class MyWatchlistController {
         }
     }
 
+    @GetMapping("/watchlist/getwatchlists/{username}")
+    @PreAuthorize("#username == authentication.name")
+    public ResponseEntity<String> getWatchlists(@PathVariable String username) {
+        JsonObject resp = new JsonObject();
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        if (myWatchlistService.checkUsernameExist(username)) {
+            Gson gson = new Gson();
+            String watchtlists = gson.toJson(myWatchlistService.getWatchlists(username));
+            return new ResponseEntity<>(watchtlists, responseHeaders, HttpStatus.OK);
+        }
+        resp.addProperty(jsonKey, "User does not exist");
+        return new ResponseEntity<>(resp.toString(), responseHeaders, HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/watchlist/getwatchlist/{watchlistId}/{username}")
+    @PreAuthorize("#username == authentication.name")
+    public ResponseEntity<String> getWatchlist(@PathVariable String username, @PathVariable long watchlistId) {
+        JsonObject resp = new JsonObject();
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        if (myWatchlistService.checkUsernameExist(username)) {
+            if (myWatchlistService.checkWatchlistIdBelongsToUser(watchlistId, username)) {
+                Gson gson = new Gson();
+                String watchtlist = gson.toJson(myWatchlistService.getWatchlist(watchlistId));
+                return new ResponseEntity<>(watchtlist, responseHeaders, HttpStatus.OK);
+            } else {
+                resp.addProperty(jsonKey, "Watchlist does not belong to the user or it does not exist");
+                return new ResponseEntity<>(resp.toString(), responseHeaders, HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            resp.addProperty(jsonKey, "User does not exist");
+            return new ResponseEntity<>(resp.toString(), responseHeaders, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/watchlist/getCompleteWatchlists/{username}")
+    @PreAuthorize("#username == authentication.name")
+    public ResponseEntity<String> getEveryWatchlistComplete(@PathVariable String username) {
+        JsonObject resp = new JsonObject();
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        if (myWatchlistService.checkUsernameExist(username)) {
+            Gson gson = new Gson();
+            // String watchtlist = gson.toJson(//todo);
+            //return new ResponseEntity<>(watchtlist, responseHeaders, HttpStatus.OK);
+            return null;
+        } else {
+            resp.addProperty(jsonKey, "User does not exist");
+            return new ResponseEntity<>(resp.toString(), responseHeaders, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping("/watchlist/newWatchlist")
     @PreAuthorize("#watchlistDto.getUsername == authentication.name")
     public ResponseEntity<String> changePrivateProfile(@RequestBody CreateUpdateWatchlistDto watchlistDto) {
+        JsonObject resp = new JsonObject();
         String username = watchlistDto.getUsername();
         String watchlistName = watchlistDto.getWatchlistName();
-        JsonObject resp = new JsonObject();
-
         if (myWatchlistService.checkUsernameExist(username)) {
-            if(!myWatchlistService.checkWatchlistName(watchlistName, username)){
+            if (!myWatchlistService.checkWatchlistName(watchlistName, username)) {
                 myWatchlistService.createWatchlist(watchlistName, username);
                 resp.addProperty(jsonKey, "New watchlist \"" + watchlistName + "\" was created");
                 return new ResponseEntity<>(resp.toString(), HttpStatus.CREATED);
-            }else{
+            } else {
                 resp.addProperty(jsonKey, "Watchlist name does not meet the requirements");
                 return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
             }
@@ -204,13 +256,12 @@ public class MyWatchlistController {
     @PreAuthorize("#username == authentication.name")
     public ResponseEntity<String> deleteWatchlist(@PathVariable String username, @PathVariable long watchlistId) {
         JsonObject resp = new JsonObject();
-
         if (myWatchlistService.checkUsernameExist(username)) {
-            if(myWatchlistService.checkWatchlistExistsToUser(watchlistId, username)){
+            if (myWatchlistService.checkWatchlistBelongsToUser(watchlistId, username)) {
                 myWatchlistService.deleteWatchlist(watchlistId);
                 resp.addProperty(jsonKey, "Successfully deleted the watchlist");
                 return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
-            }else{
+            } else {
                 resp.addProperty(jsonKey, "The watchlist cannot be assigned to the user");
                 return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
             }
@@ -225,13 +276,12 @@ public class MyWatchlistController {
     @PreAuthorize("#username == authentication.name")
     public ResponseEntity<String> deleteWatchlistEntry(@PathVariable String username, @PathVariable long entryId) {
         JsonObject resp = new JsonObject();
-
         if (myWatchlistService.checkUsernameExist(username)) {
-            if(myWatchlistService.checkWatchlistEntryExistsToUser(entryId, username)){
+            if (myWatchlistService.checkWatchlistEntryExistsToUser(entryId, username)) {
                 myWatchlistService.deleteWatchlistEntry(entryId);
                 resp.addProperty(jsonKey, "Successfully deleted the watchlist entry");
                 return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
-            }else{
+            } else {
                 resp.addProperty(jsonKey, "The watchlist entry cannot be assigned to the user");
                 return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
             }
@@ -241,14 +291,57 @@ public class MyWatchlistController {
         }
     }
 
+    @DeleteMapping("/watchlist/deleteUser/{username}")
+    @PreAuthorize("#username == authentication.name")
+    public ResponseEntity<String> deleteUser(@PathVariable String username) {
+        JsonObject resp = new JsonObject();
+        if (myWatchlistService.checkUsernameExist(username)) {
+            myWatchlistService.deleteUser(username);
+            resp.addProperty(jsonKey, "User successfully deleted");
+            return new ResponseEntity<>(resp.toString(), HttpStatus.OK);
+        } else {
+            resp.addProperty(jsonKey, "User does not exist");
+            return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
     //todo
     @PostMapping("/watchlist/addWatchlistlistEntry")
-    @PreAuthorize("#username == authentication.name")
-    public ResponseEntity<String> addWatchlistEntry() {
+    @PreAuthorize("#watchlistEntryDto.getUsername == authentication.name")
+    public ResponseEntity<String> addWatchlistEntry(@RequestBody AddWatchlistEntryDto watchlistEntryDto) {
         JsonObject resp = new JsonObject();
-
-
-        return null;
+        if (myWatchlistService.checkUsernameExist(watchlistEntryDto.getUsername())) {
+            //Check TitleType has correct Enum Type
+            if (Arrays.stream(Title.values()).anyMatch(x -> x.name().equals(watchlistEntryDto.getWatchlistEntry().getTitleType().toUpperCase()))) {
+                if (myWatchlistService.checkWatchlistBelongsToUser(watchlistEntryDto.getWatchlistId(), watchlistEntryDto.getUsername())) {
+                    Title title = Title.valueOf(watchlistEntryDto.getWatchlistEntry().getTitleType().toUpperCase());
+                    if (title.equals(Title.MOVIE)) {
+                        if (!myWatchlistService.checkTitleIdIsUsed(watchlistEntryDto.getWatchlistId(), watchlistEntryDto.getWatchlistEntry().getTitleId())) {
+                            myWatchlistService.addWatchlistEntry(watchlistEntryDto);
+                            resp.addProperty(jsonKey, "Entry was successfully entered");
+                            return new ResponseEntity<>(resp.toString(), HttpStatus.CREATED);
+                        } else {
+                            resp.addProperty(jsonKey, "Movie title already added to the watchlist");
+                            return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+                        }
+                    } else {
+                        myWatchlistService.addWatchlistEntry(watchlistEntryDto);
+                        resp.addProperty(jsonKey, "Entry was successfully entered");
+                        return new ResponseEntity<>(resp.toString(), HttpStatus.CREATED);
+                    }
+                } else {
+                    resp.addProperty(jsonKey, "Watchlist dont exist or belongs to the user");
+                    return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                resp.addProperty(jsonKey, "Title type must be Movie or Tv");
+                return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            resp.addProperty(jsonKey, "User does not exist");
+            return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+        }
     }
 
 

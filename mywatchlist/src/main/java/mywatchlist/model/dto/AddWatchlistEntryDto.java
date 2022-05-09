@@ -1,25 +1,10 @@
 package mywatchlist.model.dto;
 
 public class AddWatchlistEntryDto {
-    private int titleId;
-    private int titleType;
+
     private String username;
-
-    public int getTitleId() {
-        return titleId;
-    }
-
-    public void setTitleId(int titleId) {
-        this.titleId = titleId;
-    }
-
-    public int getTitleType() {
-        return titleType;
-    }
-
-    public void setTitleType(int titleType) {
-        this.titleType = titleType;
-    }
+    private long watchlistId;
+    private WatchlistEntryDto watchlistEntry;
 
     public String getUsername() {
         return username;
@@ -27,5 +12,22 @@ public class AddWatchlistEntryDto {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public long getWatchlistId() {
+        return watchlistId;
+    }
+
+    public void setWatchlistId(long watchlistId) {
+        this.watchlistId = watchlistId;
+    }
+
+
+    public WatchlistEntryDto getWatchlistEntry() {
+        return watchlistEntry;
+    }
+
+    public void setWatchlistEntry(WatchlistEntryDto watchlistEntry) {
+        this.watchlistEntry = watchlistEntry;
     }
 }

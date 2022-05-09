@@ -5,7 +5,7 @@ import java.util.List;
 public class ProfileDto {
     private String username;
     private boolean isPrivateProfile;
-    private List<WatchlistDto> watchlistList;
+    private List<WatchlistProfileDto> watchlistList;
 
     public String getUsername() {
         return username;
@@ -23,11 +23,11 @@ public class ProfileDto {
         isPrivateProfile = privateProfile;
     }
 
-    public List<WatchlistDto> getWatchlistList() {
+    public List<WatchlistProfileDto> getWatchlistList() {
         return watchlistList;
     }
 
-    public void setWatchlistList(List<WatchlistDto> watchlistList) {
+    public void setWatchlistList(List<WatchlistProfileDto> watchlistList) {
         this.watchlistList = watchlistList;
     }
 }

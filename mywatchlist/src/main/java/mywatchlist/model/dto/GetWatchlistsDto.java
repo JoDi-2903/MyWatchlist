@@ -1,19 +1,9 @@
 package mywatchlist.model.dto;
 
-import mywatchlist.model.hibernate.WatchlistEntry;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class WatchlistDto {
+public class GetWatchlistsDto {
 
     private String watchlistName;
     private long watchlistId;
-    private List<WatchlistEntryDto> watchlistEntries = new ArrayList<>();
-
-    public void AddEntry(WatchlistEntryDto watchlistEntry){
-        watchlistEntries.add(watchlistEntry);
-    }
 
     public String getWatchlistName() {
         return watchlistName;
@@ -29,9 +19,5 @@ public class WatchlistDto {
 
     public void setWatchlistId(long watchlistId) {
         this.watchlistId = watchlistId;
-    }
-
-    public List<WatchlistEntryDto> getWatchlistEntries() {
-        return watchlistEntries;
     }
 }
