@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface WatchlistEntryRepo extends JpaRepository<WatchlistEntry, Long> {
-    List<WatchlistEntry> findAllByWatchlistWatchlistId(long userId);
+    List<WatchlistEntry> findAllByWatchlistWatchlistId(long watchlistId);//todo fehler?
 
     @Query("SELECT we FROM WatchlistEntry we INNER JOIN Watchlist w on w.watchlistId = we.watchlist.watchlistId " +
             "INNER JOIN UserProfile up on w.user.userId = up.userId " +
@@ -20,4 +20,6 @@ public interface WatchlistEntryRepo extends JpaRepository<WatchlistEntry, Long> 
             "and up.username =:username"
     )
     Optional<WatchlistEntry> findWatchlistEntryByEntryIdAndUsername(@Param(value = "entryId") long entryId, @Param(value = "username") String username);
+    Optional<WatchlistEntry> findByTitleIdAndWatchlistWatchlistId(int titleId, long watchlistId);
+
 }

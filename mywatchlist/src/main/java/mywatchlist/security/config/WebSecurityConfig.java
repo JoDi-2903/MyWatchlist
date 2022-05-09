@@ -46,6 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().configurationSource(corsConfigurationSource());
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/api/v1/mywatchlist/register/**").permitAll()
+                .antMatchers("/api/v1/mywatchlist/user/profile/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilter(new JwtAuthenticationFilter(authenticationManagerBean(), jwtConfig, secretKey));

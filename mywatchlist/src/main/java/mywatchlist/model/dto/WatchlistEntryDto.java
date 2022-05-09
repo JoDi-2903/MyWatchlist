@@ -6,8 +6,16 @@ import java.util.List;
 public class WatchlistEntryDto {
 
     private int titleId;
-    private short titleType;
+    private String titleType;
     private List<TvInfoDto> tvInfoList;
+
+    public List<TvInfoDto> getTvInfoList() {
+        return tvInfoList;
+    }
+
+    public void setTvInfoList(List<TvInfoDto> tvInfoList) {
+        this.tvInfoList = tvInfoList;
+    }
 
     public int getTitleId() {
         return titleId;
@@ -17,19 +25,11 @@ public class WatchlistEntryDto {
         this.titleId = titleId;
     }
 
-    public short getTitleType() {
+    public String getTitleType() {
         return titleType;
     }
 
-    public void setTitleType(short titleType) {
+    public void setTitleType(String titleType) {
         this.titleType = titleType;
-    }
-
-    public List<TvInfoDto> getTvInfoList() {
-        return tvInfoList;
-    }
-
-    public void setTvInfoList(List<TvInfoDto> tvInfoList) {
-        this.tvInfoList = tvInfoList;
     }
 }

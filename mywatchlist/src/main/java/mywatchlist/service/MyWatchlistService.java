@@ -1,10 +1,8 @@
 package mywatchlist.service;
 
+import mywatchlist.model.Title;
 import mywatchlist.model.dto.*;
-import mywatchlist.model.hibernate.TvInfo;
-import mywatchlist.model.hibernate.UserProfile;
-import mywatchlist.model.hibernate.Watchlist;
-import mywatchlist.model.hibernate.WatchlistEntry;
+import mywatchlist.model.hibernate.*;
 import mywatchlist.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -97,11 +95,12 @@ public class MyWatchlistService {
 
         if (!userAccount.isPrivateProfile()) {
             List<Watchlist> watchlists = watchlistRepo.findAllByUserUserId(userAccount.getUserId());
-            List<WatchlistDto> watchlistDtoList = new ArrayList<>();
+            List<WatchlistProfileDto> watchlistDtoList = new ArrayList<>();
             for (var watchlist : watchlists) {
-                WatchlistDto watchlistDto = new WatchlistDto();
-                watchlistDto.setWatchlistName(watchlist.getWatchlistName());
-                watchlistDtoList.add(getWatchlist(watchlist.getWatchlistId()));
+                WatchlistProfileDto watchlistProfileDto = new WatchlistProfileDto();
+                watchlistProfileDto.setWatchlistName(watchlist.getWatchlistName());
+                watchlistProfileDto.setWatchlistEntries(getWatchlist(watchlist.getWatchlistId()).getWatchlistEntries());
+                watchlistDtoList.add(watchlistProfileDto);
             }
             profileDto.setWatchlistList(watchlistDtoList);
         }
@@ -183,7 +182,7 @@ public class MyWatchlistService {
         watchlistRepo.delete(watchlist);
     }
 
-    public boolean checkWatchlistExistsToUser(long watchlistId, String username) {
+    public boolean checkWatchlistBelongsToUser(long watchlistId, String username) {
         return watchlistRepo.findByUserUserIdAndWatchlistId(getUserId(username), watchlistId).isPresent();
         //watchlistRepo.findAllByUserUserId(getUserId(username)).stream().filter(x -> x.getWatchlistId() == watchlistId);
         //List<Watchlist> watchlistList =
@@ -214,16 +213,22 @@ public class MyWatchlistService {
     }
 
     public WatchlistDto getWatchlist(long watchlistId) {
-
         Watchlist watchlist = watchlistRepo.findById(watchlistId).orElseThrow(EntityNotFoundException::new);
         WatchlistDto watchlistDto = new WatchlistDto();
         watchlistDto.setWatchlistName(watchlist.getWatchlistName());
+        watchlistDto.setWatchlistId(watchlist.getWatchlistId());
 
         List<WatchlistEntry> watchlistEntries = watchlistEntryRepo.findAllByWatchlistWatchlistId(watchlist.getWatchlistId());
+        List<TitleType> titleTypes = titleTypeRepo.findAll();
         for (var entry : watchlistEntries) {
             WatchlistEntryDto watchlistEntryDto = new WatchlistEntryDto();
             watchlistEntryDto.setTitleId(entry.getTitleId());
-            watchlistEntryDto.setTitleType(entry.getTitleType().getTitleTypeId());
+            for (var type : titleTypes) {
+                if (type.getTitleTypeId() == entry.getTitleType().getTitleTypeId()) {
+                    watchlistEntryDto.setTitleType(type.getName());
+                }
+            }
+
             watchlistDto.AddEntry(watchlistEntryDto);
 
             List<TvInfo> tvInfoList = tvInfoRepo.findAllByWatchlistEntryEntryIdOrderBySeasonAscEpisode(entry.getEntryId());
@@ -251,5 +256,59 @@ public class MyWatchlistService {
             watchlistEntryDto.setTvInfoList(tvInfoDtoList);
         }
         return watchlistDto;
+    }
+
+    public boolean checkWatchlistIdBelongsToUser(long watchlistId, String username) {
+        return watchlistRepo.findByUserUserIdAndWatchlistId(getUserId(username), watchlistId).isPresent();
+    }
+
+    public void addWatchlistEntry(AddWatchlistEntryDto watchlistEntryDto) {
+        short titleTypeId = 0;
+        Title title = Title.valueOf(watchlistEntryDto.getWatchlistEntry().getTitleType().toUpperCase());
+
+        for (var type : titleTypeRepo.findAll()) {
+            if (type.getName().equalsIgnoreCase(watchlistEntryDto.getWatchlistEntry().getTitleType())) {
+                titleTypeId = type.getTitleTypeId();
+            }
+        }
+        Watchlist watchlist = new Watchlist();
+        watchlist.setWatchlistId(watchlistEntryDto.getWatchlistId());
+
+        TitleType titleType = new TitleType();
+        titleType.setTitleTypeId(titleTypeId);
+
+        WatchlistEntry watchlistEntry = new WatchlistEntry();
+        watchlistEntry.setTitleId(watchlistEntryDto.getWatchlistEntry().getTitleId());
+        watchlistEntry.setTitleType(titleType);
+        watchlistEntry.setWatchlist(watchlist);
+
+        if (title.equals(Title.TV)) {
+            if(!checkTitleIdIsUsed(watchlistEntryDto.getWatchlistId(), watchlistEntryDto.getWatchlistEntry().getTitleId())){
+                // title gibt es noch nicht zu der serie
+                watchlistEntryRepo.save(watchlistEntry);
+            }
+            watchlistEntry = watchlistEntryRepo.findByTitleIdAndWatchlistWatchlistId(watchlistEntryDto.getWatchlistEntry().getTitleId() ,
+                    watchlistEntryDto.getWatchlistId()).orElseThrow(EntityNotFoundException::new);
+
+            for (var tv : watchlistEntryDto.getWatchlistEntry().getTvInfoList()) {
+                List<TvInfo> tvInfoList = tvInfoRepo.findByWatchlistEntryEntryIdAndAndSeason(watchlistEntry.getEntryId(),tv.getSeason());
+                for (var episode : tv.getEpisodes()) {
+                    //episode gibt es schon
+                    if(tvInfoList.stream().noneMatch(x -> x.getEpisode() == episode)){
+                        TvInfo tvInfo = new TvInfo();
+                        tvInfo.setSeason(tv.getSeason());
+                        tvInfo.setEpisode(episode);
+                        tvInfo.setWatchlistEntry(watchlistEntry);
+                        tvInfoRepo.save(tvInfo);
+                    }
+                }
+            }
+        }else{
+            watchlistEntryRepo.save(watchlistEntry);
+        }
+    }
+
+    public boolean checkTitleIdIsUsed(long watchlistId, int titleId) {
+        return watchlistEntryRepo.findByTitleIdAndWatchlistWatchlistId(titleId, watchlistId).isPresent();
     }
 }
