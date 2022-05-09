@@ -11,6 +11,7 @@ import { getUsername, JWTInfo } from "../../security/JWTContext";
 import Card from "../Wrapper/Card";
 import ChangeEmail from "./ChangeMail";
 import ChangePassword from "./ChangePassword";
+import DeleteAccount from "./DeleteAccount";
 
 interface SettingDataProps {
     jwtInfo: JWTInfo;
@@ -135,22 +136,7 @@ class SettingData extends Component<SettingDataProps, SettingDataState> {
                     </div>
                 </Card>
 
-                <div className="flex justify-center">
-                    <button
-                        onClick={() =>
-                            window
-                                .open(
-                                    "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                                    "_blank"
-                                )
-                                ?.focus()
-                        }
-                        className="flex justify-between gap-2 rounded-md bg-white_bg dark:bg-dark_navbar  cursor-pointer p-4 drop-shadow dark:text-dark_text hover:dark:bg-card_dark"
-                    >
-                        <TrashIcon className="w-5" />
-                        Delete Account
-                    </button>
-                </div>
+                <DeleteAccount jwtInfo={this.props.jwtInfo} />
             </div>
         );
     }

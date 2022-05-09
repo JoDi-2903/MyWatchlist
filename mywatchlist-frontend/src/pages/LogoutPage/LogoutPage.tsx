@@ -15,7 +15,7 @@ class LogoutPage extends Component {
             clearUsername();
             clearJWT();
         }
-        return <Navigate to="/login" />;
+        return <Navigate to="/" />;
     };
 
     componentDidMount() {

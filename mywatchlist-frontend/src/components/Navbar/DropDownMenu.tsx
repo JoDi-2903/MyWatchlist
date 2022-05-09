@@ -54,7 +54,7 @@ class DropDownMenu extends Component<DropDownMenuProps, DropDownMenuState> {
                                 }
                                 className="flex justify-between gap-2"
                             >
-                                <p>Public Profile</p>
+                                <p>Profile</p>
                                 <UserIcon className="w-6" />
                             </Link>
                         </li>

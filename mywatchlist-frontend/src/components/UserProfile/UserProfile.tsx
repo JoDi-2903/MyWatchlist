@@ -62,7 +62,7 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                 method: "GET",
             })
                 .then((response) => {
-                    if (response.status !== 201) {
+                    if (response.status !== 200) {
                         exists = false;
                     }
                     return response.json();
@@ -75,6 +75,13 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                                 email: "",
                                 privateProfile: data.privateProfile,
                                 watchlist: [],
+                            },
+                            () => {
+                                this.numberEntries = 0;
+                                this.state.watchlist.forEach((element) => {
+                                    this.numberEntries += element.length;
+                                });
+                                
                             });
                         } else {
                             this.setState(
@@ -89,6 +96,7 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                                     this.state.watchlist.forEach((element) => {
                                         this.numberEntries += element.length;
                                     });
+                                    
                                 }
                             );
                         }

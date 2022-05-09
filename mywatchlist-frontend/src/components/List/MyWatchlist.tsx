@@ -52,7 +52,12 @@ class MyWatchlist extends Component<MyWatchlistProps, MyWatchlistState> {
                     jwtInfo={this.props.jwtInfo}
                     onAdded={() => this.loadData()}
                 />
-                <ListOverview lists={this.state.list} deleteWatchlists={true} />
+                <ListOverview
+                    lists={this.state.list}
+                    deleteWatchlists={true}
+                    jwtInfo={this.props.jwtInfo}
+                    onDelete={() => {this.loadData()}}
+                />
             </div>
         );
     }
