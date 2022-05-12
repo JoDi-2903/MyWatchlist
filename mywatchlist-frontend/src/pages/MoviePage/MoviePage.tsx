@@ -5,7 +5,7 @@ import { apiConfig } from "../../Config";
 
 
 export default class MoviePage extends Component<{}, { movieID: number, poster: string, backdrop: string }> {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -22,17 +22,22 @@ export default class MoviePage extends Component<{}, { movieID: number, poster: 
         var posters = movieImages.data.posters;
         var backdrops = movieImages.data.backdrops;
         this.setState({
-            poster: apiConfig.w500Image(posters[0].file_path),
-            backdrop: apiConfig.w500Image(backdrops[0].file_path),
+            poster: apiConfig.originalImage(posters[0].file_path),
+            backdrop: apiConfig.originalImage(backdrops[0].file_path),
         });
     }
     render() {
         return (
-            <div className="flex justify-center mx-auto my-10 p-10 w-3/4 m-2">
-                <h2 className="font-extrabold text-7x1 text-center text-blue-400">Movie details: {this.state.movieID}</h2>
-                <img src={this.state.poster} className="w-1/2" />
-                <img src={this.state.backdrop} className="w-1/2" />
-            </div>
+            <div>
+                <div className="bg-gradient-to-tl from-black via-transparent to-transparent h-96 w-full bg-cover bg-center relative">
+                    <img src={this.state.backdrop} className="w-full h-full object-cover absolute mix-blend-overlay" />
+                    <div className="p-24">
+                        <h1 className="text-white text-6xl font-bold">This is the movie title</h1>
+                        <h2 className="text-white text-3xl font light mt-5">Some more space for subtitles.</h2>
+                    </div>
+                </div>
+                
+            </div >
         );
     }
 }
