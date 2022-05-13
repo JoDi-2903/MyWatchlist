@@ -1,6 +1,6 @@
 import { TrashIcon } from "@heroicons/react/solid";
 import { Component } from "react";
-import { clearJWT, clearUsername, JWTInfo } from "../../security/JWTContext";
+import { JWTInfo } from "../../security/JWTContext";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import { backendURL } from "../../Config";

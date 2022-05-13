@@ -1,9 +1,7 @@
 import { Component } from "react";
 import Flicking from "@egjs/react-flicking";
 import "@egjs/react-flicking/dist/flicking.css";
-import { discoverMovie, discoverTV, getTVImages } from "../../api/API";
-import { apiConfig } from "../../Config";
-import Card from "../../components/Wrapper/Card";
+import { discoverMovie, discoverTV } from "../../api/API";
 import ListElement from "../../components/List/ListElement";
 
 interface StartPageProps {}
@@ -48,12 +46,9 @@ export default class StartPage extends Component<
                             <div key={movie.id}>
                                 <ListElement
                                     id={movie.id}
-                                    title={movie.original_title}
-                                    poster_path={movie.poster_path}
-                                    vote_average={movie.vote_average}
-                                    first_air_date={movie.release_date}
                                     type="movie"
                                     key={movie.id}
+                                    showAddToList={true}
                                 />
                             </div>
                         ))}
@@ -72,12 +67,9 @@ export default class StartPage extends Component<
                             <div key={movie.id}>
                                 <ListElement
                                     id={movie.id}
-                                    title={movie.original_name}
-                                    poster_path={movie.poster_path}
-                                    vote_average={movie.vote_average}
-                                    first_air_date={movie.first_air_date}
                                     type="tv"
                                     key={movie.id}
+                                    showAddToList={true}
                                 />
                             </div>
                         ))}
