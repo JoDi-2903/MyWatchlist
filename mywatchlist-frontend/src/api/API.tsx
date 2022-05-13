@@ -41,7 +41,23 @@ export const searchTV = async (query: string) => {
 
 export const discoverMovie = async () => {
     return await request("discover/movie", "GET", "");
-}
+};
 export const discoverTV = async () => {
     return await request("discover/tv", "GET", "");
-}
+};
+
+export const getFullTVList = async (tv_id: number) => {
+    var details = await getTVDetail(tv_id);
+    var data = new Array();
+    details.data.seasons.forEach((season) => {
+        var season_object = {
+            season: season.season_number,
+            episodes: Array.from(
+                { length: season.episode_count },
+                (_, i) => i + 1
+            ),
+        };
+        data.push(season_object);
+    });
+    return data;
+};

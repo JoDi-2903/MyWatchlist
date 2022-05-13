@@ -46,12 +46,9 @@ export default class StartPage extends Component<
                             <div key={movie.id}>
                                 <ListElement
                                     id={movie.id}
-                                    title={movie.original_title}
-                                    poster_path={movie.poster_path}
-                                    vote_average={movie.vote_average}
-                                    first_air_date={movie.release_date}
                                     type="movie"
                                     key={movie.id}
+                                    showAddToList={true}
                                 />
                             </div>
                         ))}
@@ -70,12 +67,9 @@ export default class StartPage extends Component<
                             <div key={movie.id}>
                                 <ListElement
                                     id={movie.id}
-                                    title={movie.original_name}
-                                    poster_path={movie.poster_path}
-                                    vote_average={movie.vote_average}
-                                    first_air_date={movie.first_air_date}
                                     type="tv"
                                     key={movie.id}
+                                    showAddToList={true}
                                 />
                             </div>
                         ))}

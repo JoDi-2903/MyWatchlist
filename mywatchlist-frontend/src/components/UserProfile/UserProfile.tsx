@@ -50,11 +50,20 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    this.setState({
-                        email: data.email,
-                        isPrivateProfile: data.privateProfile,
-                        watchlist: data.watchlistList,
-                    });
+                    this.setState(
+                        {
+                            email: data.email,
+                            isPrivateProfile: data.privateProfile,
+                            watchlist: data.watchlistList,
+                        },
+                        () => {
+                            this.numberEntries = 0;
+                            this.state.watchlist.forEach((element) => {
+                                this.numberEntries +=
+                                    element.watchlistEntries.length;
+                            });
+                        }
+                    );
                 });
         } else {
             var exists: boolean = true;
@@ -69,7 +78,7 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                 })
                 .then((data) => {
                     if (exists) {
-                        console.log(data)
+                        console.log(data);
                         if (data.isPrivateProfile) {
                             this.setState({
                                 existUser: true,
@@ -88,9 +97,9 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                                 () => {
                                     this.numberEntries = 0;
                                     this.state.watchlist.forEach((element) => {
-                                        this.numberEntries += element.length;
+                                        this.numberEntries +=
+                                            element.watchlistEntries.length;
                                     });
-                                    
                                 }
                             );
                         }
@@ -113,7 +122,7 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
             <div className="w-full">
                 {this.state.existUser ? (
                     <div>
-                        <Card classes="flex justify-items-start gap-4 p-6 mx-auto">
+                        <div className="bg-gray-50 dark:bg-dark_navbar drop-shadow-lg p-6 flex">
                             <img
                                 src={createAvatar(style, {
                                     seed: this.props.username,
@@ -149,8 +158,7 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                                     >
                                         {this.state.isPrivateProfile
                                             ? "-- -------"
-                                            : this.numberEntries +
-                                              " Entries"}
+                                            : this.numberEntries + " Entries"}
                                     </div>
                                 </div>
                                 {!this.state.isPrivateProfile ? (
@@ -161,7 +169,7 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                                     ""
                                 )}
                             </div>
-                        </Card>
+                        </div>
                         {!this.state.isPrivateProfile ? (
                             <ListOverview
                                 lists={this.state.watchlist}
