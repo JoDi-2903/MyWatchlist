@@ -2,6 +2,7 @@ import { Component } from "react";
 import { useParams } from "react-router-dom";
 import { getMovieImages, getMovieDetail } from "../../api/API";
 import { apiConfig } from "../../Config";
+import { PlusIcon, FilmIcon } from "@heroicons/react/solid";
 
 interface MovieDetailsProps {
     id: number;
@@ -16,6 +17,7 @@ interface MovieDetailsState {
     genres: string[];
     runtime: number;
     adult: boolean;
+    overview: string;
 }
 export default class MovieDetails extends Component<
     MovieDetailsProps,
@@ -33,6 +35,7 @@ export default class MovieDetails extends Component<
             genres: [],
             runtime: 0,
             adult: false,
+            overview: "",
         };
     }
     async componentDidMount() {
@@ -49,6 +52,7 @@ export default class MovieDetails extends Component<
             genres: movieDetails.data.genres,
             runtime: movieDetails.data.runtime,
             adult: movieDetails.data.adult,
+            overview: movieDetails.data.overview,
         });
     }
     render() {
@@ -92,6 +96,25 @@ export default class MovieDetails extends Component<
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div className="grid-background absolute inset-0 p-2 mt-[490px] grid grid-cols-12 gap-0">
+                    <div className="col-span-3 row-span-1 bg-red-600"></div>
+                    <div className="col-span-9 row-span-1">
+                        <div className="ml-11 mt-2">
+                            <button className="bg-gray-500 hover:bg-gray-600 border-2 border-primary text-white font-bold py-2 px-4 rounded-lg inline-flex items-center">
+                                <PlusIcon className="w-6 h-6 mr-2 text-white" />
+                                <span>Add to Watchlist</span>
+                            </button>
+                            <button className="bg-gray-500 hover:bg-gray-600 border-2 border-primary text-white font-bold py-2 px-4 rounded-lg inline-flex items-center ml-6">
+                                <FilmIcon className="w-6 h-6 mr-2 text-white" />
+                                <span>Watch trailer</span>
+                            </button>
+                            <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">Overview</h3>
+                            <p className="mt-3 text-white_text dark:text-dark_text text-md">{this.state.overview}</p>
+                        </div>
+                    </div>
+                    <div className="col-span-12 row-span-1 bg-yellow-600"></div>
                 </div>
             </div>
         );
