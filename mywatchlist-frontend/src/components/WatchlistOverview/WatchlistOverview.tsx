@@ -2,18 +2,21 @@ import { Component, ReactNode } from "react";
 import { backendURL } from "../../Config";
 import { JWTInfo } from "../../security/JWTContext";
 import AddList from "./AddList";
-import ListOverview from "./ListOverview";
+import ListOverview from "../List/ListOverview";
 
-interface MyWatchlistProps {
+interface WatchlistOverviewProps {
     jwtInfo: JWTInfo;
 }
 
-interface MyWatchlistState {
+interface WatchlistOverviewState {
     list;
 }
 
-class MyWatchlist extends Component<MyWatchlistProps, MyWatchlistState> {
-    constructor(props: MyWatchlistProps) {
+export default class WatchlistOverview extends Component<
+    WatchlistOverviewProps,
+    WatchlistOverviewState
+> {
+    constructor(props: WatchlistOverviewProps) {
         super(props);
         this.state = {
             list: [],
@@ -53,6 +56,7 @@ class MyWatchlist extends Component<MyWatchlistProps, MyWatchlistState> {
                     lists={this.state.list}
                     deleteWatchlists={true}
                     jwtInfo={this.props.jwtInfo}
+                    linkToWatchlist={true}
                     onDelete={() => {
                         this.loadData();
                     }}
@@ -61,5 +65,3 @@ class MyWatchlist extends Component<MyWatchlistProps, MyWatchlistState> {
         );
     }
 }
-
-export default MyWatchlist;

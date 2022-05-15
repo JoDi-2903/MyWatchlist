@@ -371,7 +371,7 @@ public class MyWatchlistController {
             if (myWatchlistService.checkWatchlistBelongsToUser(tvOrMovie.getWatchlistId(), tvOrMovie.getUsername())) {
                 if (myWatchlistService.checkWatchlistEntryExistsToUser(tvOrMovie.getTitleId(), tvOrMovie.getWatchlistId())) {
                     myWatchlistService.deleteCompleteTvOrMovie(tvOrMovie.getWatchlistId(), tvOrMovie.getTitleId());
-                    resp.addProperty(jsonKey, "Tv or movie successfully deleted ");
+                    resp.addProperty(jsonKey, "TV show or movie successfully deleted ");
                     return new ResponseEntity<>(resp.toString(), HttpStatus.OK);
                 }else {
                     resp.addProperty(jsonKey, "The watchlist entry cannot be assigned to the user");

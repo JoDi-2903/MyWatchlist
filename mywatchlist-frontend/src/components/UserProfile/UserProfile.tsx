@@ -174,6 +174,7 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                             <ListOverview
                                 lists={this.state.watchlist}
                                 deleteWatchlists={false}
+                                linkToWatchlist={false}
                             />
                         ) : (
                             <p className="dark:text-white text-center">

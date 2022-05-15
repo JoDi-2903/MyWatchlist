@@ -3,6 +3,7 @@ import "@egjs/react-flicking/dist/flicking.css";
 import { MinusCircleIcon } from "@heroicons/react/solid";
 import { Component } from "react";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 import { backendURL } from "../../Config";
 import { getUsername, JWTInfo } from "../../security/JWTContext";
 import Card from "../Wrapper/Card";
@@ -13,6 +14,7 @@ interface ListOverviewProps {
     deleteWatchlists: boolean;
     jwtInfo: JWTInfo;
     onDelete;
+    linkToWatchlist: boolean;
 }
 
 interface ListOverviewState {
@@ -78,7 +80,13 @@ class ListOverview extends Component<ListOverviewProps, ListOverviewState> {
                         classes="drop-shadow-lg m-4 p-4"
                     >
                         <h2 className="text-3xl text-primary pt-5 mb-5 flex justify-between">
-                            {list.watchlistName}
+                            {this.props.linkToWatchlist ? (
+                                <Link to={"/watchlist/" + list.watchlistId}>
+                                    {list.watchlistName}
+                                </Link>
+                            ) : (
+                                <p>{list.watchlistName}</p>
+                            )}
                             {this.props.deleteWatchlists ? (
                                 <button
                                     onClick={() =>
@@ -102,6 +110,7 @@ class ListOverview extends Component<ListOverviewProps, ListOverviewState> {
                                         id={element.titleId}
                                         type={element.titleType}
                                         showAddToList={false}
+                                        showDeleteFromList={false}
                                     />
                                 </div>
                             ))}

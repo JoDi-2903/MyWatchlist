@@ -82,7 +82,7 @@ class ChangeEmail extends Component<ChangeEmailProps, ChangeEmailState> {
                         </div>
                     </div>
                     <div
-                        className="flex justify-between gap-2 rounded-md border-2 bg-white_bg dark:bg-dark_bg border-white_bg dark:border-dark_bg cursor-pointer p-2 drop-shadow dark:text-dark_text"
+                        className="flex justify-between gap-2 rounded-md bg-white_bg dark:bg-dark_bg cursor-pointer py-2 px-4 drop-shadow dark:text-dark_text hover:dark:bg-card_dark"
                         onClick={() =>
                             this.setState({
                                 editEmail: !this.state.editEmail,
@@ -116,7 +116,7 @@ class ChangeEmail extends Component<ChangeEmailProps, ChangeEmailState> {
                     />
                     <button
                         onClick={this.saveMail}
-                        className="p-2 text-white dark:text-dark_navbar border border-primary hover:border-primary-200 rounded-lg shadow bg-primary hover:bg-primary-200 w-1/8 m-auto disabled:bg-primary-300 disabled:border-primary-300 disabled:dark:text-white w-1/3"
+                        className="p-2 text-white dark:text-dark_navbar border border-primary hover:border-primary-200 rounded-lg shadow bg-primary hover:bg-primary-200 w-1/8 m-auto disabled:bg-primary-300 disabled:border-primary-300 disabled:dark:text-white w-1/3 "
                         disabled={!this.state.newEmail.isValid}
                     >
                         Save

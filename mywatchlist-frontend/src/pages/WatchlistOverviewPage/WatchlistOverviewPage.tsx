@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import WatchlistOverview from "../../components/WatchlistOverview/WatchlistOverview";
 import { isLoggedIn, JWTContext } from "../../security/JWTContext";
 
-export default class MyWatchlistPage extends Component {
+export default class WatchlistOverviewPage extends Component {
     render() {
         return (
             <JWTContext.Consumer>
