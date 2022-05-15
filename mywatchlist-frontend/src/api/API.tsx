@@ -1,4 +1,7 @@
-import { apiConfig } from "../Config";
+import toast from "react-hot-toast";
+import Swal from "sweetalert2";
+import { apiConfig, backendURL } from "../Config";
+import { JWTInfo } from "../security/JWTContext";
 
 export const request = async (url: string, method: string, params: string) => {
     var responseStatus: number = 0;
@@ -48,7 +51,7 @@ export const discoverTV = async () => {
 
 export const getFullTVList = async (tv_id: number) => {
     var details = await getTVDetail(tv_id);
-    var data = new Array();
+    var data: any[] = [];
     details.data.seasons.forEach((season) => {
         var season_object = {
             season: season.season_number,
@@ -61,3 +64,77 @@ export const getFullTVList = async (tv_id: number) => {
     });
     return data;
 };
+
+export default async function addElementToList(
+    jwtInfo: JWTInfo,
+    id: number,
+    type: string,
+    tvInfoList
+) {
+    var responseStatus: number = 0;
+    var responseData;
+    await fetch(backendURL + "/watchlist/getwatchlists/" + jwtInfo.username, {
+        method: "GET",
+        headers: {
+            Authorization: "Bearer " + jwtInfo.jwt,
+        },
+    })
+        .then((response) => {
+            responseStatus = response.status;
+            return response.json();
+        })
+        .then((data) => {
+            responseData = data;
+        });
+    if (responseStatus === 200) {
+        var optionsList = responseData.map((list) => list.watchlistName);
+        Swal.fire({
+            icon: "question",
+            title: "To which list the " + type + " should be added?",
+            showCancelButton: true,
+            reverseButtons: true,
+            input: "select",
+            inputOptions: optionsList,
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                var body = {
+                    username: jwtInfo.username,
+                    watchlistId: responseData[result.value].watchlistId,
+                    watchlistEntry: {
+                        titleId: id,
+                        titleType: type,
+                        tvInfoList: tvInfoList,
+                    },
+                };
+                var addStatus: number = 0;
+                var addStatusText: string = "";
+                await fetch(backendURL + "/watchlist/addWatchlistlistEntry", {
+                    method: "POST",
+                    headers: {
+                        Authorization: "Bearer " + jwtInfo.jwt,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(body),
+                })
+                    .then((response) => {
+                        addStatus = response.status;
+                        return response.json();
+                    })
+                    .then((data) => (addStatusText = data.response));
+                if (addStatus === 201) {
+                    Swal.fire({
+                        icon: "success",
+                        title: addStatusText,
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: addStatusText,
+                    });
+                }
+            }
+        });
+    } else {
+        toast.error("Could not fetch data.");
+    }
+}

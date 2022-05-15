@@ -14,6 +14,7 @@ interface RegistrationFormState {
     isPasswordValid: boolean;
     isMailValid: boolean;
     isUsernameValid: boolean;
+    isPrivacyChecked: boolean;
 }
 
 interface RegistrationFormInformation {
@@ -39,6 +40,7 @@ class RegistrationForm extends Component<
             isPasswordValid: false,
             isMailValid: false,
             isUsernameValid: false,
+            isPrivacyChecked: false,
         };
     }
 
@@ -119,8 +121,13 @@ class RegistrationForm extends Component<
                             <input
                                 type="checkbox"
                                 name="privacy"
+                                onChange={(e) =>
+                                    this.setState({
+                                        isPrivacyChecked: e.target.checked,
+                                    })
+                                }
                                 required
-                                className="appearance-none h-5 w-5 border border-border_primary rounded-md bg-transparent checked:bg-primary checked:border-primary transition duration-200 mt-1 float-left cursor-pointer"
+                                className="appearance-none h-5 w-5 border border-border_primary rounded-md bg-transparent checked:bg-primary_green checked:border-primary_green transition duration-200 mt-1 float-left cursor-pointer"
                             />
                             <label className="pl-2 text-dark dark:text-white">
                                 <span>
@@ -135,7 +142,14 @@ class RegistrationForm extends Component<
                             </label>
                         </div>
                         <input
-                            className="mt-5 w-full p-2 text-white dark:text-dark_bg border border-primary rounded cursor-pointer bg-primary hover:bg-primary-100 hover:border-primary-100"
+                            className={
+                                this.state.isMailValid &&
+                                this.state.isPasswordValid &&
+                                this.state.isUsernameValid &&
+                                this.state.isPrivacyChecked
+                                    ? "mt-5 w-full p-2 text-white dark:text-dark_bg border border-primary_green rounded cursor-pointer bg-primary_green hover:bg-primary_green-100 hover:border-primary_green-100"
+                                    : "mt-5 w-full p-2 text-white dark:text-dark_bg border border-primary rounded cursor-pointer bg-primary hover:bg-primary-100 hover:border-primary-100"
+                            }
                             type="submit"
                             value="Sign up"
                         />

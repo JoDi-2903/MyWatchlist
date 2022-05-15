@@ -13,7 +13,7 @@ export default class Card extends Component<CardProps> {
         return (
             <div
                 className={
-                    "bg-white dark:bg-card_dark drop-shadow-lg m-4 p-4 " +
+                    "bg-gray-50 dark:bg-dark_navbar drop-shadow-lg m-4 p-4 " +
                     this.props.classes
                 }
             >
