@@ -4,16 +4,22 @@ import Cover from "../Search/Cover";
 import Card from "../Wrapper/Card";
 import ReactStarsRating from "react-awesome-stars-rating";
 import { JWTContext } from "../../security/JWTContext";
-import addElementToList, {
+import {
+    addElementToList,
+    deleteFromList,
     getFullTVList,
     getMovieDetail,
     getTVDetail,
 } from "../../api/API";
+import { MinusCircleIcon, PlusCircleIcon } from "@heroicons/react/solid";
 
 interface ListElementProps {
     type: string;
     id: number;
+    watchlistId: number;
     showAddToList: boolean;
+    showDeleteFromList: boolean;
+    triggerUpdate;
 }
 
 interface ListElementState {
@@ -24,6 +30,10 @@ interface ListElementState {
 }
 
 class ListElement extends Component<ListElementProps, ListElementState> {
+    static defaultProps = {
+        watchlistId: 0,
+        triggerUpdate: () => {},
+    };
     constructor(props: ListElementProps) {
         super(props);
 
@@ -99,9 +109,30 @@ class ListElement extends Component<ListElementProps, ListElementState> {
                                             tvlist
                                         );
                                     }}
-                                    className="text-left text-white_text dark:text-dark_text cursor-pointer underline text-sm pt-2"
+                                    className="text-left text-white_text dark:text-dark_text cursor-pointer underline text-sm pt-2 justify-self-end relative top-5"
                                 >
-                                    Add to list
+                                    <PlusCircleIcon className="w-6 text-primary hover:text-primary-100" />
+                                </button>
+                            )}
+                        </JWTContext.Consumer>
+                    ) : (
+                        ""
+                    )}
+                    {this.props.showDeleteFromList ? (
+                        <JWTContext.Consumer>
+                            {({ jwtInfo }) => (
+                                <button
+                                    onClick={async () => {
+                                        deleteFromList(
+                                            jwtInfo,
+                                            this.props.watchlistId,
+                                            this.props.id
+                                        );
+                                        this.props.triggerUpdate();
+                                    }}
+                                    className="text-left text-white_text dark:text-dark_text cursor-pointer underline text-sm pt-2 justify-self-end relative top-5"
+                                >
+                                    <MinusCircleIcon className="w-6 text-primary hover:text-primary-100" />
                                 </button>
                             )}
                         </JWTContext.Consumer>

@@ -65,12 +65,12 @@ export const getFullTVList = async (tv_id: number) => {
     return data;
 };
 
-export default async function addElementToList(
+export const addElementToList = async (
     jwtInfo: JWTInfo,
     id: number,
     type: string,
     tvInfoList
-) {
+) => {
     var responseStatus: number = 0;
     var responseData;
     await fetch(backendURL + "/watchlist/getwatchlists/" + jwtInfo.username, {
@@ -122,19 +122,46 @@ export default async function addElementToList(
                     })
                     .then((data) => (addStatusText = data.response));
                 if (addStatus === 201) {
-                    Swal.fire({
-                        icon: "success",
-                        title: addStatusText,
-                    });
+                    toast.success(addStatusText);
                 } else {
-                    Swal.fire({
-                        icon: "error",
-                        title: addStatusText,
-                    });
+                    toast.error(addStatusText);
                 }
             }
         });
     } else {
         toast.error("Could not fetch data.");
     }
-}
+};
+
+export const deleteFromList = async (
+    jwtInfo: JWTInfo,
+    watchlistId: number,
+    titleId: number
+) => {
+    var responseStatus: number = 0;
+    var responseData;
+    await fetch(backendURL + "/watchlist/deleteCompleteTvOrMovie", {
+        method: "DELETE",
+        headers: {
+            Authorization: "Bearer " + jwtInfo.jwt,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            username: jwtInfo.username,
+            watchlistId: watchlistId,
+            titleId: titleId,
+        }),
+    })
+        .then((response) => {
+            responseStatus = response.status;
+            return response.json();
+        })
+        .then((data) => {
+            responseData = data;
+        });
+    if (responseStatus === 200) {
+        toast.success(responseData.response);
+    } else {
+        toast.error(responseData.response);
+    }
+};

@@ -76,7 +76,7 @@ class ChangePassword extends Component<
                         </div>
                     </div>
                     <div
-                        className="flex justify-between gap-2 rounded-md border-2 bg-white_bg dark:bg-dark_bg border-white_bg dark:border-dark_bg cursor-pointer p-2 drop-shadow dark:text-dark_text"
+                        className="flex justify-between gap-2 rounded-md bg-white_bg dark:bg-dark_bg cursor-pointer py-2 px-4 drop-shadow dark:text-dark_text hover:dark:bg-card_dark"
                         onClick={() =>
                             this.setState({
                                 editPassword: !this.state.editPassword,

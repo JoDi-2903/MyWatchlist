@@ -51,6 +51,7 @@ class SearchResults extends Component<SearchResultsProps, SearchResultsState> {
                                     type="movie"
                                     key={result.id}
                                     showAddToList={true}
+                                    showDeleteFromList={false}
                                 />
                             ))
                         ) : (
@@ -73,6 +74,7 @@ class SearchResults extends Component<SearchResultsProps, SearchResultsState> {
                                     type="tv"
                                     key={result.id}
                                     showAddToList={true}
+                                    showDeleteFromList={false}
                                 />
                             ))
                         ) : (

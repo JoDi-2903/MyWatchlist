@@ -49,6 +49,7 @@ export default class StartPage extends Component<
                                     type="movie"
                                     key={movie.id}
                                     showAddToList={true}
+                                    showDeleteFromList={false}
                                 />
                             </div>
                         ))}
@@ -70,6 +71,7 @@ export default class StartPage extends Component<
                                     type="tv"
                                     key={movie.id}
                                     showAddToList={true}
+                                    showDeleteFromList={false}
                                 />
                             </div>
                         ))}
