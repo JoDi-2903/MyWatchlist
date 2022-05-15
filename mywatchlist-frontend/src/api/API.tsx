@@ -44,3 +44,9 @@ export const discoverMovie = async () => {
 export const discoverTV = async () => {
     return await request("discover/tv", "GET", "");
 }
+export const similarMovie = async (movie_id: number) => {
+    return await request("movie/" + movie_id + "/similar", "GET", "");
+}
+export const similarTV = async (tv_id: number) => {
+    return await request("tv/" + tv_id + "/similar", "GET", "");
+}
