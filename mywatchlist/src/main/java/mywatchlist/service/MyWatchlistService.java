@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -193,8 +194,8 @@ public class MyWatchlistService {
         //var test = watchlistRepo.findAllByUserUserId(getUserId(username));
     }
 
-    public boolean checkWatchlistEntryExistsToUser(long entryId, String username) {
-        return watchlistEntryRepo.findWatchlistEntryByEntryIdAndUsername(entryId, username).isPresent();
+    public boolean checkWatchlistEntryExistsToUser(int titleId, long watchlistId) {
+        return watchlistEntryRepo.findByTitleIdAndWatchlistWatchlistId(titleId, watchlistId).isPresent();
     }
 
     public void deleteWatchlistEntry(long entryId) {
@@ -280,18 +281,18 @@ public class MyWatchlistService {
         watchlistEntry.setWatchlist(watchlist);
 
         if (title.equals(Title.TV)) {
-            if(!checkTitleIdIsUsed(watchlistEntryDto.getWatchlistId(), watchlistEntryDto.getWatchlistEntry().getTitleId())){
+            if (!checkTitleIdIsUsed(watchlistEntryDto.getWatchlistId(), watchlistEntryDto.getWatchlistEntry().getTitleId())) {
                 // title gibt es noch nicht zu der serie
                 watchlistEntryRepo.save(watchlistEntry);
             }
-            watchlistEntry = watchlistEntryRepo.findByTitleIdAndWatchlistWatchlistId(watchlistEntryDto.getWatchlistEntry().getTitleId() ,
+            watchlistEntry = watchlistEntryRepo.findByTitleIdAndWatchlistWatchlistId(watchlistEntryDto.getWatchlistEntry().getTitleId(),
                     watchlistEntryDto.getWatchlistId()).orElseThrow(EntityNotFoundException::new);
 
             for (var tv : watchlistEntryDto.getWatchlistEntry().getTvInfoList()) {
-                List<TvInfo> tvInfoList = tvInfoRepo.findByWatchlistEntryEntryIdAndAndSeason(watchlistEntry.getEntryId(),tv.getSeason());
+                List<TvInfo> tvInfoList = tvInfoRepo.findByWatchlistEntryEntryIdAndSeason(watchlistEntry.getEntryId(), tv.getSeason());
                 for (var episode : tv.getEpisodes()) {
                     //episode gibt es schon
-                    if(tvInfoList.stream().noneMatch(x -> x.getEpisode() == episode)){
+                    if (tvInfoList.stream().noneMatch(x -> x.getEpisode() == episode)) {
                         TvInfo tvInfo = new TvInfo();
                         tvInfo.setSeason(tv.getSeason());
                         tvInfo.setEpisode(episode);
@@ -300,7 +301,7 @@ public class MyWatchlistService {
                     }
                 }
             }
-        }else{
+        } else {
             watchlistEntryRepo.save(watchlistEntry);
         }
     }
@@ -311,5 +312,39 @@ public class MyWatchlistService {
 
     public void deleteUser(String username) {
         userAccountRepo.deleteById(getUserId(username));
+    }
+
+    public void deleteCompleteTvOrMovie(long watchlistId, int titleId) {
+        Optional<WatchlistEntry> watchlistEntry = watchlistEntryRepo.findByTitleIdAndWatchlistWatchlistId(titleId, watchlistId);
+        watchlistEntry.ifPresent(entry -> watchlistEntryRepo.deleteById(entry.getEntryId()));
+    }
+
+    public void deleteEpisodes(long watchlistId, int titleId, TvInfoDto tvInfoDto) {
+        Optional<WatchlistEntry> watchlistEntry = watchlistEntryRepo.findByTitleIdAndWatchlistWatchlistId(titleId, watchlistId);
+
+        if (watchlistEntry.isPresent()) {
+            List<TvInfo> tvInfoList = tvInfoRepo.findByWatchlistEntryEntryIdAndSeason(watchlistEntry.get().getEntryId(), tvInfoDto.getSeason());
+            for (var tvInfo : tvInfoList) {
+                if (tvInfoDto.getEpisodes().stream().anyMatch(x -> x == tvInfo.getEpisode())) {
+                    tvInfoRepo.deleteById(tvInfo.getTvInfoId());
+                }
+            }
+        }
+    }
+
+    public void deleteSeasons(long watchlistId, int titleId, List<Short> seasons) {
+        Optional<WatchlistEntry> watchlistEntry = watchlistEntryRepo.findByTitleIdAndWatchlistWatchlistId(titleId, watchlistId);
+
+        if (watchlistEntry.isPresent()) {
+            List<TvInfo> tvInfoList = tvInfoRepo.findByWatchlistEntryEntryId(watchlistEntry.get().getEntryId());
+
+            for (var tvInfo : tvInfoList) {
+                for (var season : seasons) {
+                    if(tvInfo.getSeason() == season){
+                        tvInfoRepo.delete(tvInfo);
+                    }
+                }
+            }
+        }
     }
 }

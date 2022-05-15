@@ -277,7 +277,7 @@ public class MyWatchlistController {
     public ResponseEntity<String> deleteWatchlistEntry(@PathVariable String username, @PathVariable long entryId) {
         JsonObject resp = new JsonObject();
         if (myWatchlistService.checkUsernameExist(username)) {
-            if (myWatchlistService.checkWatchlistEntryExistsToUser(entryId, username)) {
+            if (myWatchlistService.checkWatchlistEntryExistsToUser(1, 2)) {
                 myWatchlistService.deleteWatchlistEntry(entryId);
                 resp.addProperty(jsonKey, "Successfully deleted the watchlist entry");
                 return new ResponseEntity<>(resp.toString(), HttpStatus.OK);
@@ -299,6 +299,89 @@ public class MyWatchlistController {
             myWatchlistService.deleteUser(username);
             resp.addProperty(jsonKey, "User successfully deleted");
             return new ResponseEntity<>(resp.toString(), HttpStatus.OK);
+        } else {
+            resp.addProperty(jsonKey, "User does not exist");
+            return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/watchlist/deleteEpisodes")
+    @PreAuthorize("#deleteEpisodesDto.getUsername() == authentication.name")
+    public ResponseEntity<String> deleteEpisode(@RequestBody DeleteEpisodesDto deleteEpisodesDto) {
+        JsonObject resp = new JsonObject();
+        if (myWatchlistService.checkUsernameExist(deleteEpisodesDto.getUsername())) {
+            if(deleteEpisodesDto.getTvInfo().getEpisodes().size() != 0){
+                if (myWatchlistService.checkWatchlistBelongsToUser(deleteEpisodesDto.getWatchlistId(), deleteEpisodesDto.getUsername())) {
+                    if (myWatchlistService.checkWatchlistEntryExistsToUser(deleteEpisodesDto.getTitleId(), deleteEpisodesDto.getWatchlistId())) { //todo macht das sinn??
+                        myWatchlistService.deleteEpisodes(deleteEpisodesDto.getWatchlistId(), deleteEpisodesDto.getTitleId(), deleteEpisodesDto.getTvInfo());
+                        resp.addProperty(jsonKey, "Episodes successfully deleted");
+                        return new ResponseEntity<>(resp.toString(), HttpStatus.OK);
+                    }else {
+                        resp.addProperty(jsonKey, "The watchlist entry cannot be assigned to the user");
+                        return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+                    }
+                }else {
+                    resp.addProperty(jsonKey, "Watchlist dont exist or belongs to the user");
+                    return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+                }
+            }else{
+                resp.addProperty(jsonKey, "Please specify the episodes to be deleted");
+                return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            resp.addProperty(jsonKey, "User does not exist");
+            return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/watchlist/deleteSeasons")
+    @PreAuthorize("#deleteSeasonsDto.getUsername() == authentication.name")
+    public ResponseEntity<String> deleteSeasons(@RequestBody DeleteSeasonsDto deleteSeasonsDto) {
+        JsonObject resp = new JsonObject();
+        if (myWatchlistService.checkUsernameExist(deleteSeasonsDto.getUsername())) {
+            if(deleteSeasonsDto.getSeasons().size() != 0){
+                if (myWatchlistService.checkWatchlistBelongsToUser(deleteSeasonsDto.getWatchlistId(), deleteSeasonsDto.getUsername())) {
+                    if (myWatchlistService.checkWatchlistEntryExistsToUser(deleteSeasonsDto.getTitleId(), deleteSeasonsDto.getWatchlistId())) { //todo macht das sinn??
+                        myWatchlistService.deleteSeasons(deleteSeasonsDto.getWatchlistId(), deleteSeasonsDto.getTitleId(),deleteSeasonsDto.getSeasons());
+                        resp.addProperty(jsonKey, "Seasons successfully deleted");
+                        return new ResponseEntity<>(resp.toString(), HttpStatus.OK);
+                    }else {
+                        resp.addProperty(jsonKey, "The watchlist entry cannot be assigned to the user");
+                        return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+                    }
+                }else {
+                    resp.addProperty(jsonKey, "Watchlist dont exist or belongs to the user");
+                    return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+                }
+            }else{
+                resp.addProperty(jsonKey, "Please specify the seasons to be deleted");
+                return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            resp.addProperty(jsonKey, "User does not exist");
+            return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/watchlist/deleteCompleteTvOrMovie")
+    @PreAuthorize("#tvOrMovie.getUsername() == authentication.name")
+    public ResponseEntity<String> deleteCompleteTvOrMovie(@RequestBody DeleteCompleteTvOrMovieDto tvOrMovie) {
+        JsonObject resp = new JsonObject();
+        if (myWatchlistService.checkUsernameExist(tvOrMovie.getUsername())) {
+            if (myWatchlistService.checkWatchlistBelongsToUser(tvOrMovie.getWatchlistId(), tvOrMovie.getUsername())) {
+                if (myWatchlistService.checkWatchlistEntryExistsToUser(tvOrMovie.getTitleId(), tvOrMovie.getWatchlistId())) {
+                    myWatchlistService.deleteCompleteTvOrMovie(tvOrMovie.getWatchlistId(), tvOrMovie.getTitleId());
+                    resp.addProperty(jsonKey, "Tv or movie successfully deleted ");
+                    return new ResponseEntity<>(resp.toString(), HttpStatus.OK);
+                }else {
+                    resp.addProperty(jsonKey, "The watchlist entry cannot be assigned to the user");
+                    return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+                }
+            }else {
+                resp.addProperty(jsonKey, "Watchlist dont exist or belongs to the user");
+                return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
+            }
+
         } else {
             resp.addProperty(jsonKey, "User does not exist");
             return new ResponseEntity<>(resp.toString(), HttpStatus.BAD_REQUEST);
