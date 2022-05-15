@@ -34,7 +34,6 @@ class ListOverview extends Component<ListOverviewProps, ListOverviewState> {
 
     componentDidUpdate() {
         if (this.props.lists !== this.state.lists) {
-            console.log(this.props.lists);
             this.setState({ lists: this.props.lists || [] });
         }
     }
@@ -74,9 +73,9 @@ class ListOverview extends Component<ListOverviewProps, ListOverviewState> {
         return (
             <div>
                 {this.state.lists.map((list) => (
-                    <div
+                    <Card
                         key={list.watchlistName}
-                        className="bg-gray-50 dark:bg-dark_navbar drop-shadow-lg m-4 p-4"
+                        classes="drop-shadow-lg m-4 p-4"
                     >
                         <h2 className="text-3xl text-primary pt-5 mb-5 flex justify-between">
                             {list.watchlistName}
@@ -107,7 +106,7 @@ class ListOverview extends Component<ListOverviewProps, ListOverviewState> {
                                 </div>
                             ))}
                         </Flicking>
-                    </div>
+                    </Card>
                 ))}
             </div>
         );

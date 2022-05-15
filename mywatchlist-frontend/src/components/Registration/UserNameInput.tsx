@@ -1,7 +1,7 @@
+import { CheckIcon, XIcon } from "@heroicons/react/solid";
 import { ChangeEvent, Component } from "react";
 import toast from "react-hot-toast";
 import { backendURL } from "../../Config";
-import { classesInvalidInput, classesValidInput } from "../ComponentClasses";
 
 interface UsernameInputProps {
     handleInput;
@@ -10,6 +10,7 @@ interface UsernameInputProps {
 interface UsernameInputState {
     username: string;
     isValid: boolean;
+    isFocused: boolean;
 }
 
 class UsernameInput extends Component<UsernameInputProps, UsernameInputState> {
@@ -18,6 +19,7 @@ class UsernameInput extends Component<UsernameInputProps, UsernameInputState> {
         this.state = {
             username: "",
             isValid: false,
+            isFocused: false,
         };
     }
 
@@ -77,24 +79,26 @@ class UsernameInput extends Component<UsernameInputProps, UsernameInputState> {
                 >
                     Username
                 </label>
-                <input
-                    id="username"
-                    type="text"
-                    onChange={this.handleInput}
-                    className={
-                        this.state.isValid
-                            ? classesValidInput
-                            : classesInvalidInput + " peer"
-                    }
-                />
-                <div className="invisible h-0 peer-focus:visible peer-focus:h-full transition-all duration-300">
-                    <p
-                        className={
-                            this.state.isValid ? "hidden" : "text-primary"
-                        }
-                    >
-                        Username is already taken or invalid
-                    </p>
+                <div className="z-0 flex justify-self-center align-middle w-full p-2 bg-white dark:bg-dark_input rounded drop-shadow">
+                    <input
+                        name="username"
+                        type="text"
+                        value={this.state.username}
+                        onChange={this.handleInput}
+                        onFocus={() => this.setState({ isFocused: true })}
+                        onBlur={() => this.setState({ isFocused: false })}
+                        className="h-8 p-2 text-lg focus:outline-none w-full bg-transparent text-white_text dark:text-white"
+                    />
+
+                    {this.state.isFocused ? (
+                        this.state.isValid ? (
+                            <CheckIcon className="h-8 text-primary_green" />
+                        ) : (
+                            <XIcon className="w-8 text-primary" />
+                        )
+                    ) : (
+                        ""
+                    )}
                 </div>
             </div>
         );

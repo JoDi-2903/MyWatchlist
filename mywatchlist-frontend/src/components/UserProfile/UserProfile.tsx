@@ -1,5 +1,4 @@
 import { Component } from "react";
-import { UserIcon } from "@heroicons/react/solid";
 import { backendURL } from "../../Config";
 import { JWTInfo } from "../../security/JWTContext";
 import toast from "react-hot-toast";
@@ -122,12 +121,13 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
             <div className="w-full">
                 {this.state.existUser ? (
                     <div>
-                        <div className="bg-gray-50 dark:bg-dark_navbar drop-shadow-lg p-6 flex">
+                        <Card classes="drop-shadow-lg p-6 flex">
                             <img
                                 src={createAvatar(style, {
                                     seed: this.props.username,
                                     dataUri: true,
                                 })}
+                                alt="User Avatar"
                                 className="w-20 h-20 rounded bg-white_bg dark:bg-dark_bg m-4"
                             />
                             <div className="m-4">
@@ -169,7 +169,7 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                                     ""
                                 )}
                             </div>
-                        </div>
+                        </Card>
                         {!this.state.isPrivateProfile ? (
                             <ListOverview
                                 lists={this.state.watchlist}

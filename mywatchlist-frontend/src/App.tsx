@@ -21,6 +21,7 @@ import {
 } from "./security/JWTContext";
 import SearchPage from "./pages/SearchPage/SearchPage";
 import MyWatchlistPage from "./pages/MyWatchlistPage/MyWatchlistPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage/PrivacyPolicyPage";
 
 interface AppProps {}
 
@@ -117,6 +118,10 @@ export default class App extends React.Component<AppProps, AppState> {
                                     <Route
                                         path="/user/:id"
                                         element={<UserProfilePage />}
+                                    />
+                                    <Route
+                                        path="/privacy"
+                                        element={<PrivacyPolicyPage />}
                                     />
 
                                     <Route
