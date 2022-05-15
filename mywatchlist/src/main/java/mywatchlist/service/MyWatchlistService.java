@@ -78,12 +78,12 @@ public class MyWatchlistService {
     }
 
     public boolean validateEmail(String email) {
-        String pattern = "^([A-Za-z0-9._+-]{2,20})+@([A-Za-z0-9]{2,20})+(.[A-Za-z]{2,4})$";
+        String pattern = "^[\\w-\\.]+@(([\\w-]+\\.)?)+([\\w-]+\\.)+[\\w-]{2,4}$";
         return email.matches(pattern);
     }
 
     public boolean validatePassword(String password) {
-        String pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!\"#$§€%&'+,./:;=?@\\^`|~\\-_\\(\\)\\[\\]]).{8,30}$";
+        String pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!\"#$§€%&'+,./:;=?@\\^`|~\\-_\\(\\)\\[\\]]).{8,50}$";
         return password.matches(pattern);
     }
 

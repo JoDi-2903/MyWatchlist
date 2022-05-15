@@ -61,7 +61,7 @@ class PasswordInput extends Component<PasswordInputProps, PasswordInputState> {
                     isSpecialCharacterPresent: matchesSpecial > 0,
                     isLengthValid:
                         this.state.password.length >= 8 &&
-                        this.state.password.length <= 30,
+                        this.state.password.length <= 50,
                 },
                 () => {
                     this.setState(
