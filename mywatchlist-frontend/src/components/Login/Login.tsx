@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import toast from "react-hot-toast";
 import { backendURL } from "../../Config";
-import { classesInvalidInput } from "../ComponentClasses";
 import Card from "../Wrapper/Card";
 
 interface LoginInformation {

@@ -3,7 +3,6 @@ import { Component } from "react";
 import toast from "react-hot-toast";
 import { backendURL } from "../../Config";
 import { getUsername, JWTInfo } from "../../security/JWTContext";
-import { classesInvalidInput } from "../ComponentClasses";
 import PasswordInput from "../Registration/PasswordInput";
 import Card from "../Wrapper/Card";
 
