@@ -18,7 +18,7 @@
     "query-string": "^7.1.1",
     "rc-progress": "^3.2.4",
     "react": "^18.1.0",
-    "react-awesome-stars-rating": "^0.10.0",
+    "react-awesome-stars-rating": "^0.11.0",
     "react-dom": "^18.1.0",
     "react-hot-toast": "^2.2.0",
     "react-lazyload": "^3.2.0",
