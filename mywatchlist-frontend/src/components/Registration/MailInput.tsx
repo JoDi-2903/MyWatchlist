@@ -1,5 +1,5 @@
+import { CheckIcon, XIcon } from "@heroicons/react/solid";
 import React, { Component } from "react";
-import { classesInvalidInput, classesValidInput } from "../ComponentClasses";
 
 interface MailInputProps {
     title: string;
@@ -9,6 +9,7 @@ interface MailInputProps {
 interface MailInputState {
     mail: string;
     isValid: boolean;
+    isFocused: boolean;
 }
 
 class MailInput extends Component<MailInputProps, MailInputState> {
@@ -17,6 +18,7 @@ class MailInput extends Component<MailInputProps, MailInputState> {
         this.state = {
             mail: "",
             isValid: false,
+            isFocused: false,
         };
     }
 
@@ -25,7 +27,7 @@ class MailInput extends Component<MailInputProps, MailInputState> {
             // Check Mail here
             var match = (
                 this.state.mail.match(
-                    "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
+                    "^[\\w-\\.]+@(([\\w-]+\\.)?)+([\\w-]+\\.)+[\\w-]{2,4}$"
                 ) || []
             ).length;
 
@@ -49,24 +51,24 @@ class MailInput extends Component<MailInputProps, MailInputState> {
                 >
                     {this.props.title}
                 </label>
-                <input
-                    id="email"
-                    className={
-                        this.state.isValid
-                            ? classesValidInput + " peer mb-1"
-                            : classesInvalidInput + " peer mb-1"
-                    }
-                    value={this.state.mail}
-                    onChange={this.handleInput}
-                />
-                <div className="opacity-0 h-0 peer-focus:opacity-100 peer-focus:h-full transition-all duration-100">
-                    <p
-                        className={
-                            this.state.isValid ? "hidden" : "text-primary"
-                        }
-                    >
-                        Please provide a valid E-Mail.
-                    </p>
+                <div className="flex justify-self-center align-middle w-full p-2 bg-white dark:bg-dark_input rounded drop-shadow">
+                    <input
+                        name="email"
+                        className="h-8 p-2 text-lg focus:outline-none w-full bg-transparent text-white_text dark:text-white"
+                        value={this.state.mail}
+                        onChange={this.handleInput}
+                        onFocus={() => this.setState({ isFocused: true })}
+                        onBlur={() => this.setState({ isFocused: false })}
+                    />
+                    {this.state.isFocused ? (
+                        this.state.isValid ? (
+                            <CheckIcon className="h-8 text-primary_green" />
+                        ) : (
+                            <XIcon className="w-8 text-primary" />
+                        )
+                    ) : (
+                        ""
+                    )}
                 </div>
             </div>
         );

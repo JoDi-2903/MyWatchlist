@@ -16,10 +16,12 @@ public interface WatchlistEntryRepo extends JpaRepository<WatchlistEntry, Long> 
 
     @Query("SELECT we FROM WatchlistEntry we INNER JOIN Watchlist w on w.watchlistId = we.watchlist.watchlistId " +
             "INNER JOIN UserProfile up on w.user.userId = up.userId " +
-            "where we.entryId =:entryId " +
-            "and up.username =:username"
+            "where we.titleId =:titleId " +
+            "and up.username =:username and w.watchlistId =:watchlistId"
     )
-    Optional<WatchlistEntry> findWatchlistEntryByEntryIdAndUsername(@Param(value = "entryId") long entryId, @Param(value = "username") String username);
+    Optional<WatchlistEntry> findWatchlistEntryByTitleIdAndUsernameAndWatchlistWatchlistId(@Param(value = "titleId") int titleId,
+                                                                                            @Param(value = "username") String username,
+                                                                                            @Param(value = "watchlistId") long watchlistId);
     Optional<WatchlistEntry> findByTitleIdAndWatchlistWatchlistId(int titleId, long watchlistId);
 
 }

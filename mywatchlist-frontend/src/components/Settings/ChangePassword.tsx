@@ -3,7 +3,6 @@ import { Component } from "react";
 import toast from "react-hot-toast";
 import { backendURL } from "../../Config";
 import { getUsername, JWTInfo } from "../../security/JWTContext";
-import { classesInvalidInput } from "../ComponentClasses";
 import PasswordInput from "../Registration/PasswordInput";
 import Card from "../Wrapper/Card";
 
@@ -77,7 +76,7 @@ class ChangePassword extends Component<
                         </div>
                     </div>
                     <div
-                        className="flex justify-between gap-2 rounded-md border-2 bg-white_bg dark:bg-dark_bg border-white_bg dark:border-dark_bg cursor-pointer p-2 drop-shadow dark:text-dark_text"
+                        className="flex justify-between gap-2 rounded-md bg-white_bg dark:bg-dark_bg cursor-pointer py-2 px-4 drop-shadow dark:text-dark_text hover:dark:bg-card_dark"
                         onClick={() =>
                             this.setState({
                                 editPassword: !this.state.editPassword,
@@ -91,7 +90,7 @@ class ChangePassword extends Component<
                 <div
                     className={
                         this.state.editPassword
-                            ? "w-10/12 mt-5 mx-auto grid grid-cols-1"
+                            ? "w-10/12 mt-5 mx-auto grid grid-cols-1 p-5"
                             : "hidden"
                     }
                 >
@@ -115,19 +114,21 @@ class ChangePassword extends Component<
                     >
                         Old Password
                     </label>
-                    <input
-                        id="oldPassword"
-                        className={classesInvalidInput + "mb-3"}
-                        type="password"
-                        onChange={(e) =>
-                            this.setState({ oldPassword: e.target.value })
-                        }
-                        value={this.state.oldPassword}
-                    />
+                    <div className="flex justify-self-center align-middle w-full p-2 bg-white dark:bg-dark_input rounded drop-shadow mb-3">
+                        <input
+                            id="oldPassword"
+                            className="h-8 p-2 text-lg focus:outline-none w-full bg-transparent text-white_text dark:text-white"
+                            type="password"
+                            onChange={(e) =>
+                                this.setState({ oldPassword: e.target.value })
+                            }
+                            value={this.state.oldPassword}
+                        />
+                    </div>
 
                     <button
                         onClick={this.savePassword}
-                        className="p-2 border border-primary hover:border-primary-200 rounded-lg shadow bg-primary hover:bg-primary-200 w-1/8 m-auto disabled:bg-primary-300 disabled:border-primary-300 disabled:dark:text-white w-1/3"
+                        className="p-2 text-white dark:text-dark_navbar border border-primary hover:border-primary-200 rounded-lg shadow bg-primary hover:bg-primary-200 w-1/8 m-auto disabled:bg-primary-300 disabled:border-primary-300 disabled:dark:text-white w-1/3"
                         disabled={!this.state.newPassword.isValid}
                     >
                         Save

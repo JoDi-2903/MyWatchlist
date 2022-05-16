@@ -1,6 +1,10 @@
+import {
+    CheckIcon,
+    QuestionMarkCircleIcon,
+    XIcon,
+} from "@heroicons/react/solid";
 import { Line } from "rc-progress";
 import React, { Component } from "react";
-import { classesInvalidInput, classesValidInput } from "../ComponentClasses";
 
 interface PasswordInputProps {
     handleInput;
@@ -14,6 +18,8 @@ interface PasswordInputState {
     isNumberPresent: boolean;
     isSpecialCharacterPresent: boolean;
     isLengthValid: boolean;
+    showHelp: boolean;
+    isFocused: boolean;
 }
 
 class PasswordInput extends Component<PasswordInputProps, PasswordInputState> {
@@ -27,6 +33,8 @@ class PasswordInput extends Component<PasswordInputProps, PasswordInputState> {
             isNumberPresent: false,
             isSpecialCharacterPresent: false,
             isLengthValid: false,
+            showHelp: false,
+            isFocused: false,
         };
     }
 
@@ -53,7 +61,7 @@ class PasswordInput extends Component<PasswordInputProps, PasswordInputState> {
                     isSpecialCharacterPresent: matchesSpecial > 0,
                     isLengthValid:
                         this.state.password.length >= 8 &&
-                        this.state.password.length <= 30,
+                        this.state.password.length <= 50,
                 },
                 () => {
                     this.setState(
@@ -79,24 +87,56 @@ class PasswordInput extends Component<PasswordInputProps, PasswordInputState> {
 
     render() {
         return (
-            <div>
-                <label
-                    htmlFor="password"
-                    className="block text-black dark:text-white text-md font-bold mb-2"
-                >
-                    Password
-                </label>
-                <input
-                    id="password"
-                    type="password"
-                    value={this.state.password}
-                    onChange={this.handleInput}
-                    className={
-                        this.state.isPasswordValid
-                            ? classesValidInput + " peer mb-2"
-                            : classesInvalidInput + " peer mb-2"
-                    }
-                />
+            <div className="mb-5">
+                <div className="flex justify-start gap-2 mb-2 items-center">
+                    <label
+                        htmlFor="password"
+                        className="text-black dark:text-white text-md font-bold"
+                    >
+                        Password
+                    </label>
+                    <QuestionMarkCircleIcon
+                        className="w-5 text-white_text dark:text-dark_text"
+                        onMouseEnter={() => this.setState({ showHelp: true })}
+                        onMouseLeave={() => this.setState({ showHelp: false })}
+                    />
+                    {this.state.showHelp ? (
+                        <div className="absolute top-64 bg-dark_bg text-dark_text z-10 rounded p-5 drop-shadow-lg m-2">
+                            <h1 className="font-bold text-lg">
+                                Password Requirements
+                            </h1>
+                            <ul className="">
+                                <li>Length between [8;30]</li>
+                                <li>At least one uppercase character</li>
+                                <li>At least one lowercase character</li>
+                                <li>At least one number</li>
+                                <li>At least one allowed special character</li>
+                            </ul>
+                        </div>
+                    ) : (
+                        ""
+                    )}
+                </div>
+                <div className="z-0 flex justify-self-center align-middle w-full p-2 bg-white dark:bg-dark_input rounded drop-shadow mb-1">
+                    <input
+                        name="password"
+                        type="password"
+                        value={this.state.password}
+                        onChange={this.handleInput}
+                        onFocus={() => this.setState({ isFocused: true })}
+                        onBlur={() => this.setState({ isFocused: false })}
+                        className="h-8 p-2 text-lg focus:outline-none w-full bg-transparent text-white_text dark:text-white"
+                    />
+                    {this.state.isFocused ? (
+                        this.state.isPasswordValid ? (
+                            <CheckIcon className="h-8 text-primary_green" />
+                        ) : (
+                            <XIcon className="w-8 text-primary" />
+                        )
+                    ) : (
+                        ""
+                    )}
+                </div>
                 <Line
                     percent={(this.state.password.length / 30) * 100}
                     strokeWidth={1}
@@ -104,56 +144,6 @@ class PasswordInput extends Component<PasswordInputProps, PasswordInputState> {
                         this.state.isPasswordValid ? "#72E885" : "#E67082"
                     }
                 />
-                <div className="invisible h-0 mb-5 peer-focus:visible peer-focus:h-full transition-all">
-                    <div className="grid grid-cols-1">
-                        <div
-                            className={
-                                this.state.isLengthValid
-                                    ? "hidden"
-                                    : "text-primary"
-                            }
-                        >
-                            Current Length {this.state.password.length} is out
-                            of bounds [8; 30].
-                        </div>
-                        <div
-                            className={
-                                this.state.isUppercasePresent
-                                    ? "hidden"
-                                    : "text-primary"
-                            }
-                        >
-                            At least one uppercase character
-                        </div>
-                        <div
-                            className={
-                                this.state.isLowercasePresent
-                                    ? "hidden"
-                                    : "text-primary"
-                            }
-                        >
-                            At least one lowercase character
-                        </div>
-                        <div
-                            className={
-                                this.state.isNumberPresent
-                                    ? "hidden"
-                                    : "text-primary"
-                            }
-                        >
-                            At least one number
-                        </div>
-                        <div
-                            className={
-                                this.state.isSpecialCharacterPresent
-                                    ? "hidden"
-                                    : "text-primary"
-                            }
-                        >
-                            At least one allowed special character
-                        </div>
-                    </div>
-                </div>
             </div>
         );
     }

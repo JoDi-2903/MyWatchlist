@@ -2,7 +2,6 @@ import { Component } from "react";
 import { Navigate } from "react-router-dom";
 import { searchMovie, searchTV } from "../../api/API";
 import Search from "../../components/Search/Search";
-import SearchFilter from "../../components/Search/SearchFilter";
 import SearchResults from "../../components/Search/SearchResults";
 import { isLoggedIn, JWTContext } from "../../security/JWTContext";
 

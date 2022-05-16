@@ -53,6 +53,9 @@ class DropDownMenu extends Component<DropDownMenuProps, DropDownMenuState> {
                                         )) as string
                                 }
                                 className="flex justify-between gap-2"
+                                onClick={() =>
+                                    this.setState({ isVisible: false })
+                                }
                             >
                                 <p>Profile</p>
                                 <UserIcon className="w-6" />
@@ -62,6 +65,9 @@ class DropDownMenu extends Component<DropDownMenuProps, DropDownMenuState> {
                             <Link
                                 to="/settings"
                                 className="flex justify-between gap-2"
+                                onClick={() =>
+                                    this.setState({ isVisible: false })
+                                }
                             >
                                 <p>Settings</p>
                                 <AdjustmentsIcon className="w-6" />
@@ -71,6 +77,9 @@ class DropDownMenu extends Component<DropDownMenuProps, DropDownMenuState> {
                             <Link
                                 to="/mywatchlist"
                                 className="flex justify-between gap-2"
+                                onClick={() =>
+                                    this.setState({ isVisible: false })
+                                }
                             >
                                 <p>Watchlists</p>
                                 <CollectionIcon className="w-6" />
@@ -80,6 +89,9 @@ class DropDownMenu extends Component<DropDownMenuProps, DropDownMenuState> {
                             <Link
                                 to="/search"
                                 className="flex justify-between gap-2"
+                                onClick={() =>
+                                    this.setState({ isVisible: false })
+                                }
                             >
                                 <p>Search</p>
                                 <SearchIcon className="w-6" />
@@ -89,6 +101,9 @@ class DropDownMenu extends Component<DropDownMenuProps, DropDownMenuState> {
                             <Link
                                 to="/logout"
                                 className="flex justify-between gap-2"
+                                onClick={() =>
+                                    this.setState({ isVisible: false })
+                                }
                             >
                                 <p>Logout</p>
                                 <LogoutIcon className="w-6" />

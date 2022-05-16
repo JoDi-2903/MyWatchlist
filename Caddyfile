@@ -1,4 +1,9 @@
 mywatchlist.server-welt.com {
+        handle_path /watchlist/* {
+                root * /srv
+                try_files {path} /index.html
+                file_server
+        }
         handle_path /user/* {
                 root * /srv
                 try_files {path} /index.html

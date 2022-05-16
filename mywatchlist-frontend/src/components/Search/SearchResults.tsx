@@ -1,8 +1,4 @@
-import ReactStars from "react-rating-stars-component";
 import { Component } from "react";
-import { Link } from "react-router-dom";
-import Cover from "./Cover";
-import Card from "../Wrapper/Card";
 import ListElement from "../List/ListElement";
 
 interface SearchResultsProps {
@@ -52,12 +48,10 @@ class SearchResults extends Component<SearchResultsProps, SearchResultsState> {
                             this.state.resultMovie.results.map((result) => (
                                 <ListElement
                                     id={result.id}
-                                    title={result.original_title}
-                                    poster_path={result.poster_path}
-                                    vote_average={result.vote_average}
-                                    first_air_date={result.release_date}
                                     type="movie"
                                     key={result.id}
+                                    showAddToList={true}
+                                    showDeleteFromList={false}
                                 />
                             ))
                         ) : (
@@ -77,12 +71,10 @@ class SearchResults extends Component<SearchResultsProps, SearchResultsState> {
                             this.state.resultTV.results.map((result) => (
                                 <ListElement
                                     id={result.id}
-                                    title={result.original_name}
-                                    poster_path={result.poster_path}
-                                    vote_average={result.vote_average}
-                                    first_air_date={result.first_air_date}
                                     type="tv"
                                     key={result.id}
+                                    showAddToList={true}
+                                    showDeleteFromList={false}
                                 />
                             ))
                         ) : (

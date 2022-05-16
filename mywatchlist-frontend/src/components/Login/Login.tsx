@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import toast from "react-hot-toast";
 import { backendURL } from "../../Config";
-import { classesInvalidInput } from "../ComponentClasses";
 import Card from "../Wrapper/Card";
 
 interface LoginInformation {
@@ -49,23 +48,23 @@ class Login extends Component<LoginProps, LoginState> {
     render() {
         return (
             <Card classes="p-8 w-full md:w-1/2 xl:w-1/4 mx-auto rounded">
-                <form
-                    onSubmit={this.submit_login}
-                >
+                <form onSubmit={this.submit_login}>
                     <label
                         htmlFor="username"
                         className="block text-black dark:text-white text-md font-bold mb-2"
                     >
                         Username
                     </label>
-                    <input
-                        type="text"
-                        name="username"
-                        className={classesInvalidInput + " mb-5"}
-                        onChange={(e) =>
-                            (this.information.username = e.target.value)
-                        }
-                    />
+                    <div className="z-0 flex justify-self-center align-middle w-full p-2 bg-white dark:bg-dark_input rounded drop-shadow mb-8">
+                        <input
+                            type="text"
+                            name="username"
+                            onChange={(e) =>
+                                (this.information.username = e.target.value)
+                            }
+                            className="h-8 p-2 text-lg focus:outline-none w-full bg-transparent text-white_text dark:text-white"
+                        />
+                    </div>
 
                     <div className="grid grid-cols-2 items-center">
                         <label
@@ -78,20 +77,23 @@ class Login extends Component<LoginProps, LoginState> {
                         <a
                             href="https://youtu.be/dQw4w9WgXcQ"
                             target="_blank"
+                            rel="noreferrer"
                             className="justify-self-end text-sm text-primary hover:text-primary-100"
                         >
                             Forgot Password?
                         </a>
                     </div>
 
-                    <input
-                        type="password"
-                        name="password"
-                        className={classesInvalidInput + " mb-5"}
-                        onChange={(e) =>
-                            (this.information.password = e.target.value)
-                        }
-                    />
+                    <div className="z-0 flex justify-self-center align-middle w-full p-2 bg-white dark:bg-dark_input rounded drop-shadow mb-8">
+                        <input
+                            type="password"
+                            name="password"
+                            onChange={(e) =>
+                                (this.information.password = e.target.value)
+                            }
+                            className="h-8 p-2 text-lg focus:outline-none w-full bg-transparent text-white_text dark:text-white"
+                        />
+                    </div>
                     <input
                         type="submit"
                         value="Sign in"
