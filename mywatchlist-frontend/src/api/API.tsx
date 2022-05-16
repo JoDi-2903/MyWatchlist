@@ -50,3 +50,9 @@ export const similarMovie = async (movie_id: number) => {
 export const similarTV = async (tv_id: number) => {
     return await request("tv/" + tv_id + "/similar", "GET", "");
 }
+export const creditsMovie = async (movie_id: number) => {
+    return await request("movie/" + movie_id + "/credits", "GET", "");
+}
+export const creditsTV = async (tv_id: number) => {
+    return await request("tv/" + tv_id + "/credits", "GET", "");
+}

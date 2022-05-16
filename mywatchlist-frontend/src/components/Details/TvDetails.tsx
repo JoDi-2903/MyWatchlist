@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { useParams } from "react-router-dom";
-import { getMovieImages, getMovieDetail, similarMovie, creditsMovie} from "../../api/API";
+import { getTVImages, getTVDetail, similarTV, creditsTV} from "../../api/API";
 import { apiConfig } from "../../Config";
 import { PlusIcon, FilmIcon, GlobeAltIcon } from "@heroicons/react/solid";
 import Flicking from "@egjs/react-flicking";
@@ -58,11 +58,11 @@ function age_rating(adult) {
     }
 }
 
-interface MovieDetailsProps {
+interface TVDetailsProps {
     id: number;
 }
-interface MovieDetailsState {
-    movieID: number;
+interface TVDetailsState {
+    tvID: number;
     poster: string;
     backdrop: string;
     original_title: string;
@@ -78,17 +78,17 @@ interface MovieDetailsState {
     revenue: number;
     homepage: string;
     vote_average: number;
-    similarMovie;
-    creditsMovie;
+    similarTV;
+    creditsTV;
 }
-export default class MovieDetails extends Component<
-    MovieDetailsProps,
-    MovieDetailsState
+export default class tvDetails extends Component<
+    TVDetailsProps,
+    TVDetailsState
 > {
     constructor(props) {
         super(props);
         this.state = {
-            movieID: this.props.id,
+            tvID: this.props.id,
             poster: "",
             backdrop: "",
             original_title: "",
@@ -104,35 +104,35 @@ export default class MovieDetails extends Component<
             revenue: 0,
             homepage: "",
             vote_average: 0,
-            similarMovie: [],
-            creditsMovie: [],
+            similarTV: [],
+            creditsTV: [],
         };
     }
     async componentDidMount() {
-        var movieDetails = await getMovieDetail(this.state.movieID);
-        var movieImages = await getMovieImages(this.state.movieID);
-        var resultsMovie = await similarMovie(this.state.movieID);
-        var movieCast = await creditsMovie(this.state.movieID);
-        var posters = movieImages.data.posters;
-        var backdrops = movieImages.data.backdrops;
+        var tvDetails = await getTVDetail(this.state.tvID);
+        var tvImages = await getTVImages(this.state.tvID);
+        var resultsTV = await similarTV(this.state.tvID);
+        var tvCast = await creditsTV(this.state.tvID);
+        var posters = tvImages.data.posters;
+        var backdrops = tvImages.data.backdrops;
         this.setState({
             poster: apiConfig.originalImage(posters[0].file_path),
             backdrop: apiConfig.originalImage(backdrops[0].file_path),
-            release_date: movieDetails.data.release_date,
-            original_title: movieDetails.data.original_title,
-            tagline: movieDetails.data.tagline,
-            genres: movieDetails.data.genres,
-            runtime: movieDetails.data.runtime,
-            adult: movieDetails.data.adult,
-            overview: movieDetails.data.overview,
-            status: movieDetails.data.status,
-            original_language: movieDetails.data.original_language,
-            budget: movieDetails.data.budget,
-            revenue: movieDetails.data.revenue,
-            homepage: movieDetails.data.homepage,
-            vote_average: movieDetails.data.vote_average,
-            similarMovie: resultsMovie.data.results,
-            creditsMovie: movieCast.data.cast,
+            release_date: tvDetails.data.first_air_date,
+        //    original_title: tvDetails.data.original_title,
+            tagline: tvDetails.data.tagline,
+            genres: tvDetails.data.genres,
+        //    runtime: tvDetails.data.runtime,
+            adult: tvDetails.data.adult,
+            overview: tvDetails.data.overview,
+            status: tvDetails.data.status,
+            original_language: tvDetails.data.original_language,
+        //    budget: tvDetails.data.budget,
+        //    revenue: tvDetails.data.revenue,
+            homepage: tvDetails.data.homepage,
+            vote_average: tvDetails.data.vote_average,
+            similarTV: resultsTV.data.results,
+            creditsTV: tvCast.data.cast,
         });
     }
     render() {
@@ -217,7 +217,7 @@ export default class MovieDetails extends Component<
                                     renderOnlyVisible={true}
                                     align={"prev"}
                                 >
-                                    {this.state.creditsMovie.map((movie) => (
+                                    {this.state.creditsTV.map((movie) => (
                                         <div key={movie.id}>
                                             <ListElement    // Create special ListElement for cast
                                                 id={movie.id}
@@ -225,7 +225,7 @@ export default class MovieDetails extends Component<
                                                 poster_path={movie.poster_path}
                                                 vote_average={movie.vote_average}
                                                 first_air_date={movie.release_date}
-                                                type="movie"
+                                                type="tv"
                                                 key={movie.id}
                                             />
                                         </div>
@@ -244,7 +244,7 @@ export default class MovieDetails extends Component<
                                 renderOnlyVisible={true}
                                 align={"prev"}
                             >
-                                {this.state.similarMovie.map((movie) => (
+                                {this.state.similarTV.map((movie) => (
                                     <div key={movie.id}>
                                         <ListElement
                                             id={movie.id}
@@ -252,7 +252,7 @@ export default class MovieDetails extends Component<
                                             poster_path={movie.poster_path}
                                             vote_average={movie.vote_average}
                                             first_air_date={movie.release_date}
-                                            type="movie"
+                                            type="tv"
                                             key={movie.id}
                                         />
                                     </div>
