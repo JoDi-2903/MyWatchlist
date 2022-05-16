@@ -221,10 +221,10 @@ export default class MovieDetails extends Component<
                                         <div key={movie.id}>
                                             <ListElement    // Create special ListElement for cast
                                                 id={movie.id}
-                                                title={movie.original_title}
+                                                title={movie.original_name}
                                                 poster_path={movie.poster_path}
                                                 vote_average={movie.vote_average}
-                                                first_air_date={movie.release_date}
+                                                first_air_date={movie.character}
                                                 type="movie"
                                                 key={movie.id}
                                             />

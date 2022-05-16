@@ -6,9 +6,13 @@ import { PlusIcon, FilmIcon, GlobeAltIcon } from "@heroicons/react/solid";
 import Flicking from "@egjs/react-flicking";
 import ListElement from "../../components/List/ListElement";
 
-function time_convert(num) {
-    var hours = Math.floor(num / 60);
-    var minutes = num % 60;
+function time_convert(num) {    // Bug: only time of one single episode
+    var totalTimeInMinutes = 0;
+    for (let i = 0; i < num.length; i++) {
+        totalTimeInMinutes = totalTimeInMinutes + parseInt(num[i]);
+    }
+    var hours = Math.floor(totalTimeInMinutes / 60);
+    var minutes = totalTimeInMinutes % 60;
     return hours + "h " + minutes + "m";
 }
 
@@ -69,15 +73,16 @@ interface TVDetailsState {
     release_date: string;
     tagline: string;
     genres;
-    runtime: number;
+    runtime;
     adult: boolean;
     overview: string;
     status: string;
     original_language: string;
-    budget: number;
-    revenue: number;
+    number_of_episodes: number;
+    number_of_seasons: number;
     homepage: string;
     vote_average: number;
+    type: string;
     similarTV;
     creditsTV;
 }
@@ -95,15 +100,16 @@ export default class tvDetails extends Component<
             release_date: "",
             tagline: "",
             genres: [],
-            runtime: 0,
+            runtime: [],
             adult: false,
             overview: "",
             status: "",
             original_language: "en",
-            budget: 0,
-            revenue: 0,
+            number_of_episodes: 0,
+            number_of_seasons: 0,
             homepage: "",
             vote_average: 0,
+            type: "",
             similarTV: [],
             creditsTV: [],
         };
@@ -119,16 +125,17 @@ export default class tvDetails extends Component<
             poster: apiConfig.originalImage(posters[0].file_path),
             backdrop: apiConfig.originalImage(backdrops[0].file_path),
             release_date: tvDetails.data.first_air_date,
-        //    original_title: tvDetails.data.original_title,
+            original_title: tvDetails.data.original_name,
             tagline: tvDetails.data.tagline,
             genres: tvDetails.data.genres,
-        //    runtime: tvDetails.data.runtime,
+            runtime: tvDetails.data.episode_run_time,
             adult: tvDetails.data.adult,
             overview: tvDetails.data.overview,
             status: tvDetails.data.status,
+            type: tvDetails.data.type,
             original_language: tvDetails.data.original_language,
-        //    budget: tvDetails.data.budget,
-        //    revenue: tvDetails.data.revenue,
+            number_of_episodes: tvDetails.data.number_of_episodes,
+            number_of_seasons: tvDetails.data.number_of_seasons,
             homepage: tvDetails.data.homepage,
             vote_average: tvDetails.data.vote_average,
             similarTV: resultsTV.data.results,
@@ -170,7 +177,7 @@ export default class tvDetails extends Component<
                                 </h2>
                                 <h4 className="text-white text-xl font-ligth mt-20">
                                     {" "}
-                                    {age_rating(this.state.adult)}{genres_convert(this.state.genres)} • Rating: {stars_convert(this.state.vote_average)} • Runtime: {time_convert(this.state.runtime)}
+                                    {age_rating(this.state.adult)}{genres_convert(this.state.genres)} • {this.state.type} • Rating: {stars_convert(this.state.vote_average)} • Runtime: {time_convert(this.state.runtime)}
                                 </h4>
                             </div>
                         </div>
@@ -186,10 +193,10 @@ export default class tvDetails extends Component<
                             <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.release_date}</p>
                             <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">Original Language</h3>
                             <p className="mt-0 text-white_text dark:text-dark_text text-md">{language_convert(this.state.original_language)}</p>
-                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">Budget</h3>
-                            <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.budget.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })}</p>
-                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">Revenue</h3>
-                            <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.revenue.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })}</p>
+                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">Episodes</h3>
+                            <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.number_of_episodes}</p>
+                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">Seasons</h3>
+                            <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.number_of_seasons}</p>
                         </div>
                     </div>
                     <div className="col-span-9 row-span-1">
@@ -221,10 +228,10 @@ export default class tvDetails extends Component<
                                         <div key={movie.id}>
                                             <ListElement    // Create special ListElement for cast
                                                 id={movie.id}
-                                                title={movie.original_title}
+                                                title={movie.original_name}
                                                 poster_path={movie.poster_path}
                                                 vote_average={movie.vote_average}
-                                                first_air_date={movie.release_date}
+                                                first_air_date={movie.character}
                                                 type="tv"
                                                 key={movie.id}
                                             />
@@ -248,10 +255,10 @@ export default class tvDetails extends Component<
                                     <div key={movie.id}>
                                         <ListElement
                                             id={movie.id}
-                                            title={movie.original_title}
+                                            title={movie.original_name}
                                             poster_path={movie.poster_path}
                                             vote_average={movie.vote_average}
-                                            first_air_date={movie.release_date}
+                                            first_air_date={movie.first_air_date}
                                             type="tv"
                                             key={movie.id}
                                         />

@@ -56,3 +56,6 @@ export const creditsMovie = async (movie_id: number) => {
 export const creditsTV = async (tv_id: number) => {
     return await request("tv/" + tv_id + "/credits", "GET", "");
 }
+export const getPersonImages = async (person_id: number) => {
+    return await request("person/" + person_id + "/images", "GET", "");
+}
