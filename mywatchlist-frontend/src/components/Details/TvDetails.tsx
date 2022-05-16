@@ -228,12 +228,10 @@ export default class tvDetails extends Component<
                                         <div key={movie.id}>
                                             <ListElement    // Create special ListElement for cast
                                                 id={movie.id}
-                                                title={movie.original_name}
-                                                poster_path={movie.poster_path}
-                                                vote_average={movie.vote_average}
-                                                first_air_date={movie.character}
                                                 type="tv"
                                                 key={movie.id}
+                                                showAddToList={false}
+                                                showDeleteFromList={false}
                                             />
                                         </div>
                                     ))}
@@ -255,12 +253,10 @@ export default class tvDetails extends Component<
                                     <div key={movie.id}>
                                         <ListElement
                                             id={movie.id}
-                                            title={movie.original_name}
-                                            poster_path={movie.poster_path}
-                                            vote_average={movie.vote_average}
-                                            first_air_date={movie.first_air_date}
                                             type="tv"
                                             key={movie.id}
+                                            showAddToList={true}
+                                            showDeleteFromList={false}
                                         />
                                     </div>
                                 ))}
