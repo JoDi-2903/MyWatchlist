@@ -41,12 +41,26 @@ export const searchMovie = async (query: string) => {
 export const searchTV = async (query: string) => {
     return await request("search/tv", "GET", query + "&include_adult=false");
 };
-
 export const discoverMovie = async () => {
     return await request("discover/movie", "GET", "");
 };
 export const discoverTV = async () => {
     return await request("discover/tv", "GET", "");
+};
+export const similarMovie = async (movie_id: number) => {
+    return await request("movie/" + movie_id + "/similar", "GET", "");
+};
+export const similarTV = async (tv_id: number) => {
+    return await request("tv/" + tv_id + "/similar", "GET", "");
+};
+export const creditsMovie = async (movie_id: number) => {
+    return await request("movie/" + movie_id + "/credits", "GET", "");
+};
+export const creditsTV = async (tv_id: number) => {
+    return await request("tv/" + tv_id + "/credits", "GET", "");
+};
+export const getPersonImages = async (person_id: number) => {
+    return await request("person/" + person_id + "/images", "GET", "");
 };
 
 export const getFullTVList = async (tv_id: number) => {

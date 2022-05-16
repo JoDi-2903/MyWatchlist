@@ -11,6 +11,7 @@ import StartPage from "./pages/StartPage/StartPage";
 import UserProfilePage from "./pages/UserProfilePage/UserProfilePage";
 import WelcomePage from "./pages/WelcomePage/WelcomePage";
 import MoviePage from "./pages/MoviePage/MoviePage";
+import TvPage from "./pages/TvPage/TvPage";
 import {
     expiredJWT,
     getJWT,
@@ -115,6 +116,10 @@ export default class App extends React.Component<AppProps, AppState> {
                                     <Route
                                         path="/movie/:id"
                                         element={<MoviePage />}
+                                    />
+                                    <Route
+                                        path="/tv/:id"
+                                        element={<TvPage />}
                                     />
                                     <Route
                                         path="/user/:id"
