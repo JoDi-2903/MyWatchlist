@@ -5,6 +5,7 @@ import { apiConfig } from "../../Config";
 import { PlusIcon, FilmIcon, GlobeAltIcon } from "@heroicons/react/solid";
 import Flicking from "@egjs/react-flicking";
 import ListElement from "../../components/List/ListElement";
+import ActorElement from "../../components/List/ActorElement";
 
 function time_convert(num) {
     var hours = Math.floor(num / 60);
@@ -217,14 +218,15 @@ export default class MovieDetails extends Component<
                                     renderOnlyVisible={true}
                                     align={"prev"}
                                 >
-                                    {this.state.creditsMovie.map((movie) => (
-                                        <div key={movie.id}>
-                                            <ListElement    // Create special ListElement for cast
-                                                id={movie.id}
+                                    {this.state.creditsMovie.map((cast) => (
+                                        <div key={cast.id}>
+                                            <ActorElement
+                                                id={cast.id}
+                                                title={cast.original_name}
+                                                vote_average={cast.vote_average}
+                                                first_air_date={cast.character}
                                                 type="movie"
-                                                key={movie.id}
-                                                showAddToList={false}
-                                                showDeleteFromList={false}
+                                                key={cast.id}
                                             />
                                         </div>
                                     ))}

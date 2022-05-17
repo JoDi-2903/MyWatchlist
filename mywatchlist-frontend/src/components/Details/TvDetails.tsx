@@ -1,10 +1,11 @@
 import { Component } from "react";
 import { useParams } from "react-router-dom";
-import { getTVImages, getTVDetail, similarTV, creditsTV} from "../../api/API";
+import { getTVImages, getTVDetail, similarTV, creditsTV } from "../../api/API";
 import { apiConfig } from "../../Config";
 import { PlusIcon, FilmIcon, GlobeAltIcon } from "@heroicons/react/solid";
 import Flicking from "@egjs/react-flicking";
 import ListElement from "../../components/List/ListElement";
+import ActorElement from "../../components/List/ActorElement";
 
 function time_convert(num) {    // Bug: only time of one single episode
     var totalTimeInMinutes = 0;
@@ -48,8 +49,10 @@ function stars_convert(vote_average) {
 }
 
 function genres_convert(genres_arr) {   // Fix displaying of genres from array
-    let genresList = '';
-    genresList = genresList + genres_arr[0];
+    let genresList = 'Genres [Error]';
+    for (let i = 0; i < genres_arr.length; i++) {
+        genresList.concat(genres_arr[i].toString());
+    }
     return genresList;
 }
 
@@ -90,6 +93,11 @@ export default class tvDetails extends Component<
     TVDetailsProps,
     TVDetailsState
 > {
+    /*componentDidUpdate() {
+        if (this.state.tvID !== this.props.id)
+            this.setState({ tvID: this.props.id });
+    }*/
+
     constructor(props) {
         super(props);
         this.state = {
@@ -224,14 +232,15 @@ export default class tvDetails extends Component<
                                     renderOnlyVisible={true}
                                     align={"prev"}
                                 >
-                                    {this.state.creditsTV.map((movie) => (
-                                        <div key={movie.id}>
-                                            <ListElement    // Create special ListElement for cast
-                                                id={movie.id}
+                                    {this.state.creditsTV.map((cast) => (
+                                        <div key={cast.id}>
+                                            <ActorElement
+                                                id={cast.id}
+                                                title={cast.original_name}
+                                                vote_average={cast.vote_average}
+                                                first_air_date={cast.character}
                                                 type="tv"
-                                                key={movie.id}
-                                                showAddToList={false}
-                                                showDeleteFromList={false}
+                                                key={cast.id}
                                             />
                                         </div>
                                     ))}
@@ -242,7 +251,7 @@ export default class tvDetails extends Component<
                     <div className="col-span-12 row-span-1 dark:bg-gray-500 bg-gray-200">
                         <div className="mt-4 ml-3 mr-3">
                             <h1 className="ml-5 mb-2 font-bold text-white_text dark:text-dark_text text-2xl">
-                                Similar movies
+                                Similar TV shows
                             </h1>
                             <Flicking
                                 circular={false}
