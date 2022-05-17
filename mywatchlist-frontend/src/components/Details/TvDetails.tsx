@@ -1,11 +1,13 @@
 import { Component } from "react";
-import { useParams } from "react-router-dom";
-import { getTVImages, getTVDetail, similarTV, creditsTV } from "../../api/API";
+import { Link } from "react-router-dom";
+import { getTVImages, getTVDetail, similarTV, creditsTV, addElementToList, getFullTVList } from "../../api/API";
 import { apiConfig } from "../../Config";
 import { PlusIcon, FilmIcon, GlobeAltIcon } from "@heroicons/react/solid";
 import Flicking from "@egjs/react-flicking";
 import ListElement from "../../components/List/ListElement";
 import ActorElement from "../../components/List/ActorElement";
+import { JWTContext } from "../../security/JWTContext";
+
 
 function time_convert(num) {    // Bug: only time of one single episode
     var totalTimeInMinutes = 0;
@@ -67,6 +69,7 @@ function age_rating(adult) {
 
 interface TVDetailsProps {
     id: number;
+    type: string;
 }
 interface TVDetailsState {
     tvID: number;
@@ -209,18 +212,44 @@ export default class tvDetails extends Component<
                     </div>
                     <div className="col-span-9 row-span-1">
                         <div className="ml-11 mt-2">
-                            <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center">
-                                <PlusIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
-                                <span>Add to Watchlist</span>
-                            </button>
+                        <JWTContext.Consumer>
+                                {({ jwtInfo }) => (
+                                    <button
+                                        onClick={async () => {
+                                            var tvlist;
+                                            if (this.props.type === "tv") {
+                                                tvlist = await getFullTVList(
+                                                    this.props.id
+                                                );
+                                            } else {
+                                                tvlist = [];
+                                            }
+                                            addElementToList(
+                                                jwtInfo,
+                                                this.props.id,
+                                                this.props.type,
+                                                tvlist
+                                            );
+                                        }}
+                                        className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center">
+                                        <PlusIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
+                                        <span>Add to Watchlist</span>
+                                    </button>
+                                )}
+                            </JWTContext.Consumer>
+
                             <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center ml-6">
                                 <FilmIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
                                 <span>Watch trailer</span>
                             </button>
+
+                            <Link to={this.state.homepage}>
                             <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center ml-6">
                                 <GlobeAltIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
                                 <span>Visit Homepage</span>
                             </button>
+                            </Link>
+
                             <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">Overview</h3>
                             <p className="mt-3 text-white_text dark:text-dark_text text-md">{this.state.overview}</p>
                             <div className="mt-8">
