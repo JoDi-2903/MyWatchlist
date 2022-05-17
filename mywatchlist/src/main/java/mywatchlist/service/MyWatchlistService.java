@@ -194,7 +194,7 @@ public class MyWatchlistService {
         //var test = watchlistRepo.findAllByUserUserId(getUserId(username));
     }
 
-    public boolean checkWatchlistEntryExistsToUser(int titleId, long watchlistId) {
+    public boolean checkWatchlistEntryBelongsToUser(int titleId, long watchlistId) {
         return watchlistEntryRepo.findByTitleIdAndWatchlistWatchlistId(titleId, watchlistId).isPresent();
     }
 

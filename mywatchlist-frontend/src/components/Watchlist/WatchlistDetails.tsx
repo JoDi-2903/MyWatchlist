@@ -41,10 +41,10 @@ class WatchlistDetails extends Component<
         var responseData;
         await fetch(
             backendURL +
-                "/watchlist/getwatchlist/" +
-                this.props.id +
+                "/watchlist/get-watchlist/" +
+                this.props.jwtInfo.username +
                 "/" +
-                this.props.jwtInfo.username,
+                this.props.id,
             {
                 method: "GET",
                 headers: {

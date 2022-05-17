@@ -45,7 +45,7 @@ class ListOverview extends Component<ListOverviewProps, ListOverviewState> {
         var responseText: string = "";
         await fetch(
             backendURL +
-                "/watchlist/deleteWatchlist/" +
+                "/watchlist/delete-watchlist/" +
                 getUsername() +
                 "/" +
                 id,

@@ -37,7 +37,7 @@ class ChangePassword extends Component<
         if (this.state.newPassword.isValid) {
             var responseStatus = 0;
             var responseText = "";
-            await fetch(backendURL + "/user/changePassword", {
+            await fetch(backendURL + "/user/settings/change-password", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
