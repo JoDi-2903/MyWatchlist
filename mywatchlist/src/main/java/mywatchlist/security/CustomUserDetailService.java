@@ -13,8 +13,11 @@ import java.util.Collections;
 @Service
 public class CustomUserDetailService implements UserDetailsService {
 
-    @Autowired
-    private UserAccountRepo userAccountRepo;
+    private final UserAccountRepo userAccountRepo;
+
+    public CustomUserDetailService(UserAccountRepo userAccountRepo) {
+        this.userAccountRepo = userAccountRepo;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -22,9 +25,5 @@ public class CustomUserDetailService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not present"));
 
         return new User(userAccount.getUsername(), userAccount.getPassword(), Collections.emptyList());
-    }
-
-    public boolean test(String test){
-        return true;
     }
 }

@@ -62,7 +62,7 @@ class SettingData extends Component<SettingDataProps, SettingDataState> {
     async togglePrivacy() {
         var responseStatus = 0;
         var responseText = "";
-        await fetch(backendURL + "/user/changePrivateProfile", {
+        await fetch(backendURL + "/user/settings/change-private-profile", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

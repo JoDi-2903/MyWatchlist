@@ -30,7 +30,7 @@ class UsernameInput extends Component<UsernameInputProps, UsernameInputState> {
                 var respone_text;
                 await fetch(
                     backendURL +
-                        "/register/validateUsername/" +
+                        "/register/validate-username/" +
                         this.state.username,
                     {
                         method: "GET",

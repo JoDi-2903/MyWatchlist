@@ -41,7 +41,7 @@ class ChangeEmail extends Component<ChangeEmailProps, ChangeEmailState> {
         if (this.state.newEmail.isValid) {
             var responseStatus = 0;
             var responseText = "";
-            await fetch(backendURL + "/user/changeEmail", {
+            await fetch(backendURL + "/user/settings/change-email", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
