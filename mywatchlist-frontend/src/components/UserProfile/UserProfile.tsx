@@ -41,7 +41,7 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
 
     async loadData() {
         if (this.props.username === this.props.jwtInfo.username) {
-            await fetch(backendURL + "/user/myprofile/" + this.props.username, {
+            await fetch(backendURL + "/user/my-profile/" + this.props.username, {
                 method: "GET",
                 headers: {
                     Authorization: "Bearer " + this.props.jwtInfo.jwt,

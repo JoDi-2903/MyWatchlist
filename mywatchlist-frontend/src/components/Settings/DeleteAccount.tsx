@@ -36,7 +36,7 @@ class DeleteAccount extends Component<DeleteAccountProps, DeleteAccountState> {
                 var responseText: string = "";
                 await fetch(
                     backendURL +
-                        "/user/deleteUser/" +
+                        "/user/delete-user/" +
                         this.props.jwtInfo.username,
                     {
                         method: "DELETE",

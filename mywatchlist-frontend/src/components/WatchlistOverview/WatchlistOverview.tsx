@@ -29,7 +29,7 @@ export default class WatchlistOverview extends Component<
 
     async loadData() {
         await fetch(
-            backendURL + "/user/myprofile/" + this.props.jwtInfo.username,
+            backendURL + "/user/my-profile/" + this.props.jwtInfo.username,
             {
                 method: "GET",
                 headers: {

@@ -73,7 +73,7 @@ export const addElementToList = async (
 ) => {
     var responseStatus: number = 0;
     var responseData;
-    await fetch(backendURL + "/watchlist/getwatchlists/" + jwtInfo.username, {
+    await fetch(backendURL + "/watchlist/get-every-watchlist/" + jwtInfo.username, {
         method: "GET",
         headers: {
             Authorization: "Bearer " + jwtInfo.jwt,
@@ -108,7 +108,7 @@ export const addElementToList = async (
                 };
                 var addStatus: number = 0;
                 var addStatusText: string = "";
-                await fetch(backendURL + "/watchlist/addWatchlistlistEntry", {
+                await fetch(backendURL + "/watchlist/add-new-watchlist-entry", {
                     method: "POST",
                     headers: {
                         Authorization: "Bearer " + jwtInfo.jwt,
@@ -140,7 +140,7 @@ export const deleteFromList = async (
 ) => {
     var responseStatus: number = 0;
     var responseData;
-    await fetch(backendURL + "/watchlist/deleteCompleteTvOrMovie", {
+    await fetch(backendURL + "/watchlist/delete-complete-tv-or-movie", {
         method: "DELETE",
         headers: {
             Authorization: "Bearer " + jwtInfo.jwt,
