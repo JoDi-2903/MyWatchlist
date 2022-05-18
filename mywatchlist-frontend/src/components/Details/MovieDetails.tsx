@@ -1,5 +1,4 @@
 import { Component } from "react";
-import { Link } from "react-router-dom";
 import { getMovieImages, getMovieDetail, similarMovie, creditsMovie, addElementToList, getFullTVList, getMovieTrailer } from "../../api/API";
 import { apiConfig } from "../../Config";
 import { PlusIcon, FilmIcon, GlobeAltIcon } from "@heroicons/react/solid";
@@ -7,7 +6,6 @@ import Flicking from "@egjs/react-flicking";
 import ListElement from "../../components/List/ListElement";
 import ActorElement from "../../components/List/ActorElement";
 import { JWTContext } from "../../security/JWTContext";
-import { stringify } from "querystring";
 
 
 function time_convert(num) {
@@ -47,10 +45,12 @@ function stars_convert(vote_average) {
     return stars;
 }
 
-function genres_convert(genres_arr) {   // Fix displaying of genres from array
+function genres_convert(genres_arr) {
     let genresList = '';
-    genresList = genresList + genres_arr[0];
-    return genresList;
+    for (let i = 0; i < genres_arr.length; i++) {
+        genresList = genresList + genres_arr[i].name + ', ';
+    }
+    return genresList.slice(0, -2);
 }
 
 function age_rating(adult) {
@@ -74,7 +74,7 @@ interface MovieDetailsState {
     original_title: string;
     release_date: string;
     tagline: string;
-    genres;
+    genres: string;
     runtime: number;
     adult: boolean;
     overview: string;
@@ -101,7 +101,7 @@ export default class MovieDetails extends Component<
             original_title: "",
             release_date: "",
             tagline: "",
-            genres: [],
+            genres: "",
             runtime: 0,
             adult: false,
             overview: "",
@@ -125,6 +125,7 @@ export default class MovieDetails extends Component<
         var posters = movieImages.data.posters;
         var backdrops = movieImages.data.backdrops;
         var trailers = movieTrailer.data.results;
+        var genres_arr = movieDetails.data.genres;
         this.setState({
             poster: apiConfig.originalImage(posters[0].file_path),
             backdrop: apiConfig.originalImage(backdrops[0].file_path),
@@ -132,7 +133,7 @@ export default class MovieDetails extends Component<
             release_date: movieDetails.data.release_date,
             original_title: movieDetails.data.original_title,
             tagline: movieDetails.data.tagline,
-            genres: movieDetails.data.genres,
+            genres: genres_convert(genres_arr),
             runtime: movieDetails.data.runtime,
             adult: movieDetails.data.adult,
             overview: movieDetails.data.overview,
@@ -176,7 +177,7 @@ export default class MovieDetails extends Component<
                                 </h2>
                                 <h4 className="text-white text-xl font-ligth mt-20">
                                     {" "}
-                                    {age_rating(this.state.adult)}{genres_convert(this.state.genres)} • Rating: {stars_convert(this.state.vote_average)} • Runtime: {time_convert(this.state.runtime)}
+                                    {age_rating(this.state.adult)}{this.state.genres} • Rating: {stars_convert(this.state.vote_average)} • Runtime: {time_convert(this.state.runtime)}
                                 </h4>
                             </div>
                         </div>
@@ -195,7 +196,7 @@ export default class MovieDetails extends Component<
                             <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">Budget</h3>
                             <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.budget.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })}</p>
                             <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">Revenue</h3>
-                            <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.revenue.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })}</p>
+                            <p className="mt-0 mb-6 text-white_text dark:text-dark_text text-md">{this.state.revenue.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })}</p>
                         </div>
                     </div>
                     <div className="col-span-9 row-span-1">

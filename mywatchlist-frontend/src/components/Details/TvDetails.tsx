@@ -49,12 +49,12 @@ function stars_convert(vote_average) {
     return stars;
 }
 
-function genres_convert(genres_arr) {   // Fix displaying of genres from array
-    let genresList = 'Genres [Error]';
+function genres_convert(genres_arr) {
+    let genresList = '';
     for (let i = 0; i < genres_arr.length; i++) {
-        genresList.concat(genres_arr[i].toString());
+        genresList = genresList + genres_arr[i].name + ', ';
     }
-    return genresList;
+    return genresList.slice(0, -2);
 }
 
 function age_rating(adult) {
@@ -77,7 +77,7 @@ interface TVDetailsState {
     original_title: string;
     release_date: string;
     tagline: string;
-    genres;
+    genres: string;
     runtime;
     adult: boolean;
     overview: string;
@@ -110,7 +110,7 @@ export default class tvDetails extends Component<
             original_title: "",
             release_date: "",
             tagline: "",
-            genres: [],
+            genres: "",
             runtime: [],
             adult: false,
             overview: "",
@@ -135,6 +135,7 @@ export default class tvDetails extends Component<
         var posters = tvImages.data.posters;
         var backdrops = tvImages.data.backdrops;
         var trailers = tvTrailer.data.results;
+        var genres_arr = tvDetails.data.genres;
         this.setState({
             poster: apiConfig.originalImage(posters[0].file_path),
             backdrop: apiConfig.originalImage(backdrops[0].file_path),
@@ -142,7 +143,7 @@ export default class tvDetails extends Component<
             release_date: tvDetails.data.first_air_date,
             original_title: tvDetails.data.original_name,
             tagline: tvDetails.data.tagline,
-            genres: tvDetails.data.genres,
+            genres: genres_convert(genres_arr),
             runtime: tvDetails.data.episode_run_time,
             adult: tvDetails.data.adult,
             overview: tvDetails.data.overview,
@@ -187,7 +188,7 @@ export default class tvDetails extends Component<
                                 </h2>
                                 <h4 className="text-white text-xl font-ligth mt-20">
                                     {" "}
-                                    {age_rating(this.state.adult)}{genres_convert(this.state.genres)} • {this.state.type} • Rating: {stars_convert(this.state.vote_average)} • Runtime: {time_convert(this.state.runtime)}
+                                    {age_rating(this.state.adult)}{this.state.genres} • {this.state.type} • Rating: {stars_convert(this.state.vote_average)} • Runtime: {time_convert(this.state.runtime)}
                                 </h4>
                             </div>
                         </div>
@@ -206,7 +207,7 @@ export default class tvDetails extends Component<
                             <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">Episodes</h3>
                             <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.number_of_episodes}</p>
                             <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">Seasons</h3>
-                            <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.number_of_seasons}</p>
+                            <p className="mt-0 mb-6 text-white_text dark:text-dark_text text-md">{this.state.number_of_seasons}</p>
                         </div>
                     </div>
                     <div className="col-span-9 row-span-1">
