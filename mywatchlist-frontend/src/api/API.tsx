@@ -63,6 +63,10 @@ export const getPersonImages = async (person_id: number) => {
     return await request("person/" + person_id + "/images", "GET", "");
 };
 
+export const getTrendingPerDay = async () => {
+    return await request("trending/all/day", "GET", "");
+}
+
 export const getFullTVList = async (tv_id: number) => {
     var details = await getTVDetail(tv_id);
     var data: any[] = [];

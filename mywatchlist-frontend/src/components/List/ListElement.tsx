@@ -68,7 +68,7 @@ class ListElement extends Component<ListElementProps, ListElementState> {
     render(): ReactNode {
         return (
             <Card
-                classes="my-4 grid grid-cols-8 drop-shadow-xl p-4 w-72 h-36 gap-3"
+                classes="my-4 grid grid-cols-8 drop-shadow-xl p-4 w-72 h-36 gap-3 hover:-translate-y-1 hover:-translate-x-1"
                 key={this.props.id}
             >
                 <Cover name={this.state.title} path={this.state.poster_path} />
