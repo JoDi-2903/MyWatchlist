@@ -69,6 +69,10 @@ export const getTVTrailer = async (tv_id: number) => {
     return await request("tv/" + tv_id + "/videos", "GET", "");
 };
 
+export const getTrendingPerDay = async () => {
+    return await request("trending/all/day", "GET", "");
+}
+
 export const getFullTVList = async (tv_id: number) => {
     var details = await getTVDetail(tv_id);
     var data: any[] = [];
