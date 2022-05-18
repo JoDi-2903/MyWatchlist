@@ -1,6 +1,5 @@
 import { Component } from "react";
-import { Link } from "react-router-dom";
-import { getTVImages, getTVDetail, similarTV, creditsTV, addElementToList, getFullTVList } from "../../api/API";
+import { getTVImages, getTVDetail, similarTV, creditsTV, addElementToList, getFullTVList, getTVTrailer } from "../../api/API";
 import { apiConfig } from "../../Config";
 import { PlusIcon, FilmIcon, GlobeAltIcon } from "@heroicons/react/solid";
 import Flicking from "@egjs/react-flicking";
@@ -91,6 +90,7 @@ interface TVDetailsState {
     type: string;
     similarTV;
     creditsTV;
+    trailer;
 }
 export default class tvDetails extends Component<
     TVDetailsProps,
@@ -123,6 +123,7 @@ export default class tvDetails extends Component<
             type: "",
             similarTV: [],
             creditsTV: [],
+            trailer: "",
         };
     }
     async componentDidMount() {
@@ -130,11 +131,14 @@ export default class tvDetails extends Component<
         var tvImages = await getTVImages(this.state.tvID);
         var resultsTV = await similarTV(this.state.tvID);
         var tvCast = await creditsTV(this.state.tvID);
+        var tvTrailer = await getTVTrailer(this.state.tvID);
         var posters = tvImages.data.posters;
         var backdrops = tvImages.data.backdrops;
+        var trailers = tvTrailer.data.results;
         this.setState({
             poster: apiConfig.originalImage(posters[0].file_path),
             backdrop: apiConfig.originalImage(backdrops[0].file_path),
+            trailer: apiConfig.trailer(trailers[0].key),
             release_date: tvDetails.data.first_air_date,
             original_title: tvDetails.data.original_name,
             tagline: tvDetails.data.tagline,
@@ -175,12 +179,7 @@ export default class tvDetails extends Component<
                                     {this.state.original_title}
                                     <span className="text-primary italic font-medium">
                                         {" "}
-                                        (
-                                        {this.state.release_date.substring(
-                                            0,
-                                            4
-                                        )}
-                                        )
+                                        {'(' + this.state.release_date.substring(0, 4) + ')'}
                                     </span>
                                 </h1>
                                 <h2 className="text-white text-4xl font-light mt-5 italic ">
@@ -212,7 +211,7 @@ export default class tvDetails extends Component<
                     </div>
                     <div className="col-span-9 row-span-1">
                         <div className="ml-11 mt-2">
-                        <JWTContext.Consumer>
+                            <JWTContext.Consumer>
                                 {({ jwtInfo }) => (
                                     <button
                                         onClick={async () => {
@@ -238,17 +237,19 @@ export default class tvDetails extends Component<
                                 )}
                             </JWTContext.Consumer>
 
-                            <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center ml-6">
-                                <FilmIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
-                                <span>Watch trailer</span>
-                            </button>
+                            <a href={this.state.trailer} target="_blank" rel="noopener noreferrer">
+                                <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center ml-6">
+                                    <FilmIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
+                                    <span>Watch trailer</span>
+                                </button>
+                            </a>
 
-                            <Link to={this.state.homepage}>
-                            <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center ml-6">
-                                <GlobeAltIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
-                                <span>Visit Homepage</span>
-                            </button>
-                            </Link>
+                            <a href={this.state.homepage} target="_blank" rel="noopener noreferrer">
+                                <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center ml-6">
+                                    <GlobeAltIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
+                                    <span>Visit Homepage</span>
+                                </button>
+                            </a>
 
                             <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">Overview</h3>
                             <p className="mt-3 text-white_text dark:text-dark_text text-md">{this.state.overview}</p>

@@ -1,12 +1,13 @@
 import { Component } from "react";
 import { Link } from "react-router-dom";
-import { getMovieImages, getMovieDetail, similarMovie, creditsMovie, addElementToList, getFullTVList } from "../../api/API";
+import { getMovieImages, getMovieDetail, similarMovie, creditsMovie, addElementToList, getFullTVList, getMovieTrailer } from "../../api/API";
 import { apiConfig } from "../../Config";
 import { PlusIcon, FilmIcon, GlobeAltIcon } from "@heroicons/react/solid";
 import Flicking from "@egjs/react-flicking";
 import ListElement from "../../components/List/ListElement";
 import ActorElement from "../../components/List/ActorElement";
 import { JWTContext } from "../../security/JWTContext";
+import { stringify } from "querystring";
 
 
 function time_convert(num) {
@@ -61,6 +62,7 @@ function age_rating(adult) {
     }
 }
 
+
 interface MovieDetailsProps {
     id: number;
     type: string;
@@ -84,6 +86,7 @@ interface MovieDetailsState {
     vote_average: number;
     similarMovie;
     creditsMovie;
+    trailer;
 }
 export default class MovieDetails extends Component<
     MovieDetailsProps,
@@ -110,6 +113,7 @@ export default class MovieDetails extends Component<
             vote_average: 0,
             similarMovie: [],
             creditsMovie: [],
+            trailer: "",
         };
     }
     async componentDidMount() {
@@ -117,11 +121,14 @@ export default class MovieDetails extends Component<
         var movieImages = await getMovieImages(this.state.movieID);
         var resultsMovie = await similarMovie(this.state.movieID);
         var movieCast = await creditsMovie(this.state.movieID);
+        var movieTrailer = await getMovieTrailer(this.state.movieID);
         var posters = movieImages.data.posters;
         var backdrops = movieImages.data.backdrops;
+        var trailers = movieTrailer.data.results;
         this.setState({
             poster: apiConfig.originalImage(posters[0].file_path),
             backdrop: apiConfig.originalImage(backdrops[0].file_path),
+            trailer: apiConfig.trailer(trailers[0].key),
             release_date: movieDetails.data.release_date,
             original_title: movieDetails.data.original_title,
             tagline: movieDetails.data.tagline,
@@ -161,12 +168,7 @@ export default class MovieDetails extends Component<
                                     {this.state.original_title}
                                     <span className="text-primary italic font-medium">
                                         {" "}
-                                        (
-                                        {this.state.release_date.substring(
-                                            0,
-                                            4
-                                        )}
-                                        )
+                                        {'(' + this.state.release_date.substring(0, 4) + ')'}
                                     </span>
                                 </h1>
                                 <h2 className="text-white text-4xl font-light mt-5 italic ">
@@ -224,17 +226,19 @@ export default class MovieDetails extends Component<
                                 )}
                             </JWTContext.Consumer>
 
-                            <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center ml-6">
-                                <FilmIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
-                                <span>Watch trailer</span>
-                            </button>
-                            
-                            <Link to={this.state.homepage}>
+                            <a href={this.state.trailer} target="_blank" rel="noopener noreferrer">
+                                <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center ml-6">
+                                    <FilmIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
+                                    <span>Watch trailer</span>
+                                </button>
+                            </a>
+
+                            <a href={this.state.homepage} target="_blank" rel="noopener noreferrer">
                                 <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center ml-6">
                                     <GlobeAltIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
                                     <span>Visit Homepage</span>
                                 </button>
-                            </Link>
+                            </a>
 
                             <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">Overview</h3>
                             <p className="mt-3 text-white_text dark:text-dark_text text-md">{this.state.overview}</p>
