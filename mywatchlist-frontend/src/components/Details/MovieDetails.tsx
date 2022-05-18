@@ -1,11 +1,12 @@
 import { Component } from "react";
-import { useParams } from "react-router-dom";
-import { getMovieImages, getMovieDetail, similarMovie, creditsMovie} from "../../api/API";
+import { getMovieImages, getMovieDetail, similarMovie, creditsMovie, addElementToList, getFullTVList, getMovieTrailer } from "../../api/API";
 import { apiConfig } from "../../Config";
 import { PlusIcon, FilmIcon, GlobeAltIcon } from "@heroicons/react/solid";
 import Flicking from "@egjs/react-flicking";
 import ListElement from "../../components/List/ListElement";
 import ActorElement from "../../components/List/ActorElement";
+import { JWTContext } from "../../security/JWTContext";
+
 
 function time_convert(num) {
     var hours = Math.floor(num / 60);
@@ -44,10 +45,12 @@ function stars_convert(vote_average) {
     return stars;
 }
 
-function genres_convert(genres_arr) {   // Fix displaying of genres from array
+function genres_convert(genres_arr) {
     let genresList = '';
-    genresList = genresList + genres_arr[0];
-    return genresList;
+    for (let i = 0; i < genres_arr.length; i++) {
+        genresList = genresList + genres_arr[i].name + ', ';
+    }
+    return genresList.slice(0, -2);
 }
 
 function age_rating(adult) {
@@ -59,8 +62,10 @@ function age_rating(adult) {
     }
 }
 
+
 interface MovieDetailsProps {
     id: number;
+    type: string;
 }
 interface MovieDetailsState {
     movieID: number;
@@ -69,7 +74,7 @@ interface MovieDetailsState {
     original_title: string;
     release_date: string;
     tagline: string;
-    genres;
+    genres: string;
     runtime: number;
     adult: boolean;
     overview: string;
@@ -81,6 +86,7 @@ interface MovieDetailsState {
     vote_average: number;
     similarMovie;
     creditsMovie;
+    trailer;
 }
 export default class MovieDetails extends Component<
     MovieDetailsProps,
@@ -95,7 +101,7 @@ export default class MovieDetails extends Component<
             original_title: "",
             release_date: "",
             tagline: "",
-            genres: [],
+            genres: "",
             runtime: 0,
             adult: false,
             overview: "",
@@ -107,6 +113,7 @@ export default class MovieDetails extends Component<
             vote_average: 0,
             similarMovie: [],
             creditsMovie: [],
+            trailer: "",
         };
     }
     async componentDidMount() {
@@ -114,15 +121,19 @@ export default class MovieDetails extends Component<
         var movieImages = await getMovieImages(this.state.movieID);
         var resultsMovie = await similarMovie(this.state.movieID);
         var movieCast = await creditsMovie(this.state.movieID);
+        var movieTrailer = await getMovieTrailer(this.state.movieID);
         var posters = movieImages.data.posters;
         var backdrops = movieImages.data.backdrops;
+        var trailers = movieTrailer.data.results;
+        var genres_arr = movieDetails.data.genres;
         this.setState({
             poster: apiConfig.originalImage(posters[0].file_path),
             backdrop: apiConfig.originalImage(backdrops[0].file_path),
+            trailer: apiConfig.trailer(trailers[0].key),
             release_date: movieDetails.data.release_date,
             original_title: movieDetails.data.original_title,
             tagline: movieDetails.data.tagline,
-            genres: movieDetails.data.genres,
+            genres: genres_convert(genres_arr),
             runtime: movieDetails.data.runtime,
             adult: movieDetails.data.adult,
             overview: movieDetails.data.overview,
@@ -158,12 +169,7 @@ export default class MovieDetails extends Component<
                                     {this.state.original_title}
                                     <span className="text-primary italic font-medium">
                                         {" "}
-                                        (
-                                        {this.state.release_date.substring(
-                                            0,
-                                            4
-                                        )}
-                                        )
+                                        {'(' + this.state.release_date.substring(0, 4) + ')'}
                                     </span>
                                 </h1>
                                 <h2 className="text-white text-4xl font-light mt-5 italic ">
@@ -171,7 +177,7 @@ export default class MovieDetails extends Component<
                                 </h2>
                                 <h4 className="text-white text-xl font-ligth mt-20">
                                     {" "}
-                                    {age_rating(this.state.adult)}{genres_convert(this.state.genres)} • Rating: {stars_convert(this.state.vote_average)} • Runtime: {time_convert(this.state.runtime)}
+                                    {age_rating(this.state.adult)}{this.state.genres} • Rating: {stars_convert(this.state.vote_average)} • Runtime: {time_convert(this.state.runtime)}
                                 </h4>
                             </div>
                         </div>
@@ -190,23 +196,51 @@ export default class MovieDetails extends Component<
                             <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">Budget</h3>
                             <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.budget.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })}</p>
                             <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">Revenue</h3>
-                            <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.revenue.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })}</p>
+                            <p className="mt-0 mb-6 text-white_text dark:text-dark_text text-md">{this.state.revenue.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })}</p>
                         </div>
                     </div>
                     <div className="col-span-9 row-span-1">
                         <div className="ml-11 mt-2">
-                            <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center">
-                                <PlusIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
-                                <span>Add to Watchlist</span>
-                            </button>
-                            <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center ml-6">
-                                <FilmIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
-                                <span>Watch trailer</span>
-                            </button>
-                            <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center ml-6">
-                                <GlobeAltIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
-                                <span>Visit Homepage</span>
-                            </button>
+                            <JWTContext.Consumer>
+                                {({ jwtInfo }) => (
+                                    <button
+                                        onClick={async () => {
+                                            var tvlist;
+                                            if (this.props.type === "tv") {
+                                                tvlist = await getFullTVList(
+                                                    this.props.id
+                                                );
+                                            } else {
+                                                tvlist = [];
+                                            }
+                                            addElementToList(
+                                                jwtInfo,
+                                                this.props.id,
+                                                this.props.type,
+                                                tvlist
+                                            );
+                                        }}
+                                        className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center">
+                                        <PlusIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
+                                        <span>Add to Watchlist</span>
+                                    </button>
+                                )}
+                            </JWTContext.Consumer>
+
+                            <a href={this.state.trailer} target="_blank" rel="noopener noreferrer">
+                                <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center ml-6">
+                                    <FilmIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
+                                    <span>Watch trailer</span>
+                                </button>
+                            </a>
+
+                            <a href={this.state.homepage} target="_blank" rel="noopener noreferrer">
+                                <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center ml-6">
+                                    <GlobeAltIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
+                                    <span>Visit Homepage</span>
+                                </button>
+                            </a>
+
                             <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">Overview</h3>
                             <p className="mt-3 text-white_text dark:text-dark_text text-md">{this.state.overview}</p>
                             <div className="mt-8">
