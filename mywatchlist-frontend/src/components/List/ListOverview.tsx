@@ -75,9 +75,9 @@ class ListOverview extends Component<ListOverviewProps, ListOverviewState> {
         return (
             <div>
                 {this.state.lists.map((list) => (
-                    <Card
+                    <div
                         key={list.watchlistName}
-                        classes="drop-shadow-lg m-4 p-4"
+                        className="bg-gray-50 dark:bg-dark_input drop-shadow-lg m-4 p-4"
                     >
                         <h2 className="text-3xl text-primary pt-5 mb-5 flex justify-between">
                             {this.props.linkToWatchlist ? (
@@ -115,7 +115,7 @@ class ListOverview extends Component<ListOverviewProps, ListOverviewState> {
                                 </div>
                             ))}
                         </Flicking>
-                    </Card>
+                    </div>
                 ))}
             </div>
         );

@@ -27,7 +27,7 @@ class AddList extends Component<AddListProps, AddListState> {
         var responeStatus: number = 0;
         var responseText: string = "";
 
-        await fetch(backendURL + "/watchlist/add-new-watchlist-entry", {
+        await fetch(backendURL + "/watchlist/new-watchlist", {
             method: "POST",
             headers: {
                 Authorization: "Bearer " + this.props.jwtInfo.jwt,
