@@ -25,7 +25,7 @@ function language_convert(languageCode) {
 
 function stars_convert(vote_average) {
     let stars = "☆☆☆☆☆";
-    let votingInStars = Math.floor(5 * vote_average * 0.1);
+    let votingInStars = Math.round(vote_average / 2);
     switch (votingInStars) {
         case 1:
             stars = "★☆☆☆☆";

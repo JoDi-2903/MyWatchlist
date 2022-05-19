@@ -106,7 +106,7 @@ class PasswordInput extends Component<PasswordInputProps, PasswordInputState> {
                                 Password Requirements
                             </h1>
                             <ul className="">
-                                <li>Length between [8;30]</li>
+                                <li>Length between [8;50]</li>
                                 <li>At least one uppercase character</li>
                                 <li>At least one lowercase character</li>
                                 <li>At least one number</li>
