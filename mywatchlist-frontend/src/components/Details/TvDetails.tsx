@@ -1,10 +1,12 @@
 import { Component } from "react";
-import { getTVImages, getTVDetail, similarTV, creditsTV } from "../../api/API";
+import { getTVImages, getTVDetail, similarTV, creditsTV, addElementToList, getFullTVList, getTVTrailer } from "../../api/API";
 import { apiConfig } from "../../Config";
 import { PlusIcon, FilmIcon, GlobeAltIcon } from "@heroicons/react/solid";
 import Flicking from "@egjs/react-flicking";
 import ListElement from "../../components/List/ListElement";
 import ActorElement from "../../components/List/ActorElement";
+import { JWTContext } from "../../security/JWTContext";
+
 
 function time_convert(num) {
     // Bug: only time of one single episode
@@ -49,12 +51,11 @@ function stars_convert(vote_average) {
 }
 
 function genres_convert(genres_arr) {
-    // Fix displaying of genres from array
-    let genresList = "Genres [Error]";
+    let genresList = '';
     for (let i = 0; i < genres_arr.length; i++) {
-        genresList.concat(genres_arr[i].toString());
+        genresList = genresList + genres_arr[i].name + ', ';
     }
-    return genresList;
+    return genresList.slice(0, -2);
 }
 
 function age_rating(adult) {
@@ -67,6 +68,7 @@ function age_rating(adult) {
 
 interface TVDetailsProps {
     id: number;
+    type: string;
 }
 interface TVDetailsState {
     tvID: number;
@@ -75,7 +77,7 @@ interface TVDetailsState {
     original_title: string;
     release_date: string;
     tagline: string;
-    genres;
+    genres: string;
     runtime;
     adult: boolean;
     overview: string;
@@ -88,6 +90,7 @@ interface TVDetailsState {
     type: string;
     similarTV;
     creditsTV;
+    trailer;
 }
 export default class tvDetails extends Component<
     TVDetailsProps,
@@ -102,7 +105,7 @@ export default class tvDetails extends Component<
             original_title: "",
             release_date: "",
             tagline: "",
-            genres: [],
+            genres: "",
             runtime: [],
             adult: false,
             overview: "",
@@ -115,6 +118,7 @@ export default class tvDetails extends Component<
             type: "",
             similarTV: [],
             creditsTV: [],
+            trailer: "",
         };
     }
 
@@ -130,6 +134,7 @@ export default class tvDetails extends Component<
 
     async loadData() {
         var tvDetails = await getTVDetail(this.state.tvID);
+
         this.setState(
             {
                 release_date: tvDetails.data.first_air_date,
@@ -200,12 +205,7 @@ export default class tvDetails extends Component<
                                     {this.state.original_title}
                                     <span className="text-primary italic font-medium">
                                         {" "}
-                                        (
-                                        {this.state.release_date.substring(
-                                            0,
-                                            4
-                                        )}
-                                        )
+                                        {'(' + this.state.release_date.substring(0, 4) + ')'}
                                     </span>
                                 </h1>
                                 <h2 className="text-white text-4xl font-light mt-5 italic ">
@@ -213,11 +213,7 @@ export default class tvDetails extends Component<
                                 </h2>
                                 <h4 className="text-white text-xl font-ligth mt-20">
                                     {" "}
-                                    {age_rating(this.state.adult)}
-                                    {genres_convert(this.state.genres)} •{" "}
-                                    {this.state.type} • Rating:{" "}
-                                    {stars_convert(this.state.vote_average)} •
-                                    Runtime: {time_convert(this.state.runtime)}
+                                    {age_rating(this.state.adult)}{this.state.genres} • {this.state.type} • Rating: {stars_convert(this.state.vote_average)} • Runtime: {time_convert(this.state.runtime)}
                                 </h4>
                             </div>
                         </div>
@@ -227,58 +223,62 @@ export default class tvDetails extends Component<
                 <div className="grid-background absolute inset-0 p-2 mt-[490px] grid grid-cols-12 gap-0">
                     <div className="col-span-3 row-span-1">
                         <div className="ml-8 mr-8 mt-24">
-                            <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">
-                                Status
-                            </h3>
-                            <p className="mt-0 text-white_text dark:text-dark_text text-md">
-                                {this.state.status}
-                            </p>
-                            <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">
-                                Release date
-                            </h3>
-                            <p className="mt-0 text-white_text dark:text-dark_text text-md">
-                                {this.state.release_date}
-                            </p>
-                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">
-                                Original Language
-                            </h3>
-                            <p className="mt-0 text-white_text dark:text-dark_text text-md">
-                                {language_convert(this.state.original_language)}
-                            </p>
-                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">
-                                Episodes
-                            </h3>
-                            <p className="mt-0 text-white_text dark:text-dark_text text-md">
-                                {this.state.number_of_episodes}
-                            </p>
-                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">
-                                Seasons
-                            </h3>
-                            <p className="mt-0 text-white_text dark:text-dark_text text-md">
-                                {this.state.number_of_seasons}
-                            </p>
+                            <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">Status</h3>
+                            <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.status}</p>
+                            <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">Release date</h3>
+                            <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.release_date}</p>
+                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">Original Language</h3>
+                            <p className="mt-0 text-white_text dark:text-dark_text text-md">{language_convert(this.state.original_language)}</p>
+                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">Episodes</h3>
+                            <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.number_of_episodes}</p>
+                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">Seasons</h3>
+                            <p className="mt-0 mb-6 text-white_text dark:text-dark_text text-md">{this.state.number_of_seasons}</p>
                         </div>
                     </div>
                     <div className="col-span-9 row-span-1">
                         <div className="ml-11 mt-2">
-                            <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center">
-                                <PlusIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
-                                <span>Add to Watchlist</span>
-                            </button>
-                            <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center ml-6">
-                                <FilmIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
-                                <span>Watch trailer</span>
-                            </button>
-                            <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center ml-6">
-                                <GlobeAltIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
-                                <span>Visit Homepage</span>
-                            </button>
-                            <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">
-                                Overview
-                            </h3>
-                            <p className="mt-3 text-white_text dark:text-dark_text text-md">
-                                {this.state.overview}
-                            </p>
+                            <JWTContext.Consumer>
+                                {({ jwtInfo }) => (
+                                    <button
+                                        onClick={async () => {
+                                            var tvlist;
+                                            if (this.props.type === "tv") {
+                                                tvlist = await getFullTVList(
+                                                    this.props.id
+                                                );
+                                            } else {
+                                                tvlist = [];
+                                            }
+                                            addElementToList(
+                                                jwtInfo,
+                                                this.props.id,
+                                                this.props.type,
+                                                tvlist
+                                            );
+                                        }}
+                                        className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center">
+                                        <PlusIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
+                                        <span>Add to Watchlist</span>
+                                    </button>
+                                )}
+                            </JWTContext.Consumer>
+
+                            <a href={this.state.trailer} target="_blank" rel="noopener noreferrer">
+                                <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center ml-6">
+                                    <FilmIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
+                                    <span>Watch trailer</span>
+                                </button>
+                            </a>
+
+                            <a href={this.state.homepage} target="_blank" rel="noopener noreferrer">
+                                <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-500 dark:hover:bg-gray-600 border-2 border-primary text-white_text dark:text-white font-bold py-2 px-4 rounded-lg inline-flex items-center ml-6">
+                                    <GlobeAltIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
+                                    <span>Visit Homepage</span>
+                                </button>
+                            </a>
+
+                            <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">Overview</h3>
+                            <p className="mt-3 text-white_text dark:text-dark_text text-md">{this.state.overview}</p>
                             <div className="mt-8">
                                 <h1 className="mb-2 font-bold text-white_text dark:text-dark_text text-2xl">
                                     Top Billed Cast

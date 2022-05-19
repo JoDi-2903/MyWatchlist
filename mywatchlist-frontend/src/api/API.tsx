@@ -62,6 +62,12 @@ export const creditsTV = async (tv_id: number) => {
 export const getPersonImages = async (person_id: number) => {
     return await request("person/" + person_id + "/images", "GET", "");
 };
+export const getMovieTrailer = async (movie_id: number) => {
+    return await request("movie/" + movie_id + "/videos", "GET", "");
+};
+export const getTVTrailer = async (tv_id: number) => {
+    return await request("tv/" + tv_id + "/videos", "GET", "");
+};
 
 export const getTrendingPerDay = async () => {
     return await request("trending/all/day", "GET", "");
