@@ -19,11 +19,10 @@ interface UserProfileState {
     email: string;
     isPrivateProfile: boolean;
     watchlist;
+    numberEntries: number;
 }
 
 class UserProfile extends Component<UserProfileProps, UserProfileState> {
-    numberEntries: number = 0;
-
     constructor(props: UserProfileProps) {
         super(props);
         this.state = {
@@ -32,6 +31,7 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
             email: "",
             isPrivateProfile: true,
             watchlist: [],
+            numberEntries: 0,
         };
     }
 
@@ -41,12 +41,15 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
 
     async loadData() {
         if (this.props.username === this.props.jwtInfo.username) {
-            await fetch(backendURL + "/user/my-profile/" + this.props.username, {
-                method: "GET",
-                headers: {
-                    Authorization: "Bearer " + this.props.jwtInfo.jwt,
-                },
-            })
+            await fetch(
+                backendURL + "/user/my-profile/" + this.props.username,
+                {
+                    method: "GET",
+                    headers: {
+                        Authorization: "Bearer " + this.props.jwtInfo.jwt,
+                    },
+                }
+            )
                 .then((response) => response.json())
                 .then((data) => {
                     this.setState(
@@ -56,11 +59,12 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                             watchlist: data.watchlistList,
                         },
                         () => {
-                            this.numberEntries = 0;
+                            var numberEntries: number = 0;
                             this.state.watchlist.forEach((element) => {
-                                this.numberEntries +=
+                                numberEntries +=
                                     element.watchlistEntries.length;
                             });
+                            this.setState({ numberEntries: numberEntries });
                         }
                     );
                 });
@@ -94,10 +98,13 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                                     watchlist: data.watchlistList,
                                 },
                                 () => {
-                                    this.numberEntries = 0;
+                                    var numberEntries: number = 0;
                                     this.state.watchlist.forEach((element) => {
-                                        this.numberEntries +=
+                                        numberEntries +=
                                             element.watchlistEntries.length;
+                                    });
+                                    this.setState({
+                                        numberEntries: numberEntries,
                                     });
                                 }
                             );
@@ -158,7 +165,7 @@ class UserProfile extends Component<UserProfileProps, UserProfileState> {
                                     >
                                         {this.state.isPrivateProfile
                                             ? "-- -------"
-                                            : this.numberEntries + " Entries"}
+                                            : this.state.numberEntries + " Entries"}
                                     </div>
                                 </div>
                                 {!this.state.isPrivateProfile ? (

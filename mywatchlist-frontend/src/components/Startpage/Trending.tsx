@@ -17,6 +17,7 @@ interface TrendingState {
 
 export default class Trending extends Component<TrendingProps, TrendingState> {
     private flicking: React.RefObject<Flicking>;
+    private mounted: boolean = false;
     constructor(props: TrendingProps) {
         super(props);
         this.state = {
@@ -36,7 +37,10 @@ export default class Trending extends Component<TrendingProps, TrendingState> {
     }
 
     componentDidMount() {
-        this.moveToNextPanel();
+        if(!this.mounted){
+            this.moveToNextPanel();
+            this.mounted = true;
+        }
     }
 
     componentDidUpdate() {
@@ -63,6 +67,8 @@ export default class Trending extends Component<TrendingProps, TrendingState> {
                                     src={apiConfig.originalImage(
                                         element.backdrop_path
                                     )}
+                                    
+                                    alt={element.title}
                                     className="w-screen h-screen  object-cover mix-blend-overlay z-0 pointer-events-none"
                                 />
                             </div>
