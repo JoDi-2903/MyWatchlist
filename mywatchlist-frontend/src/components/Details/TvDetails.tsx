@@ -140,7 +140,7 @@ export default class tvDetails extends Component<
                 release_date: tvDetails.data.first_air_date,
                 original_title: tvDetails.data.original_name,
                 tagline: tvDetails.data.tagline,
-                genres: tvDetails.data.genres,
+                genres: genres_convert(tvDetails.data.genres),
                 runtime: tvDetails.data.episode_run_time,
                 adult: tvDetails.data.adult,
                 overview: tvDetails.data.overview,
