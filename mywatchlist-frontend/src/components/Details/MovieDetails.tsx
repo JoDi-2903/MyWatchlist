@@ -132,7 +132,7 @@ export default class MovieDetails extends Component<
                 release_date: movieDetails.data.release_date,
                 original_title: movieDetails.data.original_title,
                 tagline: movieDetails.data.tagline,
-                genres: movieDetails.data.genres,
+                genres: genres_convert(movieDetails.data.genres),
                 runtime: movieDetails.data.runtime,
                 adult: movieDetails.data.adult,
                 overview: movieDetails.data.overview,
@@ -204,7 +204,6 @@ export default class MovieDetails extends Component<
                                     {this.state.tagline}
                                 </h2>
                                 <h4 className="text-white text-xl font-ligth mt-20">
-                                    {" "}
                                     {age_rating(this.state.adult)}{this.state.genres} • Rating: {stars_convert(this.state.vote_average)} • Runtime: {time_convert(this.state.runtime)}
                                 </h4>
                             </div>
