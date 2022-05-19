@@ -1,5 +1,4 @@
 import { Component } from "react";
-import { useParams } from "react-router-dom";
 import { getTVImages, getTVDetail, similarTV, creditsTV } from "../../api/API";
 import { apiConfig } from "../../Config";
 import { PlusIcon, FilmIcon, GlobeAltIcon } from "@heroicons/react/solid";
@@ -7,7 +6,8 @@ import Flicking from "@egjs/react-flicking";
 import ListElement from "../../components/List/ListElement";
 import ActorElement from "../../components/List/ActorElement";
 
-function time_convert(num) {    // Bug: only time of one single episode
+function time_convert(num) {
+    // Bug: only time of one single episode
     var totalTimeInMinutes = 0;
     for (let i = 0; i < num.length; i++) {
         totalTimeInMinutes = totalTimeInMinutes + parseInt(num[i]);
@@ -18,38 +18,39 @@ function time_convert(num) {    // Bug: only time of one single episode
 }
 
 function language_convert(languageCode) {
-    let languageNames = new Intl.DisplayNames(['en'], { type: 'language' });
+    let languageNames = new Intl.DisplayNames(["en"], { type: "language" });
     return languageNames.of(languageCode);
 }
 
 function stars_convert(vote_average) {
-    let stars = '☆☆☆☆☆';
+    let stars = "☆☆☆☆☆";
     let votingInStars = Math.floor(5 * vote_average * 0.1);
     switch (votingInStars) {
         case 1:
-            stars = '★☆☆☆☆';
+            stars = "★☆☆☆☆";
             break;
         case 2:
-            stars = '★★☆☆☆';
+            stars = "★★☆☆☆";
             break;
         case 3:
-            stars = '★★★☆☆';
+            stars = "★★★☆☆";
             break;
         case 4:
-            stars = '★★★★☆';
+            stars = "★★★★☆";
             break;
         case 5:
-            stars = '★★★★★';
+            stars = "★★★★★";
             break;
         default:
-            stars = '☆☆☆☆☆';
+            stars = "☆☆☆☆☆";
             break;
     }
     return stars;
 }
 
-function genres_convert(genres_arr) {   // Fix displaying of genres from array
-    let genresList = 'Genres [Error]';
+function genres_convert(genres_arr) {
+    // Fix displaying of genres from array
+    let genresList = "Genres [Error]";
     for (let i = 0; i < genres_arr.length; i++) {
         genresList.concat(genres_arr[i].toString());
     }
@@ -58,10 +59,9 @@ function genres_convert(genres_arr) {   // Fix displaying of genres from array
 
 function age_rating(adult) {
     if (adult) {
-        return 'ADULTS ONLY • ';
-    }
-    else {
-        return '';
+        return "ADULTS ONLY • ";
+    } else {
+        return "";
     }
 }
 
@@ -93,11 +93,6 @@ export default class tvDetails extends Component<
     TVDetailsProps,
     TVDetailsState
 > {
-    /*componentDidUpdate() {
-        if (this.state.tvID !== this.props.id)
-            this.setState({ tvID: this.props.id });
-    }*/
-
     constructor(props) {
         super(props);
         this.state = {
@@ -122,34 +117,67 @@ export default class tvDetails extends Component<
             creditsTV: [],
         };
     }
-    async componentDidMount() {
-        var tvDetails = await getTVDetail(this.state.tvID);
-        var tvImages = await getTVImages(this.state.tvID);
-        var resultsTV = await similarTV(this.state.tvID);
-        var tvCast = await creditsTV(this.state.tvID);
-        var posters = tvImages.data.posters;
-        var backdrops = tvImages.data.backdrops;
-        this.setState({
-            poster: apiConfig.originalImage(posters[0].file_path),
-            backdrop: apiConfig.originalImage(backdrops[0].file_path),
-            release_date: tvDetails.data.first_air_date,
-            original_title: tvDetails.data.original_name,
-            tagline: tvDetails.data.tagline,
-            genres: tvDetails.data.genres,
-            runtime: tvDetails.data.episode_run_time,
-            adult: tvDetails.data.adult,
-            overview: tvDetails.data.overview,
-            status: tvDetails.data.status,
-            type: tvDetails.data.type,
-            original_language: tvDetails.data.original_language,
-            number_of_episodes: tvDetails.data.number_of_episodes,
-            number_of_seasons: tvDetails.data.number_of_seasons,
-            homepage: tvDetails.data.homepage,
-            vote_average: tvDetails.data.vote_average,
-            similarTV: resultsTV.data.results,
-            creditsTV: tvCast.data.cast,
-        });
+
+    componentDidMount() {
+        this.loadData();
     }
+
+    componentDidUpdate() {
+        if (this.state.tvID !== this.props.id) {
+            this.setState({ tvID: this.props.id }, () => this.loadData());
+        }
+    }
+
+    async loadData() {
+        var tvDetails = await getTVDetail(this.state.tvID);
+        this.setState(
+            {
+                release_date: tvDetails.data.first_air_date,
+                original_title: tvDetails.data.original_name,
+                tagline: tvDetails.data.tagline,
+                genres: tvDetails.data.genres,
+                runtime: tvDetails.data.episode_run_time,
+                adult: tvDetails.data.adult,
+                overview: tvDetails.data.overview,
+                status: tvDetails.data.status,
+                original_language: tvDetails.data.original_language,
+                number_of_episodes: tvDetails.data.number_of_episodes,
+                number_of_seasons: tvDetails.data.number_of_seasons,
+                homepage: tvDetails.data.homepage,
+                vote_average: tvDetails.data.vote_average,
+            },
+            async () => {
+                var tvImages = await getTVImages(this.state.tvID);
+                var posters = tvImages.data.posters;
+                var backdrops = tvImages.data.backdrops;
+                this.setState(
+                    {
+                        poster: apiConfig.originalImage(posters[0].file_path),
+                        backdrop: apiConfig.originalImage(
+                            backdrops[0].file_path
+                        ),
+                    },
+                    async () => {
+                        var tvCast = await creditsTV(this.state.tvID);
+                        this.setState(
+                            {
+                                creditsTV: tvCast.data.cast,
+                            },
+                            async () => {
+                                var resultsTV = await similarTV(
+                                    this.state.tvID
+                                );
+                                this.setState({
+                                    similarTV: resultsTV.data.results,
+                                });
+                            }
+                        );
+                    }
+                );
+            }
+        );
+    }
+
     render() {
         return (
             <div>
@@ -185,7 +213,11 @@ export default class tvDetails extends Component<
                                 </h2>
                                 <h4 className="text-white text-xl font-ligth mt-20">
                                     {" "}
-                                    {age_rating(this.state.adult)}{genres_convert(this.state.genres)} • {this.state.type} • Rating: {stars_convert(this.state.vote_average)} • Runtime: {time_convert(this.state.runtime)}
+                                    {age_rating(this.state.adult)}
+                                    {genres_convert(this.state.genres)} •{" "}
+                                    {this.state.type} • Rating:{" "}
+                                    {stars_convert(this.state.vote_average)} •
+                                    Runtime: {time_convert(this.state.runtime)}
                                 </h4>
                             </div>
                         </div>
@@ -195,16 +227,36 @@ export default class tvDetails extends Component<
                 <div className="grid-background absolute inset-0 p-2 mt-[490px] grid grid-cols-12 gap-0">
                     <div className="col-span-3 row-span-1">
                         <div className="ml-8 mr-8 mt-24">
-                            <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">Status</h3>
-                            <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.status}</p>
-                            <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">Release date</h3>
-                            <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.release_date}</p>
-                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">Original Language</h3>
-                            <p className="mt-0 text-white_text dark:text-dark_text text-md">{language_convert(this.state.original_language)}</p>
-                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">Episodes</h3>
-                            <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.number_of_episodes}</p>
-                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">Seasons</h3>
-                            <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.number_of_seasons}</p>
+                            <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">
+                                Status
+                            </h3>
+                            <p className="mt-0 text-white_text dark:text-dark_text text-md">
+                                {this.state.status}
+                            </p>
+                            <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">
+                                Release date
+                            </h3>
+                            <p className="mt-0 text-white_text dark:text-dark_text text-md">
+                                {this.state.release_date}
+                            </p>
+                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">
+                                Original Language
+                            </h3>
+                            <p className="mt-0 text-white_text dark:text-dark_text text-md">
+                                {language_convert(this.state.original_language)}
+                            </p>
+                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">
+                                Episodes
+                            </h3>
+                            <p className="mt-0 text-white_text dark:text-dark_text text-md">
+                                {this.state.number_of_episodes}
+                            </p>
+                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">
+                                Seasons
+                            </h3>
+                            <p className="mt-0 text-white_text dark:text-dark_text text-md">
+                                {this.state.number_of_seasons}
+                            </p>
                         </div>
                     </div>
                     <div className="col-span-9 row-span-1">
@@ -221,8 +273,12 @@ export default class tvDetails extends Component<
                                 <GlobeAltIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
                                 <span>Visit Homepage</span>
                             </button>
-                            <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">Overview</h3>
-                            <p className="mt-3 text-white_text dark:text-dark_text text-md">{this.state.overview}</p>
+                            <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">
+                                Overview
+                            </h3>
+                            <p className="mt-3 text-white_text dark:text-dark_text text-md">
+                                {this.state.overview}
+                            </p>
                             <div className="mt-8">
                                 <h1 className="mb-2 font-bold text-white_text dark:text-dark_text text-2xl">
                                     Top Billed Cast

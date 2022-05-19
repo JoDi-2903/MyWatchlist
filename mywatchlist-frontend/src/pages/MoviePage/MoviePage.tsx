@@ -4,7 +4,6 @@ import MovieDetails from "../../components/Details/MovieDetails";
 
 const MoviePage = () => {
     const params = useParams();
-
     return <MovieDetails id={parseInt(params.id as string)} />;
 };
 

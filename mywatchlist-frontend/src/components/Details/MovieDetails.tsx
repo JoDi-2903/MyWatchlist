@@ -1,6 +1,11 @@
 import { Component } from "react";
 import { useParams } from "react-router-dom";
-import { getMovieImages, getMovieDetail, similarMovie, creditsMovie} from "../../api/API";
+import {
+    getMovieImages,
+    getMovieDetail,
+    similarMovie,
+    creditsMovie,
+} from "../../api/API";
 import { apiConfig } from "../../Config";
 import { PlusIcon, FilmIcon, GlobeAltIcon } from "@heroicons/react/solid";
 import Flicking from "@egjs/react-flicking";
@@ -14,48 +19,48 @@ function time_convert(num) {
 }
 
 function language_convert(languageCode) {
-    let languageNames = new Intl.DisplayNames(['en'], { type: 'language' });
+    let languageNames = new Intl.DisplayNames(["en"], { type: "language" });
     return languageNames.of(languageCode);
 }
 
 function stars_convert(vote_average) {
-    let stars = '☆☆☆☆☆';
+    let stars = "☆☆☆☆☆";
     let votingInStars = Math.floor(5 * vote_average * 0.1);
     switch (votingInStars) {
         case 1:
-            stars = '★☆☆☆☆';
+            stars = "★☆☆☆☆";
             break;
         case 2:
-            stars = '★★☆☆☆';
+            stars = "★★☆☆☆";
             break;
         case 3:
-            stars = '★★★☆☆';
+            stars = "★★★☆☆";
             break;
         case 4:
-            stars = '★★★★☆';
+            stars = "★★★★☆";
             break;
         case 5:
-            stars = '★★★★★';
+            stars = "★★★★★";
             break;
         default:
-            stars = '☆☆☆☆☆';
+            stars = "☆☆☆☆☆";
             break;
     }
     return stars;
 }
 
-function genres_convert(genres_arr) {   // Fix displaying of genres from array
-    let genresList = '';
+function genres_convert(genres_arr) {
+    // Fix displaying of genres from array
+    let genresList = "";
     genresList = genresList + genres_arr[0];
     return genresList;
 }
 
 function age_rating(adult) {
     if (adult) {
-        return 'ADULTS ONLY • ';
-    }
-    else {
-        return '';
+        return "ADULTS ONLY • ";
+    } else {
+        return "";
     }
 }
 
@@ -110,32 +115,65 @@ export default class MovieDetails extends Component<
         };
     }
     async componentDidMount() {
-        var movieDetails = await getMovieDetail(this.state.movieID);
-        var movieImages = await getMovieImages(this.state.movieID);
-        var resultsMovie = await similarMovie(this.state.movieID);
-        var movieCast = await creditsMovie(this.state.movieID);
-        var posters = movieImages.data.posters;
-        var backdrops = movieImages.data.backdrops;
-        this.setState({
-            poster: apiConfig.originalImage(posters[0].file_path),
-            backdrop: apiConfig.originalImage(backdrops[0].file_path),
-            release_date: movieDetails.data.release_date,
-            original_title: movieDetails.data.original_title,
-            tagline: movieDetails.data.tagline,
-            genres: movieDetails.data.genres,
-            runtime: movieDetails.data.runtime,
-            adult: movieDetails.data.adult,
-            overview: movieDetails.data.overview,
-            status: movieDetails.data.status,
-            original_language: movieDetails.data.original_language,
-            budget: movieDetails.data.budget,
-            revenue: movieDetails.data.revenue,
-            homepage: movieDetails.data.homepage,
-            vote_average: movieDetails.data.vote_average,
-            similarMovie: resultsMovie.data.results,
-            creditsMovie: movieCast.data.cast,
-        });
+        this.loadData();
     }
+
+    componentDidUpdate() {
+        if (this.state.movieID !== this.props.id) {
+            this.setState({ movieID: this.props.id }, () => this.loadData());
+        }
+    }
+
+    async loadData() {
+        var movieDetails = await getMovieDetail(this.state.movieID);
+        this.setState(
+            {
+                release_date: movieDetails.data.release_date,
+                original_title: movieDetails.data.original_title,
+                tagline: movieDetails.data.tagline,
+                genres: movieDetails.data.genres,
+                runtime: movieDetails.data.runtime,
+                adult: movieDetails.data.adult,
+                overview: movieDetails.data.overview,
+                status: movieDetails.data.status,
+                original_language: movieDetails.data.original_language,
+                budget: movieDetails.data.budget,
+                revenue: movieDetails.data.revenue,
+                homepage: movieDetails.data.homepage,
+                vote_average: movieDetails.data.vote_average,
+            },
+            async () => {
+                var movieImages = await getMovieImages(this.state.movieID);
+                var posters = movieImages.data.posters;
+                var backdrops = movieImages.data.backdrops;
+                this.setState(
+                    {
+                        poster: apiConfig.originalImage(posters[0].file_path),
+                        backdrop: apiConfig.originalImage(
+                            backdrops[0].file_path
+                        ),
+                    },
+                    async () => {
+                        var movieCast = await creditsMovie(this.state.movieID);
+                        this.setState(
+                            {
+                                creditsMovie: movieCast.data.cast,
+                            },
+                            async () => {
+                                var resultsMovie = await similarMovie(
+                                    this.state.movieID
+                                );
+                                this.setState({
+                                    similarMovie: resultsMovie.data.results,
+                                });
+                            }
+                        );
+                    }
+                );
+            }
+        );
+    }
+
     render() {
         return (
             <div>
@@ -171,7 +209,11 @@ export default class MovieDetails extends Component<
                                 </h2>
                                 <h4 className="text-white text-xl font-ligth mt-20">
                                     {" "}
-                                    {age_rating(this.state.adult)}{genres_convert(this.state.genres)} • Rating: {stars_convert(this.state.vote_average)} • Runtime: {time_convert(this.state.runtime)}
+                                    {age_rating(this.state.adult)}
+                                    {genres_convert(this.state.genres)} •
+                                    Rating:{" "}
+                                    {stars_convert(this.state.vote_average)} •
+                                    Runtime: {time_convert(this.state.runtime)}
                                 </h4>
                             </div>
                         </div>
@@ -181,16 +223,44 @@ export default class MovieDetails extends Component<
                 <div className="grid-background absolute inset-0 p-2 mt-[490px] grid grid-cols-12 gap-0">
                     <div className="col-span-3 row-span-1">
                         <div className="ml-8 mr-8 mt-24">
-                            <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">Status</h3>
-                            <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.status}</p>
-                            <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">Release date</h3>
-                            <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.release_date}</p>
-                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">Original Language</h3>
-                            <p className="mt-0 text-white_text dark:text-dark_text text-md">{language_convert(this.state.original_language)}</p>
-                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">Budget</h3>
-                            <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.budget.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })}</p>
-                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">Revenue</h3>
-                            <p className="mt-0 text-white_text dark:text-dark_text text-md">{this.state.revenue.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })}</p>
+                            <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">
+                                Status
+                            </h3>
+                            <p className="mt-0 text-white_text dark:text-dark_text text-md">
+                                {this.state.status}
+                            </p>
+                            <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">
+                                Release date
+                            </h3>
+                            <p className="mt-0 text-white_text dark:text-dark_text text-md">
+                                {this.state.release_date}
+                            </p>
+                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">
+                                Original Language
+                            </h3>
+                            <p className="mt-0 text-white_text dark:text-dark_text text-md">
+                                {language_convert(this.state.original_language)}
+                            </p>
+                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">
+                                Budget
+                            </h3>
+                            <p className="mt-0 text-white_text dark:text-dark_text text-md">
+                                {this.state.budget.toLocaleString("en-US", {
+                                    style: "currency",
+                                    currency: "USD",
+                                    maximumFractionDigits: 0,
+                                })}
+                            </p>
+                            <h3 className="mt-7 font-bold text-white_text dark:text-dark_text text-2xl">
+                                Revenue
+                            </h3>
+                            <p className="mt-0 text-white_text dark:text-dark_text text-md">
+                                {this.state.revenue.toLocaleString("en-US", {
+                                    style: "currency",
+                                    currency: "USD",
+                                    maximumFractionDigits: 0,
+                                })}
+                            </p>
                         </div>
                     </div>
                     <div className="col-span-9 row-span-1">
@@ -207,8 +277,12 @@ export default class MovieDetails extends Component<
                                 <GlobeAltIcon className="w-6 h-6 mr-2 text-white_text dark:text-white" />
                                 <span>Visit Homepage</span>
                             </button>
-                            <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">Overview</h3>
-                            <p className="mt-3 text-white_text dark:text-dark_text text-md">{this.state.overview}</p>
+                            <h3 className="mt-10 font-bold text-white_text dark:text-dark_text text-2xl">
+                                Overview
+                            </h3>
+                            <p className="mt-3 text-white_text dark:text-dark_text text-md">
+                                {this.state.overview}
+                            </p>
                             <div className="mt-8">
                                 <h1 className="mb-2 font-bold text-white_text dark:text-dark_text text-2xl">
                                     Top Billed Cast
