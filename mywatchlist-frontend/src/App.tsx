@@ -2,6 +2,7 @@ import React from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
+import Footer from "./components/Footer/Footer";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import LogoutPage from "./pages/LogoutPage/LogoutPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
@@ -25,7 +26,7 @@ import MyWatchlistPage from "./pages/WatchlistOverviewPage/WatchlistOverviewPage
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage/PrivacyPolicyPage";
 import WatchlistPage from "./pages/WatchlistPage/WatchlistPage";
 
-interface AppProps {}
+interface AppProps { }
 
 interface AppState {
     jwtInfo: JWTInfo;
@@ -148,6 +149,7 @@ export default class App extends React.Component<AppProps, AppState> {
                                 </Routes>
                             )}
                         </JWTContext.Consumer>
+                        <Footer />
                     </JWTContext.Provider>
                 </Router>
             </div>

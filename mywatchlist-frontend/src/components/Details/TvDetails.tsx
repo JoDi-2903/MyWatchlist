@@ -9,7 +9,6 @@ import { JWTContext } from "../../security/JWTContext";
 
 
 function time_convert(num) {
-    // Bug: only time of one single episode
     var totalTimeInMinutes = 0;
     for (let i = 0; i < num.length; i++) {
         totalTimeInMinutes = totalTimeInMinutes + parseInt(num[i]);
