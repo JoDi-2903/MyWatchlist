@@ -15,31 +15,31 @@ function time_convert(num) {
 }
 
 function language_convert(languageCode) {
-    let languageNames = new Intl.DisplayNames(['en'], { type: 'language' });
+    let languageNames = new Intl.DisplayNames(["en"], { type: "language" });
     return languageNames.of(languageCode);
 }
 
 function stars_convert(vote_average) {
-    let stars = '☆☆☆☆☆';
+    let stars = "☆☆☆☆☆";
     let votingInStars = Math.floor(5 * vote_average * 0.1);
     switch (votingInStars) {
         case 1:
-            stars = '★☆☆☆☆';
+            stars = "★☆☆☆☆";
             break;
         case 2:
-            stars = '★★☆☆☆';
+            stars = "★★☆☆☆";
             break;
         case 3:
-            stars = '★★★☆☆';
+            stars = "★★★☆☆";
             break;
         case 4:
-            stars = '★★★★☆';
+            stars = "★★★★☆";
             break;
         case 5:
-            stars = '★★★★★';
+            stars = "★★★★★";
             break;
         default:
-            stars = '☆☆☆☆☆';
+            stars = "☆☆☆☆☆";
             break;
     }
     return stars;
@@ -55,10 +55,9 @@ function genres_convert(genres_arr) {
 
 function age_rating(adult) {
     if (adult) {
-        return 'ADULTS ONLY • ';
-    }
-    else {
-        return '';
+        return "ADULTS ONLY • ";
+    } else {
+        return "";
     }
 }
 
@@ -117,36 +116,65 @@ export default class MovieDetails extends Component<
         };
     }
     async componentDidMount() {
-        var movieDetails = await getMovieDetail(this.state.movieID);
-        var movieImages = await getMovieImages(this.state.movieID);
-        var resultsMovie = await similarMovie(this.state.movieID);
-        var movieCast = await creditsMovie(this.state.movieID);
-        var movieTrailer = await getMovieTrailer(this.state.movieID);
-        var posters = movieImages.data.posters;
-        var backdrops = movieImages.data.backdrops;
-        var trailers = movieTrailer.data.results;
-        var genres_arr = movieDetails.data.genres;
-        this.setState({
-            poster: apiConfig.originalImage(posters[0].file_path),
-            backdrop: apiConfig.originalImage(backdrops[0].file_path),
-            trailer: apiConfig.trailer(trailers[0].key),
-            release_date: movieDetails.data.release_date,
-            original_title: movieDetails.data.original_title,
-            tagline: movieDetails.data.tagline,
-            genres: genres_convert(genres_arr),
-            runtime: movieDetails.data.runtime,
-            adult: movieDetails.data.adult,
-            overview: movieDetails.data.overview,
-            status: movieDetails.data.status,
-            original_language: movieDetails.data.original_language,
-            budget: movieDetails.data.budget,
-            revenue: movieDetails.data.revenue,
-            homepage: movieDetails.data.homepage,
-            vote_average: movieDetails.data.vote_average,
-            similarMovie: resultsMovie.data.results,
-            creditsMovie: movieCast.data.cast,
-        });
+        this.loadData();
     }
+
+    componentDidUpdate() {
+        if (this.state.movieID !== this.props.id) {
+            this.setState({ movieID: this.props.id }, () => this.loadData());
+        }
+    }
+
+    async loadData() {
+        var movieDetails = await getMovieDetail(this.state.movieID);
+        this.setState(
+            {
+                release_date: movieDetails.data.release_date,
+                original_title: movieDetails.data.original_title,
+                tagline: movieDetails.data.tagline,
+                genres: movieDetails.data.genres,
+                runtime: movieDetails.data.runtime,
+                adult: movieDetails.data.adult,
+                overview: movieDetails.data.overview,
+                status: movieDetails.data.status,
+                original_language: movieDetails.data.original_language,
+                budget: movieDetails.data.budget,
+                revenue: movieDetails.data.revenue,
+                homepage: movieDetails.data.homepage,
+                vote_average: movieDetails.data.vote_average,
+            },
+            async () => {
+                var movieImages = await getMovieImages(this.state.movieID);
+                var posters = movieImages.data.posters;
+                var backdrops = movieImages.data.backdrops;
+                this.setState(
+                    {
+                        poster: apiConfig.originalImage(posters[0].file_path),
+                        backdrop: apiConfig.originalImage(
+                            backdrops[0].file_path
+                        ),
+                    },
+                    async () => {
+                        var movieCast = await creditsMovie(this.state.movieID);
+                        this.setState(
+                            {
+                                creditsMovie: movieCast.data.cast,
+                            },
+                            async () => {
+                                var resultsMovie = await similarMovie(
+                                    this.state.movieID
+                                );
+                                this.setState({
+                                    similarMovie: resultsMovie.data.results,
+                                });
+                            }
+                        );
+                    }
+                );
+            }
+        );
+    }
+
     render() {
         return (
             <div>

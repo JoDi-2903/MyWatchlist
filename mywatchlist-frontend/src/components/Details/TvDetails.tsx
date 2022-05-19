@@ -8,7 +8,8 @@ import ActorElement from "../../components/List/ActorElement";
 import { JWTContext } from "../../security/JWTContext";
 
 
-function time_convert(num) {    // Bug: only time of one single episode
+function time_convert(num) {
+    // Bug: only time of one single episode
     var totalTimeInMinutes = 0;
     for (let i = 0; i < num.length; i++) {
         totalTimeInMinutes = totalTimeInMinutes + parseInt(num[i]);
@@ -19,31 +20,31 @@ function time_convert(num) {    // Bug: only time of one single episode
 }
 
 function language_convert(languageCode) {
-    let languageNames = new Intl.DisplayNames(['en'], { type: 'language' });
+    let languageNames = new Intl.DisplayNames(["en"], { type: "language" });
     return languageNames.of(languageCode);
 }
 
 function stars_convert(vote_average) {
-    let stars = '☆☆☆☆☆';
+    let stars = "☆☆☆☆☆";
     let votingInStars = Math.floor(5 * vote_average * 0.1);
     switch (votingInStars) {
         case 1:
-            stars = '★☆☆☆☆';
+            stars = "★☆☆☆☆";
             break;
         case 2:
-            stars = '★★☆☆☆';
+            stars = "★★☆☆☆";
             break;
         case 3:
-            stars = '★★★☆☆';
+            stars = "★★★☆☆";
             break;
         case 4:
-            stars = '★★★★☆';
+            stars = "★★★★☆";
             break;
         case 5:
-            stars = '★★★★★';
+            stars = "★★★★★";
             break;
         default:
-            stars = '☆☆☆☆☆';
+            stars = "☆☆☆☆☆";
             break;
     }
     return stars;
@@ -59,10 +60,9 @@ function genres_convert(genres_arr) {
 
 function age_rating(adult) {
     if (adult) {
-        return 'ADULTS ONLY • ';
-    }
-    else {
-        return '';
+        return "ADULTS ONLY • ";
+    } else {
+        return "";
     }
 }
 
@@ -96,11 +96,6 @@ export default class tvDetails extends Component<
     TVDetailsProps,
     TVDetailsState
 > {
-    /*componentDidUpdate() {
-        if (this.state.tvID !== this.props.id)
-            this.setState({ tvID: this.props.id });
-    }*/
-
     constructor(props) {
         super(props);
         this.state = {
@@ -126,38 +121,68 @@ export default class tvDetails extends Component<
             trailer: "",
         };
     }
-    async componentDidMount() {
-        var tvDetails = await getTVDetail(this.state.tvID);
-        var tvImages = await getTVImages(this.state.tvID);
-        var resultsTV = await similarTV(this.state.tvID);
-        var tvCast = await creditsTV(this.state.tvID);
-        var tvTrailer = await getTVTrailer(this.state.tvID);
-        var posters = tvImages.data.posters;
-        var backdrops = tvImages.data.backdrops;
-        var trailers = tvTrailer.data.results;
-        var genres_arr = tvDetails.data.genres;
-        this.setState({
-            poster: apiConfig.originalImage(posters[0].file_path),
-            backdrop: apiConfig.originalImage(backdrops[0].file_path),
-            trailer: apiConfig.trailer(trailers[0].key),
-            release_date: tvDetails.data.first_air_date,
-            original_title: tvDetails.data.original_name,
-            tagline: tvDetails.data.tagline,
-            genres: genres_convert(genres_arr),
-            runtime: tvDetails.data.episode_run_time,
-            adult: tvDetails.data.adult,
-            overview: tvDetails.data.overview,
-            status: tvDetails.data.status,
-            type: tvDetails.data.type,
-            original_language: tvDetails.data.original_language,
-            number_of_episodes: tvDetails.data.number_of_episodes,
-            number_of_seasons: tvDetails.data.number_of_seasons,
-            homepage: tvDetails.data.homepage,
-            vote_average: tvDetails.data.vote_average,
-            similarTV: resultsTV.data.results,
-            creditsTV: tvCast.data.cast,
-        });
+
+    componentDidMount() {
+        this.loadData();
     }
+
+    componentDidUpdate() {
+        if (this.state.tvID !== this.props.id) {
+            this.setState({ tvID: this.props.id }, () => this.loadData());
+        }
+    }
+
+    async loadData() {
+        var tvDetails = await getTVDetail(this.state.tvID);
+
+        this.setState(
+            {
+                release_date: tvDetails.data.first_air_date,
+                original_title: tvDetails.data.original_name,
+                tagline: tvDetails.data.tagline,
+                genres: tvDetails.data.genres,
+                runtime: tvDetails.data.episode_run_time,
+                adult: tvDetails.data.adult,
+                overview: tvDetails.data.overview,
+                status: tvDetails.data.status,
+                original_language: tvDetails.data.original_language,
+                number_of_episodes: tvDetails.data.number_of_episodes,
+                number_of_seasons: tvDetails.data.number_of_seasons,
+                homepage: tvDetails.data.homepage,
+                vote_average: tvDetails.data.vote_average,
+            },
+            async () => {
+                var tvImages = await getTVImages(this.state.tvID);
+                var posters = tvImages.data.posters;
+                var backdrops = tvImages.data.backdrops;
+                this.setState(
+                    {
+                        poster: apiConfig.originalImage(posters[0].file_path),
+                        backdrop: apiConfig.originalImage(
+                            backdrops[0].file_path
+                        ),
+                    },
+                    async () => {
+                        var tvCast = await creditsTV(this.state.tvID);
+                        this.setState(
+                            {
+                                creditsTV: tvCast.data.cast,
+                            },
+                            async () => {
+                                var resultsTV = await similarTV(
+                                    this.state.tvID
+                                );
+                                this.setState({
+                                    similarTV: resultsTV.data.results,
+                                });
+                            }
+                        );
+                    }
+                );
+            }
+        );
+    }
+
     render() {
         return (
             <div>
