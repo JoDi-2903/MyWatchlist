@@ -5,7 +5,7 @@ class Footer extends Component {
     render() {
         return (
             <div>
-                <div className="bg-white_navbar dark:bg-dark_navbar py-5 px-5 lg:px-20 grid grid-cols-1 md:grid-cols-2 w-full justify-between align-middle absolute bottom-0">
+                <div className="bg-white_navbar dark:bg-dark_navbar py-5 px-5 lg:px-20 grid grid-cols-1 md:grid-cols-2 w-full justify-between align-middle top-full">
                     <a href="https://www.themoviedb.org/" target="_blank" rel="noopener noreferrer">
                         <div className="flex items-center gap-3 justify-self-center lg:justify-self-start">
                             <img alt="Logo" src="TMDB_Logo.svg" className="h-3" />

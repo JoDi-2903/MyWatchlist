@@ -149,17 +149,21 @@ export default class tvDetails extends Component<
                 number_of_seasons: tvDetails.data.number_of_seasons,
                 homepage: tvDetails.data.homepage,
                 vote_average: tvDetails.data.vote_average,
+                type: tvDetails.data.type,
             },
             async () => {
                 var tvImages = await getTVImages(this.state.tvID);
                 var posters = tvImages.data.posters;
                 var backdrops = tvImages.data.backdrops;
+                var tvTrailer = await getTVTrailer(this.state.tvID);
+                var trailers = tvTrailer.data.results;
                 this.setState(
                     {
                         poster: apiConfig.originalImage(posters[0].file_path),
                         backdrop: apiConfig.originalImage(
                             backdrops[0].file_path
                         ),
+                        trailer: apiConfig.trailer(trailers[0].key),
                     },
                     async () => {
                         var tvCast = await creditsTV(this.state.tvID);

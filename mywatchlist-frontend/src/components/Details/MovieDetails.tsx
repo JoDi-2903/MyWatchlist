@@ -147,12 +147,15 @@ export default class MovieDetails extends Component<
                 var movieImages = await getMovieImages(this.state.movieID);
                 var posters = movieImages.data.posters;
                 var backdrops = movieImages.data.backdrops;
+                var movieTrailer = await getMovieTrailer(this.state.movieID);
+                var trailers = movieTrailer.data.results;
                 this.setState(
                     {
                         poster: apiConfig.originalImage(posters[0].file_path),
                         backdrop: apiConfig.originalImage(
                             backdrops[0].file_path
                         ),
+                        trailer: apiConfig.trailer(trailers[0].key),
                     },
                     async () => {
                         var movieCast = await creditsMovie(this.state.movieID);
