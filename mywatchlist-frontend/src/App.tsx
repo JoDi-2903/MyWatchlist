@@ -2,6 +2,7 @@ import React from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
+import Footer from "./components/Footer/Footer";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import LogoutPage from "./pages/LogoutPage/LogoutPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
@@ -25,7 +26,7 @@ import MyWatchlistPage from "./pages/WatchlistOverviewPage/WatchlistOverviewPage
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage/PrivacyPolicyPage";
 import WatchlistPage from "./pages/WatchlistPage/WatchlistPage";
 
-interface AppProps {}
+interface AppProps { }
 
 interface AppState {
     jwtInfo: JWTInfo;
@@ -81,73 +82,76 @@ export default class App extends React.Component<AppProps, AppState> {
                         <div>
                             <Toaster position="bottom-right" />
                         </div>
-                        <Navbar />
-                        <JWTContext.Consumer>
-                            {({ jwtInfo, changeJWT }) => (
-                                <Routes>
-                                    <Route
-                                        path="*"
-                                        element={<NotFoundPage />}
-                                    />
-                                    <Route
-                                        path="/login"
-                                        element={<LoginPage />}
-                                    />
-                                    <Route
-                                        path="/logout"
-                                        element={<LogoutPage />}
-                                    />
-                                    <Route
-                                        path="/register"
-                                        element={<RegisterPage />}
-                                    />
-                                    <Route
-                                        path="/settings"
-                                        element={<SettingsPage />}
-                                    />
-                                    <Route
-                                        path="/search"
-                                        element={<SearchPage />}
-                                    />
-                                    <Route
-                                        path="/mywatchlist"
-                                        element={<MyWatchlistPage />}
-                                    />
-                                    <Route
-                                        path="/movie/:id"
-                                        element={<MoviePage />}
-                                    />
-                                    <Route
-                                        path="/tv/:id"
-                                        element={<TvPage />}
-                                    />
-                                    <Route
-                                        path="/user/:id"
-                                        element={<UserProfilePage />}
-                                    />
-                                    <Route
-                                        path="/privacy"
-                                        element={<PrivacyPolicyPage />}
-                                    />
+                        <div className="min-h-screen">
+                            <Navbar />
+                            <JWTContext.Consumer>
+                                {({ jwtInfo, changeJWT }) => (
+                                    <Routes>
+                                        <Route
+                                            path="*"
+                                            element={<NotFoundPage />}
+                                        />
+                                        <Route
+                                            path="/login"
+                                            element={<LoginPage />}
+                                        />
+                                        <Route
+                                            path="/logout"
+                                            element={<LogoutPage />}
+                                        />
+                                        <Route
+                                            path="/register"
+                                            element={<RegisterPage />}
+                                        />
+                                        <Route
+                                            path="/settings"
+                                            element={<SettingsPage />}
+                                        />
+                                        <Route
+                                            path="/search"
+                                            element={<SearchPage />}
+                                        />
+                                        <Route
+                                            path="/mywatchlist"
+                                            element={<MyWatchlistPage />}
+                                        />
+                                        <Route
+                                            path="/movie/:id"
+                                            element={<MoviePage />}
+                                        />
+                                        <Route
+                                            path="/tv/:id"
+                                            element={<TvPage />}
+                                        />
+                                        <Route
+                                            path="/user/:id"
+                                            element={<UserProfilePage />}
+                                        />
+                                        <Route
+                                            path="/privacy"
+                                            element={<PrivacyPolicyPage />}
+                                        />
 
-                                    <Route
-                                        path="/watchlist/:id"
-                                        element={<WatchlistPage />}
-                                    />
+                                        <Route
+                                            path="/watchlist/:id"
+                                            element={<WatchlistPage />}
+                                        />
 
-                                    <Route
-                                        path="/"
-                                        element={
-                                            isLoggedIn(jwtInfo.jwt) ? (
-                                                <StartPage />
-                                            ) : (
-                                                <WelcomePage />
-                                            )
-                                        }
-                                    />
-                                </Routes>
-                            )}
-                        </JWTContext.Consumer>
+                                        <Route
+                                            path="/"
+                                            element={
+                                                isLoggedIn(jwtInfo.jwt) ? (
+                                                    <StartPage />
+                                                ) : (
+                                                    <WelcomePage />
+                                                )
+                                            }
+                                        />
+                                    </Routes>
+                                )}
+                            </JWTContext.Consumer>
+                        </div>
+                        <Footer />
                     </JWTContext.Provider>
                 </Router>
             </div>

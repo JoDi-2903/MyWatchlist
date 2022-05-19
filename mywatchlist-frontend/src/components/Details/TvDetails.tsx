@@ -9,7 +9,6 @@ import { JWTContext } from "../../security/JWTContext";
 
 
 function time_convert(num) {
-    // Bug: only time of one single episode
     var totalTimeInMinutes = 0;
     for (let i = 0; i < num.length; i++) {
         totalTimeInMinutes = totalTimeInMinutes + parseInt(num[i]);
@@ -150,17 +149,21 @@ export default class tvDetails extends Component<
                 number_of_seasons: tvDetails.data.number_of_seasons,
                 homepage: tvDetails.data.homepage,
                 vote_average: tvDetails.data.vote_average,
+                type: tvDetails.data.type,
             },
             async () => {
                 var tvImages = await getTVImages(this.state.tvID);
                 var posters = tvImages.data.posters;
                 var backdrops = tvImages.data.backdrops;
+                var tvTrailer = await getTVTrailer(this.state.tvID);
+                var trailers = tvTrailer.data.results;
                 this.setState(
                     {
                         poster: apiConfig.originalImage(posters[0].file_path),
                         backdrop: apiConfig.originalImage(
                             backdrops[0].file_path
                         ),
+                        trailer: apiConfig.trailer(trailers[0].key),
                     },
                     async () => {
                         var tvCast = await creditsTV(this.state.tvID);
@@ -189,6 +192,8 @@ export default class tvDetails extends Component<
                 <div className="bg-gradient-to-tl from-black via-dark_bg to-dark_bg h-96 w-full bg-cover bg-center relative">
                     <img
                         src={this.state.backdrop}
+                        
+                        alt={this.state.original_title}
                         className="w-full h-full object-cover absolute mix-blend-overlay"
                     />
                     <div className="grid-background absolute inset-0 p-2 grid grid-cols-12 gap-0">
@@ -196,6 +201,7 @@ export default class tvDetails extends Component<
                         <div className="col-span-2">
                             <img
                                 src={this.state.poster}
+                                alt={this.state.original_title}
                                 className="h-auto w-auto object-cover rounded-lg border-2 border-white shadow-2xl shadow-black"
                             />
                         </div>
