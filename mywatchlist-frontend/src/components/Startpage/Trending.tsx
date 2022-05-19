@@ -1,12 +1,11 @@
 import Flicking from "@egjs/react-flicking";
 import "@egjs/react-flicking/dist/flicking.css";
 import { InformationCircleIcon, PlusCircleIcon } from "@heroicons/react/solid";
-import { Component, ReactNode } from "react";
+import { Component, createRef, ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { addElementToList } from "../../api/API";
 import { apiConfig } from "../../Config";
 import { getJWT, getUsername, JWTInfo } from "../../security/JWTContext";
-import Card from "../Wrapper/Card";
 
 interface TrendingProps {
     trendingList;
@@ -17,11 +16,27 @@ interface TrendingState {
 }
 
 export default class Trending extends Component<TrendingProps, TrendingState> {
+    private flicking: React.RefObject<Flicking>;
     constructor(props: TrendingProps) {
         super(props);
         this.state = {
             trendingList: this.props.trendingList,
         };
+        this.flicking = createRef();
+    }
+
+    moveToNextPanel() {
+        setTimeout(async () => {
+            try {
+                await this.flicking.current?.next();
+            } finally {
+                this.moveToNextPanel();
+            }
+        }, 5000);
+    }
+
+    componentDidMount() {
+        this.moveToNextPanel();
     }
 
     componentDidUpdate() {
@@ -39,9 +54,10 @@ export default class Trending extends Component<TrendingProps, TrendingState> {
                     circular={true}
                     renderOnlyVisible={true}
                     align={"prev"}
+                    ref={this.flicking}
                 >
                     {this.state.trendingList.map((element) => (
-                        <div className="w-screen" key={element.id}>
+                        <div className="w-screen panel" key={element.id}>
                             <div className="bg-gradient-to-b from-transparent via-dark_bg to-dark_bg bg-cover bg-center relative -top-24">
                                 <img
                                     src={apiConfig.originalImage(
