@@ -108,12 +108,6 @@ public class MyWatchlistService {
         return profileDto;
     }
 
-    //todo auslagern
-    private void getWatchlist() {
-
-    }
-
-
     public MyProfileDto getMyProfile(String username) {
         UserProfile userAccount = userAccountRepo.findByUsername(username).orElseThrow(EntityNotFoundException::new);
         List<Watchlist> watchlists = watchlistRepo.findAllByUserUserId(userAccount.getUserId());
@@ -137,11 +131,6 @@ public class MyWatchlistService {
         userSettingsDto.setEmail(userAccount.getEmail());
         userSettingsDto.setPrivateProfile(userAccount.isPrivateProfile());
         return userSettingsDto;
-    }
-
-    public List<WatchlistDto> test(String username) {
-
-        return null;
     }
 
     public void changeEmail(String email, String username) {
@@ -174,7 +163,6 @@ public class MyWatchlistService {
 
     public boolean checkWatchlistName(String watchlistName, String username) {
         return watchlistRepo.findByUserUserIdAndWatchlistName(getUserId(username), watchlistName).isPresent();
-
     }
 
     public void deleteWatchlist(long watchlistId) {
@@ -185,13 +173,6 @@ public class MyWatchlistService {
 
     public boolean checkWatchlistBelongsToUser(long watchlistId, String username) {
         return watchlistRepo.findByUserUserIdAndWatchlistId(getUserId(username), watchlistId).isPresent();
-        //watchlistRepo.findAllByUserUserId(getUserId(username)).stream().filter(x -> x.getWatchlistId() == watchlistId);
-        //List<Watchlist> watchlistList =
-
-        //watchlistRepo.
-        //return false; todo eigenes search skript
-        //exist = watchlistRepo.findAllByUserUserId(getUserId(username)).stream().anyMatch(x -> x.getWatchlistId() == watchlistId);
-        //var test = watchlistRepo.findAllByUserUserId(getUserId(username));
     }
 
     public boolean checkWatchlistEntryBelongsToUser(int titleId, long watchlistId) {
@@ -199,7 +180,7 @@ public class MyWatchlistService {
     }
 
     public void deleteWatchlistEntry(long entryId) {
-        watchlistEntryRepo.deleteById(entryId); //todo die anderen auch byId löschen
+        watchlistEntryRepo.deleteById(entryId);
     }
 
     public List<GetWatchlistsDto> getWatchlists(String username) {
@@ -239,7 +220,6 @@ public class MyWatchlistService {
             for (var tvInfo : tvInfoList) {
                 seasonList.add(tvInfo.getSeason());
             }
-
             seasonList = seasonList.stream().distinct().collect(Collectors.toList());
 
             for (var season : seasonList) {
@@ -282,7 +262,6 @@ public class MyWatchlistService {
 
         if (title.equals(Title.TV)) {
             if (!checkTitleIdIsUsed(watchlistEntryDto.getWatchlistId(), watchlistEntryDto.getWatchlistEntry().getTitleId())) {
-                // title gibt es noch nicht zu der serie
                 watchlistEntryRepo.save(watchlistEntry);
             }
             watchlistEntry = watchlistEntryRepo.findByTitleIdAndWatchlistWatchlistId(watchlistEntryDto.getWatchlistEntry().getTitleId(),
@@ -291,7 +270,7 @@ public class MyWatchlistService {
             for (var tv : watchlistEntryDto.getWatchlistEntry().getTvInfoList()) {
                 List<TvInfo> tvInfoList = tvInfoRepo.findByWatchlistEntryEntryIdAndSeason(watchlistEntry.getEntryId(), tv.getSeason());
                 for (var episode : tv.getEpisodes()) {
-                    //episode gibt es schon
+                    //Check episode already exist
                     if (tvInfoList.stream().noneMatch(x -> x.getEpisode() == episode)) {
                         TvInfo tvInfo = new TvInfo();
                         tvInfo.setSeason(tv.getSeason());
@@ -340,7 +319,7 @@ public class MyWatchlistService {
 
             for (var tvInfo : tvInfoList) {
                 for (var season : seasons) {
-                    if(tvInfo.getSeason() == season){
+                    if (tvInfo.getSeason() == season) {
                         tvInfoRepo.delete(tvInfo);
                     }
                 }

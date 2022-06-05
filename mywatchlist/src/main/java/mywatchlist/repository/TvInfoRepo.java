@@ -14,6 +14,4 @@ public interface TvInfoRepo extends JpaRepository<TvInfo, Long> {
     List<TvInfo> findByWatchlistEntryEntryIdAndSeason(long entryId, short season);
 
     List<TvInfo> findByWatchlistEntryEntryId(long entryId);
-
-
 }
