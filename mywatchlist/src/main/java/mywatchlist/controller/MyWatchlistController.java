@@ -34,6 +34,7 @@ public class MyWatchlistController {
     //region User
 
     /**
+     * Register new user
      * @param userAccountDto
      * @return
      */
@@ -69,6 +70,7 @@ public class MyWatchlistController {
     }
 
     /**
+     * Validate username
      * @param username
      * @return
      */
@@ -88,6 +90,7 @@ public class MyWatchlistController {
     }
 
     /**
+     * Set private profile
      * @param changeUserSettingsDto
      * @return
      */
@@ -111,6 +114,7 @@ public class MyWatchlistController {
     }
 
     /**
+     * Change password
      * @param changePasswordDto
      * @return
      */
@@ -139,6 +143,7 @@ public class MyWatchlistController {
     }
 
     /**
+     * Change email adress
      * @param changeUserSettingsDto
      * @return
      */
@@ -169,6 +174,7 @@ public class MyWatchlistController {
     }
 
     /**
+     * Get all settings from a user
      * @param username
      * @return
      */
@@ -179,6 +185,7 @@ public class MyWatchlistController {
     }
 
     /**
+     * All information about your profile and the watchlists
      * @param username
      * @return
      */
@@ -189,6 +196,7 @@ public class MyWatchlistController {
     }
 
     /**
+     * All watchlists from a user when his profile is public
      * @param username
      * @return
      */
@@ -206,6 +214,7 @@ public class MyWatchlistController {
     }
 
     /**
+     * Delete a user
      * @param username
      * @return
      */
@@ -227,6 +236,7 @@ public class MyWatchlistController {
     //region Watchlist
 
     /**
+     * Create a new watchlist
      * @param watchlistDto
      * @return
      */
@@ -250,6 +260,7 @@ public class MyWatchlistController {
     }
 
     /**
+     * Add a new entry to a watchlist
      * @param watchlistEntryDto Watchlist entry
      * @return
      */
@@ -285,7 +296,13 @@ public class MyWatchlistController {
         return new ResponseEntity<>(resp.toString(), responseHeaders, HttpStatus.BAD_REQUEST);
     }
 
-    //refactored mit nested test X
+
+    /**
+     * Get a specific watchlist
+     * @param username
+     * @param watchlistId
+     * @return
+     */
     @GetMapping("/watchlist/get-watchlist/{username}/{watchlistId}")
     @PreAuthorize("#username == authentication.name")
     public ResponseEntity<String> getWatchlist(@PathVariable String username, @PathVariable long watchlistId) {
@@ -303,6 +320,11 @@ public class MyWatchlistController {
         return new ResponseEntity<>(watchlist, responseHeaders, HttpStatus.OK);
     }
 
+    /**
+     * Get every watchlist from a user
+     * @param username
+     * @return
+     */
     @GetMapping("/watchlist/get-every-watchlist/{username}")
     @PreAuthorize("#username == authentication.name")
     public ResponseEntity<String> getEveryWatchlist(@PathVariable String username) {
@@ -316,6 +338,12 @@ public class MyWatchlistController {
         return new ResponseEntity<>(resp.toString(), responseHeaders, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Delete a watchlist entry
+     * @param username
+     * @param entryId
+     * @return
+     */
     @DeleteMapping("/watchlist/delete-watchlist-entry/{username}/{entryId}")
     @PreAuthorize("#username == authentication.name")
     public ResponseEntity<String> deleteWatchlistEntry(@PathVariable String username, @PathVariable long entryId) {
@@ -334,6 +362,12 @@ public class MyWatchlistController {
 
     }
 
+    /**
+     * Delete a complete watchlist
+     * @param username
+     * @param watchlistId
+     * @return
+     */
     @DeleteMapping("/watchlist/delete-watchlist/{username}/{watchlistId}")
     @PreAuthorize("#username == authentication.name")
     public ResponseEntity<String> deleteWatchlist(@PathVariable String username, @PathVariable long watchlistId) {
@@ -351,6 +385,11 @@ public class MyWatchlistController {
         return new ResponseEntity<>(resp.toString(), responseHeaders, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Delete episodes from a title
+     * @param deleteEpisodesDto
+     * @return
+     */
     @DeleteMapping("/watchlist/delete-episodes")
     @PreAuthorize("#deleteEpisodesDto.getUsername() == authentication.name")
     public ResponseEntity<String> deleteEpisode(@RequestBody DeleteEpisodesDto deleteEpisodesDto) {
@@ -376,6 +415,11 @@ public class MyWatchlistController {
         return new ResponseEntity<>(resp.toString(), responseHeaders, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Delete several seasons with their episodes from a title
+     * @param deleteSeasonsDto
+     * @return
+     */
     @DeleteMapping("/watchlist/delete-seasons")
     @PreAuthorize("#deleteSeasonsDto.getUsername() == authentication.name")
     public ResponseEntity<String> deleteSeasons(@RequestBody DeleteSeasonsDto deleteSeasonsDto) {
@@ -401,6 +445,11 @@ public class MyWatchlistController {
         return new ResponseEntity<>(resp.toString(), responseHeaders, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Delete complete title
+     * @param tvOrMovie
+     * @return
+     */
     @DeleteMapping("/watchlist/delete-complete-tv-or-movie")
     @PreAuthorize("#tvOrMovie.getUsername() == authentication.name")
     public ResponseEntity<String> deleteCompleteTvOrMovie(@RequestBody DeleteCompleteTvOrMovieDto tvOrMovie) {

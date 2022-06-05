@@ -14,18 +14,15 @@ import java.util.Optional;
 @Repository
 public interface UserAccountRepo extends JpaRepository<UserProfile, Long> {
     Optional<UserProfile> findByUsername(String username);
-    //Optional<UserAccount> findById(long userId);
-    //UserAccount findByUsername(String username);
-    //geht nicht wie umsetzen?
 
-   List<UserProfile> findByEmailOrUsername(String eMail, String username);
+    List<UserProfile> findByEmailOrUsername(String eMail, String username);
 
-   Optional<UserProfile> findByEmail(String eMail);
+    Optional<UserProfile> findByEmail(String eMail);
 
-   @Modifying
-   @Transactional
-   @Query("update UserProfile u set u.email =:email where u.userId =:userId")
-   void updateEmail(@Param(value = "email") String email, @Param(value = "userId") long userId);
+    @Modifying
+    @Transactional
+    @Query("update UserProfile u set u.email =:email where u.userId =:userId")
+    void updateEmail(@Param(value = "email") String email, @Param(value = "userId") long userId);
 
     @Modifying
     @Transactional
@@ -36,6 +33,4 @@ public interface UserAccountRepo extends JpaRepository<UserProfile, Long> {
     @Transactional
     @Query("update UserProfile u set u.privateProfile =:privateProfile where u.userId =:userId")
     void updatePrivateProfile(@Param(value = "privateProfile") boolean privateProfile, @Param(value = "userId") long userId);
-
-
 }
